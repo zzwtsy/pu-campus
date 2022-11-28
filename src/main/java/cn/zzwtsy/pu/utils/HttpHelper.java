@@ -1,0 +1,67 @@
+package cn.zzwtsy.pu.utils;
+
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.Objects;
+
+/**
+ * HttpHelper
+ *
+ * @author zzwtsy
+ * @since 2022/11/28
+ */
+public class HttpHelper {
+    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
+    private static Request request;
+    private static Response response;
+    private static String responseBody;
+
+    /**
+     * 发送GET请求
+     *
+     * @param url     发送请求的URL
+     * @param headers 请求头
+     * @return 远程资源的响应结果
+     */
+    @NotNull
+    public static String sendGet(String url, Headers headers) throws IOException {
+        request = new Request.Builder()
+                .url(url)
+                .get()
+                .headers(headers)
+                .build();
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+            responseBody = Objects.requireNonNull(response.body()).string();
+        } finally {
+            response.close();
+        }
+        return responseBody;
+    }
+
+    /**
+     * 发送POST请求
+     *
+     * @param url         URL
+     * @param headers     请求头
+     * @param requestBody 请求体
+     * @return 远程资源的响应结果
+     */
+    @NotNull
+    public static String sendPost(String url, Headers headers, RequestBody requestBody) throws IOException {
+        request = new Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .headers(headers)
+                .build();
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+            responseBody = Objects.requireNonNull(response.body()).string();
+        } finally {
+            response.close();
+        }
+        return responseBody;
+    }
+}
