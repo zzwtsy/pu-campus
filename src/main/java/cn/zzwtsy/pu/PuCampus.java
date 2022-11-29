@@ -1,11 +1,10 @@
 package cn.zzwtsy.pu;
 
+import cn.zzwtsy.pu.tools.CheckConfigFile;
 import cn.zzwtsy.pu.tools.InitConfig;
-import cn.zzwtsy.pu.tools.SaveConfig;
+import cn.zzwtsy.pu.tools.LoadConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
-
-import java.io.IOException;
 
 /**
  * pu校园
@@ -25,21 +24,14 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        InitConfig initConfig = new InitConfig();
-        getLogger().info("Init User Config");
-        initConfig.initUserConfig();
-        getLogger().info("Init Command Config");
-        initConfig.initCommandConfig();
-        SaveConfig saveConfig = new SaveConfig();
-        try {
-            saveConfig.saveUserConfig();
-        } catch (IOException e) {
-            getLogger().error("Failed to save UserConfig" + e);
-        }
-        try {
-            saveConfig.saveCommandConfig();
-        } catch (IOException e) {
-            getLogger().error("Failed to save Command" + e);
+        if (!new CheckConfigFile().check()) {
+            if (new InitConfig().initConfig()) {
+                getLogger().info("Init Config file successfully");
+            } else {
+                getLogger().error("Init Config file failed");
+            }
+        } else {
+            new LoadConfig().loadConfig();
         }
         getLogger().info("pu-campus Plugin loaded!");
     }

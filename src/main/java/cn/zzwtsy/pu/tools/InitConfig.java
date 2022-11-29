@@ -1,7 +1,14 @@
 package cn.zzwtsy.pu.tools;
 
+import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.javabean.Command;
 import cn.zzwtsy.pu.javabean.UserConfig;
+import cn.zzwtsy.pu.utils.ConfigHelper;
+
+import java.io.IOException;
+
+import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_PATH;
+import static cn.zzwtsy.pu.tools.MyStatic.USER_CONFIG_FILE_PATH;
 
 /**
  * 初始化配置
@@ -13,18 +20,20 @@ public class InitConfig {
     /**
      * 初始化用户配置
      */
-    public void initUserConfig() {
+    public boolean initConfig() {
+        PuCampus.INSTANCE.getLogger().info("Init User Config");
         UserConfig.INSTANCE.setAdminId(0)
                 .setGroupId(0)
                 .setEmailSuffix("")
                 .setOauthToken("")
                 .setOauthTokenSecret("");
-    }
-
-    /**
-     * 初始化命令配置
-     */
-    public void initCommandConfig() {
+        try {
+            ConfigHelper.createConfigFile(USER_CONFIG_FILE_PATH);
+        } catch (IOException e) {
+            PuCampus.INSTANCE.getLogger().error("Failed to create User Config file", e);
+            return false;
+        }
+        PuCampus.INSTANCE.getLogger().info("Init Command Config");
         Command.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
                 .setGetCalendarEventList("获取活动列表")
@@ -32,5 +41,12 @@ public class InitConfig {
                 .setQuerySignInEventList("待签到活动")
                 .setQuerySignOutEventList("待签到活动退")
                 .setQueryActivityDetailById("活动信息");
+        try {
+            ConfigHelper.createConfigFile(COMMAND_FILE_PATH);
+        } catch (IOException e) {
+            PuCampus.INSTANCE.getLogger().error("Failed to create command config file", e);
+            return false;
+        }
+        return new SaveConfig().saveAllConfig();
     }
 }

@@ -7,4 +7,7 @@ package cn.zzwtsy.pu.tools;
  * @since 2022/11/29
  */
 public class LoadConfig {
+    public void loadConfig(){
+        
+    }
 }
