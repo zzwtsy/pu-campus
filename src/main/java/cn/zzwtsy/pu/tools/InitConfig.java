@@ -7,8 +7,8 @@ import cn.zzwtsy.pu.utils.ConfigHelper;
 
 import java.io.IOException;
 
-import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_PATH;
-import static cn.zzwtsy.pu.tools.MyStatic.USER_CONFIG_FILE_PATH;
+import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.USER_CONFIG_FILE_NAME;
 
 /**
  * 初始化配置
@@ -28,7 +28,7 @@ public class InitConfig {
                 .setOauthToken("")
                 .setOauthTokenSecret("");
         try {
-            ConfigHelper.createConfigFile(USER_CONFIG_FILE_PATH);
+            ConfigHelper.createConfigFile(USER_CONFIG_FILE_NAME);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Failed to create User Config file", e);
             return false;
@@ -42,7 +42,7 @@ public class InitConfig {
                 .setQuerySignOutEventList("待签到活动退")
                 .setQueryActivityDetailById("活动信息");
         try {
-            ConfigHelper.createConfigFile(COMMAND_FILE_PATH);
+            ConfigHelper.createConfigFile(COMMAND_FILE_NAME);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Failed to create command config file", e);
             return false;

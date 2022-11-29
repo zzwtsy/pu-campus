@@ -31,7 +31,7 @@ public final class PuCampus extends JavaPlugin {
                 getLogger().error("Init Config file failed");
             }
         } else {
-            new LoadConfig().loadConfig();
+            new LoadConfig().loadAllConfig();
         }
         getLogger().info("pu-campus Plugin loaded!");
     }
