@@ -28,7 +28,11 @@ public class InitConfig {
                 .setOauthToken("")
                 .setOauthTokenSecret("");
         try {
-            ConfigHelper.createConfigFile(USER_CONFIG_FILE_NAME);
+            if (ConfigHelper.createConfigFile(USER_CONFIG_FILE_NAME)) {
+                PuCampus.INSTANCE.getLogger().info("Failed to create user config successfully");
+            } else {
+                PuCampus.INSTANCE.getLogger().error("Failed to create user config failed");
+            }
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Failed to create User Config file", e);
             return false;
@@ -42,7 +46,11 @@ public class InitConfig {
                 .setQuerySignOutEventList("待签到活动退")
                 .setQueryActivityDetailById("活动信息");
         try {
-            ConfigHelper.createConfigFile(COMMAND_FILE_NAME);
+            if (ConfigHelper.createConfigFile(COMMAND_FILE_NAME)) {
+                PuCampus.INSTANCE.getLogger().info("Failed to create command config successfully");
+            } else {
+                PuCampus.INSTANCE.getLogger().error("Failed to create command config failed");
+            }
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Failed to create command config file", e);
             return false;
