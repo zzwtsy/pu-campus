@@ -6,52 +6,56 @@ package cn.zzwtsy.pu.javabean;
  * @author zzwtsy
  * @since 2022/11/29
  */
-public class Config {
+public class UserConfig {
+    public static UserConfig INSTANCE = new UserConfig();
     private long groupId;
     private long adminId;
     private String emailSuffix;
     private String oauthToken;
     private String oauthTokenSecret;
 
-    public static Config INSTANCE = new Config();
-
     public long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(long groupId) {
+    public UserConfig setGroupId(long groupId) {
         this.groupId = groupId;
+        return this;
     }
 
     public long getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(long adminId) {
+    public UserConfig setAdminId(long adminId) {
         this.adminId = adminId;
+        return this;
     }
 
     public String getEmailSuffix() {
         return emailSuffix;
     }
 
-    public void setEmailSuffix(String emailSuffix) {
+    public UserConfig setEmailSuffix(String emailSuffix) {
         this.emailSuffix = emailSuffix;
+        return this;
     }
 
     public String getOauthToken() {
         return oauthToken;
     }
 
-    public void setOauthToken(String oauthToken) {
+    public UserConfig setOauthToken(String oauthToken) {
         this.oauthToken = oauthToken;
+        return this;
     }
 
     public String getOauthTokenSecret() {
         return oauthTokenSecret;
     }
 
-    public void setOauthTokenSecret(String oauthTokenSecret) {
+    public UserConfig setOauthTokenSecret(String oauthTokenSecret) {
         this.oauthTokenSecret = oauthTokenSecret;
+        return this;
     }
 }
