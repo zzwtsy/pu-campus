@@ -1,5 +1,7 @@
 package cn.zzwtsy.pu.javabean;
 
+import net.mamoe.mirai.console.command.CommandOwner;
+
 /**
  * 配置文件
  *
@@ -10,6 +12,7 @@ public class UserConfig {
     public static UserConfig INSTANCE = new UserConfig();
     private long groupId;
     private long adminId;
+    private long botId;
     private String emailSuffix;
     private String oauthToken;
     private String oauthTokenSecret;
@@ -51,6 +54,26 @@ public class UserConfig {
      */
     public UserConfig setAdminId(long adminId) {
         this.adminId = adminId;
+        return this;
+    }
+
+    /**
+     * 获取机器人qq号
+     *
+     * @return long
+     */
+    public long getBotId() {
+        return botId;
+    }
+
+    /**
+     * 设置机器人qq号
+     *
+     * @param botId 机器人qq号
+     * @return {@link UserConfig}
+     */
+    public UserConfig setBotId(long botId) {
+        this.botId = botId;
         return this;
     }
 
