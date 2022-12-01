@@ -22,13 +22,13 @@ public class LoadConfig {
     public void loadAllConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
-            ConfigHelper.getConfigFromFile(USER_CONFIG_FILE_NAME, UserConfig.class);
+            ConfigHelper.getConfigFromFile(PATH_NAME, USER_CONFIG_FILE_NAME, UserConfig.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading user config file error", e);
         }
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
-            ConfigHelper.getConfigFromFile(COMMAND_FILE_NAME, Command.class);
+            ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, Command.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading command config file error", e);
         }
@@ -40,7 +40,7 @@ public class LoadConfig {
     public void loadUserConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
-            ConfigHelper.getConfigFromFile(USER_CONFIG_FILE_NAME, UserConfig.class);
+            ConfigHelper.getConfigFromFile(PATH_NAME, USER_CONFIG_FILE_NAME, UserConfig.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading user config file error", e);
         }
@@ -52,7 +52,7 @@ public class LoadConfig {
     public void loadCommandConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
-            ConfigHelper.getConfigFromFile(COMMAND_FILE_NAME, Command.class);
+            ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, Command.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading command config file error", e);
         }

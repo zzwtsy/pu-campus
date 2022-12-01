@@ -7,6 +7,8 @@ import cn.zzwtsy.pu.utils.ConfigHelper;
 
 import java.io.IOException;
 
+import static cn.zzwtsy.pu.tools.MyStatic.*;
+
 /**
  * 保存配置
  *
@@ -21,13 +23,13 @@ public class SaveConfig {
      */
     public boolean saveAllConfig() {
         try {
-            ConfigHelper.setConfigFile("userConfig", UserConfig.INSTANCE);
+            ConfigHelper.setConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME, UserConfig.INSTANCE);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Save user config file failed", e);
             return false;
         }
         try {
-            ConfigHelper.setConfigFile("commandConfig", Command.INSTANCE);
+            ConfigHelper.setConfigFile(PATH_NAME, COMMAND_FILE_NAME, Command.INSTANCE);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Save command config file failed", e);
             return false;
@@ -41,7 +43,7 @@ public class SaveConfig {
      * @throws IOException ioexception
      */
     public void saveUserConfig() throws IOException {
-        ConfigHelper.setConfigFile("userConfig", UserConfig.INSTANCE);
+        ConfigHelper.setConfigFile(PATH_NAME, "userConfig", UserConfig.INSTANCE);
     }
 
     /**
@@ -50,6 +52,6 @@ public class SaveConfig {
      * @throws IOException ioexception
      */
     public void saveCommandConfig() throws IOException {
-        ConfigHelper.setConfigFile("commandConfig", Command.INSTANCE);
+        ConfigHelper.setConfigFile(PATH_NAME, "commandConfig", Command.INSTANCE);
     }
 }

@@ -2,8 +2,7 @@ package cn.zzwtsy.pu.tools;
 
 import java.io.File;
 
-import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.USER_CONFIG_FILE_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.*;
 
 /**
  * 检查配置文件
@@ -18,8 +17,8 @@ public class CheckConfigFile {
      * @return boolean
      */
     public boolean check() {
-        File userFile = new File("config/pu-campus/" + USER_CONFIG_FILE_NAME + ".json");
-        File commandFile = new File("config/pu-campus/" + COMMAND_FILE_NAME + ".json");
+        File userFile = new File("config/" + PATH_NAME + "/" + USER_CONFIG_FILE_NAME + ".json");
+        File commandFile = new File("config/" + PATH_NAME + "/" + COMMAND_FILE_NAME + ".json");
         return userFile.exists() && commandFile.exists();
     }
 }

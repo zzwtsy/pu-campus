@@ -19,8 +19,8 @@ public class ConfigHelper {
      * @return 配置文件内容
      * @throws IOException 获取配置文件错误
      */
-    public static <T> T getConfigFromFile(String fileName, Class<T> object) throws IOException {
-        String absolutePath = new File("config/" + fileName).getAbsolutePath();
+    public static <T> T getConfigFromFile(String pathName, String fileName, Class<T> object) throws IOException {
+        String absolutePath = new File("config/" + pathName).getAbsolutePath();
         String filePath = String.format("%s/%s.json", absolutePath, fileName);
         BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(filePath)), StandardCharsets.UTF_8));
         StringBuilder jsonString = new StringBuilder();
@@ -39,10 +39,10 @@ public class ConfigHelper {
      * @param object   配置文件类
      * @throws IOException 配置文件内容写入错误
      */
-    public static void setConfigFile(String fileName, Object object) throws IOException {
+    public static void setConfigFile(String pathName, String fileName, Object object) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-        String filePath = String.format("config/%s/%s.json", fileName, fileName);
+        String filePath = String.format("config/%s/%s.json", pathName, fileName);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, false), StandardCharsets.UTF_8));
         bw.write(jsonString);
         bw.close();
@@ -54,13 +54,16 @@ public class ConfigHelper {
      * @param fileName 配置文件名
      * @return 如果配置文件夹已存在返回false，不存在则创建文件夹
      */
-    public static boolean createConfigFile(String fileName) throws IOException {
-        String filePath = String.format("config/%s/%s.json", fileName, fileName);
+    public static boolean createConfigFile(String pathName, String fileName) throws IOException {
+        String filePath = String.format("config/%s/%s.json", pathName, fileName);
         File file = new File(filePath);
-        File dir = new File("config/" + fileName);
-        if (!file.exists()) {
+        File dir = new File("config/" + pathName);
+        if (!dir.exists()) {
             return dir.mkdirs() && file.createNewFile();
+        } else if (!file.exists()) {
+            return file.createNewFile();
+        } else {
+            return false;
         }
-        return false;
     }
 }

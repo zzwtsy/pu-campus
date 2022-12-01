@@ -7,8 +7,7 @@ import cn.zzwtsy.pu.utils.ConfigHelper;
 
 import java.io.IOException;
 
-import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.USER_CONFIG_FILE_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.*;
 
 /**
  * 初始化配置
@@ -28,13 +27,13 @@ public class InitConfig {
                 .setOauthToken("")
                 .setOauthTokenSecret("");
         try {
-            if (ConfigHelper.createConfigFile(USER_CONFIG_FILE_NAME)) {
-                PuCampus.INSTANCE.getLogger().info("Failed to create user config successfully");
+            if (ConfigHelper.createConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME)) {
+                PuCampus.INSTANCE.getLogger().info("Create user config successfully");
             } else {
-                PuCampus.INSTANCE.getLogger().error("Failed to create user config failed");
+                PuCampus.INSTANCE.getLogger().error("Create user config failed");
             }
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Failed to create User Config file", e);
+            PuCampus.INSTANCE.getLogger().error("Create user config failed", e);
             return false;
         }
         PuCampus.INSTANCE.getLogger().info("Init Command Config");
@@ -46,13 +45,13 @@ public class InitConfig {
                 .setQuerySignOutEventList("待签到活动退")
                 .setQueryActivityDetailById("活动信息");
         try {
-            if (ConfigHelper.createConfigFile(COMMAND_FILE_NAME)) {
-                PuCampus.INSTANCE.getLogger().info("Failed to create command config successfully");
+            if (ConfigHelper.createConfigFile(PATH_NAME, COMMAND_FILE_NAME)) {
+                PuCampus.INSTANCE.getLogger().info("Create command config successfully");
             } else {
-                PuCampus.INSTANCE.getLogger().error("Failed to create command config failed");
+                PuCampus.INSTANCE.getLogger().error("Create command config failed" + getClass().getSimpleName());
             }
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Failed to create command config file", e);
+            PuCampus.INSTANCE.getLogger().error("Create command config failed", e);
             return false;
         }
         return new SaveConfig().saveAllConfig();

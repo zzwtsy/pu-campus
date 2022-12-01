@@ -7,4 +7,5 @@ package cn.zzwtsy.pu.tools;
 public class MyStatic {
     public static final String USER_CONFIG_FILE_NAME = "userConfig";
     public static final String COMMAND_FILE_NAME = "command";
+    public static final String PATH_NAME = "cn.zzwtsy.pu";
 }
