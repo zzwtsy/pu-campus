@@ -1,4 +1,4 @@
-package cn.zzwtsy.pu.javabean;
+package cn.zzwtsy.pu.bean;
 
 /**
  * 命令

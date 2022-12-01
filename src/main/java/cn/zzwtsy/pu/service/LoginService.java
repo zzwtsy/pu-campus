@@ -1,6 +1,6 @@
-package cn.zzwtsy.pu.server;
+package cn.zzwtsy.pu.service;
 
-import cn.zzwtsy.pu.javabean.UserConfig;
+import cn.zzwtsy.pu.bean.UserConfig;
 import cn.zzwtsy.pu.tools.MyHeaders;
 import cn.zzwtsy.pu.tools.MyRequestBody;
 import cn.zzwtsy.pu.utils.HttpHelper;
@@ -17,7 +17,7 @@ import static cn.zzwtsy.pu.api.ApiUrl.LOGIN_URL;
  * @author zzwtsy
  * @since 2022/11/30
  */
-public class GetToken {
+public class LoginService {
     /**
      * @param userName 用户名
      * @param password 用户密码

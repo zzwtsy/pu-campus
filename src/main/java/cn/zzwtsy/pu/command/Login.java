@@ -1,8 +1,8 @@
 package cn.zzwtsy.pu.command;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.javabean.UserConfig;
-import cn.zzwtsy.pu.server.GetToken;
+import cn.zzwtsy.pu.bean.UserConfig;
+import cn.zzwtsy.pu.service.LoginService;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.command.CommandSender;
 import net.mamoe.mirai.console.command.java.JSimpleCommand;
@@ -33,7 +33,7 @@ public class Login extends JSimpleCommand {
         // 补全用户密码邮箱后缀
         String passwordFull = password + UserConfig.INSTANCE.getEmailSuffix();
         try {
-            if (new GetToken().getUserToken(userName, passwordFull)) {
+            if (new LoginService().getUserToken(userName, passwordFull)) {
                 bot.getGroup(UserConfig.INSTANCE.getGroupId()).sendMessage("登录成功:)");
             } else {
                 bot.getGroup(UserConfig.INSTANCE.getGroupId()).sendMessage("登录失败'^'");

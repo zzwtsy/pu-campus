@@ -1,8 +1,8 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.javabean.Command;
-import cn.zzwtsy.pu.javabean.UserConfig;
+import cn.zzwtsy.pu.bean.Command;
+import cn.zzwtsy.pu.bean.UserConfig;
 import cn.zzwtsy.pu.utils.ConfigHelper;
 
 import java.io.IOException;

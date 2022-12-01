@@ -1,6 +1,4 @@
-package cn.zzwtsy.pu.javabean;
-
-import net.mamoe.mirai.console.command.CommandOwner;
+package cn.zzwtsy.pu.bean;
 
 /**
  * 配置文件
