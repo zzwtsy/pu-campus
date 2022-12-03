@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.Command;
+import cn.zzwtsy.pu.bean.UserCommand;
 import cn.zzwtsy.pu.bean.UserConfig;
 import cn.zzwtsy.pu.utils.ConfigHelper;
 
@@ -21,7 +21,7 @@ public class SaveConfig {
      *
      * @return boolean
      */
-    public boolean saveAllConfig() {
+    public static boolean saveAllConfig() {
         try {
             ConfigHelper.setConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME, UserConfig.INSTANCE);
         } catch (IOException e) {
@@ -29,7 +29,7 @@ public class SaveConfig {
             return false;
         }
         try {
-            ConfigHelper.setConfigFile(PATH_NAME, COMMAND_FILE_NAME, Command.INSTANCE);
+            ConfigHelper.setConfigFile(PATH_NAME, COMMAND_FILE_NAME, UserCommand.INSTANCE);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Save command config file failed", e);
             return false;
@@ -42,7 +42,7 @@ public class SaveConfig {
      *
      * @throws IOException ioexception
      */
-    public void saveUserConfig() throws IOException {
+    public static void saveUserConfig() throws IOException {
         ConfigHelper.setConfigFile(PATH_NAME, "userConfig", UserConfig.INSTANCE);
     }
 
@@ -51,7 +51,7 @@ public class SaveConfig {
      *
      * @throws IOException ioexception
      */
-    public void saveCommandConfig() throws IOException {
-        ConfigHelper.setConfigFile(PATH_NAME, "commandConfig", Command.INSTANCE);
+    public static void saveCommandConfig() throws IOException {
+        ConfigHelper.setConfigFile(PATH_NAME, "commandConfig", UserCommand.INSTANCE);
     }
 }

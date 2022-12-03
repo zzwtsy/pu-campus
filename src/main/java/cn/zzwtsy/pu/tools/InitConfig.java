@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.Command;
+import cn.zzwtsy.pu.bean.UserCommand;
 import cn.zzwtsy.pu.bean.UserConfig;
 import cn.zzwtsy.pu.utils.ConfigHelper;
 
@@ -37,7 +37,7 @@ public class InitConfig {
             return false;
         }
         PuCampus.INSTANCE.getLogger().info("Init Command Config");
-        Command.INSTANCE.setCommandPrefix("#")
+        UserCommand.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
                 .setGetCalendarEventList("获取活动列表")
                 .setQueryNewEventList("新活动列表")
@@ -54,6 +54,6 @@ public class InitConfig {
             PuCampus.INSTANCE.getLogger().error("Create command config failed", e);
             return false;
         }
-        return new SaveConfig().saveAllConfig();
+        return SaveConfig.saveAllConfig();
     }
 }
