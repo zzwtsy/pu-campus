@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.api.ApiUrl.LOGIN_URL;
+import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
 
 /**
  * 获取令牌
@@ -47,8 +48,8 @@ public class LoginService {
             String oauthToken = content.get("oauth_token").asText();
             String oauthTokenSecret = content.get("oauth_token_secret").asText();
             if (oauthTokenSecret != null && oauthToken != null) {
-                UserConfig.INSTANCE.setOauthToken(oauthToken);
-                UserConfig.INSTANCE.setOauthTokenSecret(oauthTokenSecret);
+                userConfig.setOauthToken(oauthToken);
+                userConfig.setOauthTokenSecret(oauthTokenSecret);
                 return "true";
             }
             return "登录失败";

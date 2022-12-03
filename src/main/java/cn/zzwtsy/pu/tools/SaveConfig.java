@@ -23,13 +23,13 @@ public class SaveConfig {
      */
     public static boolean saveAllConfig() {
         try {
-            ConfigHelper.setConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME, UserConfig.INSTANCE);
+            ConfigHelper.setConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME, userConfig);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Save user config file failed", e);
             return false;
         }
         try {
-            ConfigHelper.setConfigFile(PATH_NAME, COMMAND_FILE_NAME, UserCommand.INSTANCE);
+            ConfigHelper.setConfigFile(PATH_NAME, COMMAND_FILE_NAME, userCommand);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Save command config file failed", e);
             return false;
@@ -43,7 +43,7 @@ public class SaveConfig {
      * @throws IOException ioexception
      */
     public static void saveUserConfig() throws IOException {
-        ConfigHelper.setConfigFile(PATH_NAME, "userConfig", UserConfig.INSTANCE);
+        ConfigHelper.setConfigFile(PATH_NAME, "userConfig", userConfig);
     }
 
     /**
@@ -52,6 +52,6 @@ public class SaveConfig {
      * @throws IOException ioexception
      */
     public static void saveCommandConfig() throws IOException {
-        ConfigHelper.setConfigFile(PATH_NAME, "commandConfig", UserCommand.INSTANCE);
+        ConfigHelper.setConfigFile(PATH_NAME, "commandConfig", userCommand);
     }
 }
