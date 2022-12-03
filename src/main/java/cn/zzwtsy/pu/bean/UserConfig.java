@@ -7,7 +7,7 @@ package cn.zzwtsy.pu.bean;
  * @since 2022/11/29
  */
 public class UserConfig {
-    public static UserConfig INSTANCE = new UserConfig();
+    public static final UserConfig INSTANCE = new UserConfig();
     private long groupId;
     private long adminId;
     private long botId;

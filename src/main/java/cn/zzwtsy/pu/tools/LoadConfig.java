@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.Command;
+import cn.zzwtsy.pu.bean.UserCommand;
 import cn.zzwtsy.pu.bean.UserConfig;
 import cn.zzwtsy.pu.utils.ConfigHelper;
 
@@ -28,7 +28,7 @@ public class LoadConfig {
         }
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
-            ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, Command.class);
+            ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, UserCommand.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading command config file error", e);
         }
@@ -52,7 +52,7 @@ public class LoadConfig {
     public void loadCommandConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
-            ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, Command.class);
+            ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, UserCommand.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading command config file error", e);
         }
