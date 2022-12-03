@@ -1,10 +1,14 @@
 package cn.zzwtsy.pu;
 
+import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.tools.CheckConfigFile;
 import cn.zzwtsy.pu.tools.InitConfig;
 import cn.zzwtsy.pu.tools.LoadConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
+import net.mamoe.mirai.event.Event;
+import net.mamoe.mirai.event.EventChannel;
+import net.mamoe.mirai.event.GlobalEventChannel;
 
 /**
  * pu校园
@@ -35,6 +39,8 @@ public final class PuCampus extends JavaPlugin {
         } else {
             new LoadConfig().loadAllConfig();
         }
+        EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
+        eventChannel.registerListenerHost(new ListenerGroupMessage());
         getLogger().info("pu-campus Plugin loaded!");
     }
 }
