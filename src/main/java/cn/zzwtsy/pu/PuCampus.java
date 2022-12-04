@@ -4,6 +4,7 @@ import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.tools.CheckConfigFile;
 import cn.zzwtsy.pu.tools.InitConfig;
 import cn.zzwtsy.pu.tools.LoadConfig;
+import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Event;
@@ -47,5 +48,10 @@ public final class PuCampus extends JavaPlugin {
         EventChannel<Event> eventChannel = filter.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         getLogger().info("pu-campus Plugin loaded!");
+    }
+
+    @Override
+    public void onDisable() {
+        SaveConfig.saveAllConfig();
     }
 }
