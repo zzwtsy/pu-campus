@@ -39,9 +39,9 @@ public final class PuCampus extends JavaPlugin {
             } else {
                 getLogger().error("Init Config file failed");
             }
-            new LoadConfig().loadAllConfig();
+            LoadConfig.loadAllConfig();
         } else {
-            new LoadConfig().loadAllConfig();
+            LoadConfig.loadAllConfig();
         }
         long botId = userConfig.getBotId();
         EventChannel<Event> filter = GlobalEventChannel.INSTANCE.filter(ev -> ev instanceof BotEvent && ((BotEvent) ev).getBot().getId() == botId);

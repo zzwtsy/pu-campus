@@ -19,7 +19,7 @@ public class LoadConfig {
     /**
      * 加载所有配置
      */
-    public void loadAllConfig() {
+    public static void loadAllConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
             userConfig = ConfigHelper.getConfigFromFile(PATH_NAME, USER_CONFIG_FILE_NAME, UserConfig.class);
@@ -37,7 +37,7 @@ public class LoadConfig {
     /**
      * 加载用户配置
      */
-    public void loadUserConfig() {
+    public static void loadUserConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
             userConfig = ConfigHelper.getConfigFromFile(PATH_NAME, USER_CONFIG_FILE_NAME, UserConfig.class);
@@ -49,7 +49,7 @@ public class LoadConfig {
     /**
      * 加载命令配置
      */
-    public void loadCommandConfig() {
+    public static void loadCommandConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
             userCommand = ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, UserCommand.class);
