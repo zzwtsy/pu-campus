@@ -42,7 +42,7 @@ public class InitConfig {
                 .setGetCalendarEventList("获取活动列表")
                 .setQueryNewEventList("新活动列表")
                 .setQuerySignInEventList("待签到活动")
-                .setQuerySignOutEventList("待签到活动退")
+                .setQuerySignOutEventList("待签退活动")
                 .setQueryActivityDetailById("活动信息");
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, COMMAND_FILE_NAME)) {
