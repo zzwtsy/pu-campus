@@ -9,6 +9,9 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
+import net.mamoe.mirai.event.events.BotEvent;
+
+import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
 
 /**
  * pu校园
@@ -39,7 +42,9 @@ public final class PuCampus extends JavaPlugin {
         } else {
             new LoadConfig().loadAllConfig();
         }
-        EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
+        long botId = userConfig.getBotId();
+        EventChannel<Event> filter = GlobalEventChannel.INSTANCE.filter(ev -> ev instanceof BotEvent && ((BotEvent) ev).getBot().getId() == botId);
+        EventChannel<Event> eventChannel = filter.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         getLogger().info("pu-campus Plugin loaded!");
     }
