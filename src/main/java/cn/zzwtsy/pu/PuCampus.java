@@ -10,7 +10,7 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
-import net.mamoe.mirai.event.events.BotEvent;
+import net.mamoe.mirai.event.events.GroupEvent;
 
 import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
 
@@ -43,8 +43,8 @@ public final class PuCampus extends JavaPlugin {
         } else {
             LoadConfig.loadAllConfig();
         }
-        long botId = userConfig.getBotId();
-        EventChannel<Event> filter = GlobalEventChannel.INSTANCE.filter(ev -> ev instanceof BotEvent && ((BotEvent) ev).getBot().getId() == botId);
+        long groupId = userConfig.getGroupId();
+        EventChannel<Event> filter = GlobalEventChannel.INSTANCE.filter(ev -> ev instanceof GroupEvent && ((GroupEvent) ev).getGroup().getId() == groupId);
         EventChannel<Event> eventChannel = filter.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         getLogger().info("pu-campus Plugin loaded!");
