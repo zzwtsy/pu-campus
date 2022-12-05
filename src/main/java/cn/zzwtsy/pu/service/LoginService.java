@@ -1,7 +1,6 @@
 package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.UserConfig;
 import cn.zzwtsy.pu.tools.MyHeaders;
 import cn.zzwtsy.pu.tools.MyRequestBody;
 import cn.zzwtsy.pu.utils.HttpHelper;
