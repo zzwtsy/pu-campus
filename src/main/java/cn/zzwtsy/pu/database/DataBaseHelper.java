@@ -109,6 +109,7 @@ public class DataBaseHelper {
         try {
             executeStatus = pstmt.executeUpdate();
         } catch (SQLException e) {
+            conn.rollback();
             e.printStackTrace();
         } finally {
             close();
@@ -185,5 +186,24 @@ public class DataBaseHelper {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 自动提交事物
+     *
+     * @param b true or false
+     * @throws SQLException sqlexception
+     */
+    public static void autoCommit(boolean b) throws SQLException {
+        conn.setAutoCommit(b);
+    }
+
+    /**
+     * 提交事物
+     *
+     * @throws SQLException sqlexception
+     */
+    public static void commit() throws SQLException {
+        conn.commit();
     }
 }
