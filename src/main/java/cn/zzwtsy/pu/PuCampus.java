@@ -2,7 +2,7 @@ package cn.zzwtsy.pu;
 
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.tools.CheckConfigFile;
-import cn.zzwtsy.pu.tools.InitConfig;
+import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.tools.LoadConfig;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
