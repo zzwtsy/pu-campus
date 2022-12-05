@@ -10,10 +10,6 @@ public class UserConfig {
     public static final UserConfig INSTANCE = new UserConfig();
     private long groupId;
     private long adminId;
-    private long botId;
-    private String emailSuffix;
-    private String oauthToken;
-    private String oauthTokenSecret;
 
     /**
      * 获取QQ群号
@@ -52,86 +48,6 @@ public class UserConfig {
      */
     public UserConfig setAdminId(long adminId) {
         this.adminId = adminId;
-        return this;
-    }
-
-    /**
-     * 获取机器人qq号
-     *
-     * @return long
-     */
-    public long getBotId() {
-        return botId;
-    }
-
-    /**
-     * 设置机器人qq号
-     *
-     * @param botId 机器人qq号
-     * @return {@link UserConfig}
-     */
-    public UserConfig setBotId(long botId) {
-        this.botId = botId;
-        return this;
-    }
-
-    /**
-     * 获取电子邮件后缀
-     *
-     * @return {@link String}
-     */
-    public String getEmailSuffix() {
-        return emailSuffix;
-    }
-
-    /**
-     * 设置电子邮件后缀
-     *
-     * @param emailSuffix 电子邮件后缀
-     * @return {@link UserConfig}
-     */
-    public UserConfig setEmailSuffix(String emailSuffix) {
-        this.emailSuffix = emailSuffix;
-        return this;
-    }
-
-    /**
-     * 获取setOauthToken
-     *
-     * @return {@link String}
-     */
-    public String getOauthToken() {
-        return oauthToken;
-    }
-
-    /**
-     * 设置setOauthToken
-     *
-     * @param oauthToken oauth令牌
-     * @return {@link UserConfig}
-     */
-    public UserConfig setOauthToken(String oauthToken) {
-        this.oauthToken = oauthToken;
-        return this;
-    }
-
-    /**
-     * 获取oauthTokenSecret
-     *
-     * @return {@link String}
-     */
-    public String getOauthTokenSecret() {
-        return oauthTokenSecret;
-    }
-
-    /**
-     * 设置oauthTokenSecret
-     *
-     * @param oauthTokenSecret oauth令牌秘密
-     * @return {@link UserConfig}
-     */
-    public UserConfig setOauthTokenSecret(String oauthTokenSecret) {
-        this.oauthTokenSecret = oauthTokenSecret;
         return this;
     }
 }

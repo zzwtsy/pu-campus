@@ -23,10 +23,7 @@ public class InitConfig {
     public boolean initConfig() {
         PuCampus.INSTANCE.getLogger().info("Init User Config");
         UserConfig.INSTANCE.setAdminId(0)
-                .setGroupId(0)
-                .setEmailSuffix("")
-                .setOauthToken("")
-                .setOauthTokenSecret("");
+                .setGroupId(0);
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME)) {
                 PuCampus.INSTANCE.getLogger().info("Create user config successfully");
