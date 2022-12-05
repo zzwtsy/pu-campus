@@ -21,6 +21,7 @@ import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
  */
 public class ListenerGroupMessage extends SimpleListenerHost {
     private final String LOGIN_COMMAND = userCommand.getCommandPrefix() + userCommand.getLogin();
+    private final String EVENT_LIST = userCommand.getCommandPrefix() + userCommand.getGetCalendarEventList();
     String message;
     GroupMessageEvent event;
 
@@ -42,6 +43,9 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 }
                 event.getGroup().sendMessage("登录成功");
             }
+        }
+        if (message.startsWith(EVENT_LIST)) {
+            String[] strings = splitMessage(message);
         }
     }
 
