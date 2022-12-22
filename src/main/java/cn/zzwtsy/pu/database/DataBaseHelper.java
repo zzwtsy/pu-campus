@@ -76,8 +76,8 @@ public class DataBaseHelper {
      * @return {@code Object}
      * @throws SQLException sqlexception异常
      */
-    public static Object executeQueryObject(String sql, Object... object) throws SQLException {
-        Object resultFromResultSet;
+    public static Map<Object, Object> executeQueryMap(String sql, Object... object) throws SQLException {
+        Map<Object, Object> resultFromResultSet;
         pstmt = getStatement(sql);
         System.out.println(object[0]);
         for (int i = 0; i < object.length; i++) {
@@ -107,7 +107,9 @@ public class DataBaseHelper {
             pstmt.setObject(i + 1, object[i]);
         }
         try {
+            autoCommit(false);
             executeStatus = pstmt.executeUpdate();
+            commit();
         } catch (SQLException e) {
             conn.rollback();
             e.printStackTrace();
@@ -149,16 +151,22 @@ public class DataBaseHelper {
      * @return {@code Object}
      * @throws SQLException sqlexception异常
      */
-    private static Object getResultFromResultSet(ResultSet rs) throws SQLException {
-        Object rsObject;
+    private static Map<Object, Object> getResultFromResultSet(ResultSet rs) throws SQLException {
         ResultSetMetaData rsMetaData = rs.getMetaData();
+        int columnCount = rsMetaData.getColumnCount();
+        Map<Object, Object> map = new HashMap<>(columnCount);
         if (rs.next()) {
-            String columnName = rsMetaData.getColumnName(1);
-            rsObject = rs.getObject(columnName);
+            for (int i = 1; i <= columnCount; i++) {
+                String column = rsMetaData.getColumnLabel(i);
+                Object object = rs.getObject(column);
+                if (object != null) {
+                    map.put(column, object);
+                }
+            }
         } else {
-            rsObject = "false";
+            return null;
         }
-        return rsObject;
+        return map;
     }
 
     private static void close() {
@@ -194,7 +202,7 @@ public class DataBaseHelper {
      * @param b true or false
      * @throws SQLException sqlexception
      */
-    public static void autoCommit(boolean b) throws SQLException {
+    private static void autoCommit(boolean b) throws SQLException {
         conn.setAutoCommit(b);
     }
 
@@ -203,7 +211,16 @@ public class DataBaseHelper {
      *
      * @throws SQLException sqlexception
      */
-    public static void commit() throws SQLException {
+    private static void commit() throws SQLException {
         conn.commit();
+    }
+
+    /**
+     * 事务回滚
+     *
+     * @throws SQLException sqlexception异常
+     */
+    private static void rollback() throws SQLException {
+        conn.rollback();
     }
 }
