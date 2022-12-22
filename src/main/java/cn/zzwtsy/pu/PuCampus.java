@@ -12,7 +12,7 @@ import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.GroupEvent;
 
-import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
+import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
 /**
  * pu校园
@@ -43,7 +43,7 @@ public final class PuCampus extends JavaPlugin {
         } else {
             LoadConfig.loadAllConfig();
         }
-        long groupId = userConfig.getGroupId();
+        long groupId = setting.getGroupId();
         EventChannel<Event> filter = GlobalEventChannel.INSTANCE.filter(ev -> ev instanceof GroupEvent && ((GroupEvent) ev).getGroup().getId() == groupId);
         EventChannel<Event> eventChannel = filter.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());

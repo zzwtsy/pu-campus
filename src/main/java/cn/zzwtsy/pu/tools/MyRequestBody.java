@@ -3,7 +3,7 @@ package cn.zzwtsy.pu.tools;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
-import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
+import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
 /**
  * 请求体
@@ -12,8 +12,8 @@ import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
  * @since 2022/11/30
  */
 public class MyRequestBody {
-    private static String oauthToken = userConfig.getOauthToken();
-    private static String oauthTokenSecret = userConfig.getOauthTokenSecret();
+    private static String oauthToken = setting.getOauthToken();
+    private static String oauthTokenSecret = setting.getOauthTokenSecret();
 
     public static RequestBody loginBody(String userName, String password) {
         return new FormBody.Builder()

@@ -1,8 +1,8 @@
 package cn.zzwtsy.pu.init;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.UserCommand;
-import cn.zzwtsy.pu.bean.UserConfig;
+import cn.zzwtsy.pu.bean.Command;
+import cn.zzwtsy.pu.bean.Setting;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import cn.zzwtsy.pu.utils.ConfigHelper;
 
@@ -22,7 +22,7 @@ public class InitConfig {
      */
     public boolean initConfig() {
         PuCampus.INSTANCE.getLogger().info("Init User Config");
-        UserConfig.INSTANCE.setAdminId(0)
+        Setting.INSTANCE.setAdminId(0)
                 .setGroupId(0);
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME)) {
@@ -35,7 +35,7 @@ public class InitConfig {
             return false;
         }
         PuCampus.INSTANCE.getLogger().info("Init Command Config");
-        UserCommand.INSTANCE.setCommandPrefix("#")
+        Command.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
                 .setGetCalendarEventList("获取活动列表")
                 .setQueryNewEventList("新活动列表")

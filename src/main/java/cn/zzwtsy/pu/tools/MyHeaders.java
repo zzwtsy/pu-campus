@@ -2,7 +2,7 @@ package cn.zzwtsy.pu.tools;
 
 import okhttp3.Headers;
 
-import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
+import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
 /**
  * 请求头
@@ -11,8 +11,8 @@ import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
  * @since 2022/11/30
  */
 public class MyHeaders {
-    private static final String OAUTH_TOKEN = userConfig.getOauthToken();
-    private static final String OAUTH_TOKEN_SECRET = userConfig.getOauthTokenSecret();
+    private static final String OAUTH_TOKEN = setting.getOauthToken();
+    private static final String OAUTH_TOKEN_SECRET = setting.getOauthTokenSecret();
 
     public static Headers baseHeaders() {
         return new Headers.Builder()

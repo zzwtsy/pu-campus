@@ -10,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-import static cn.zzwtsy.pu.tools.MyStatic.userCommand;
-import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
+import static cn.zzwtsy.pu.tools.MyStatic.command;
+import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
 /**
  * 监听群消息
@@ -20,8 +20,8 @@ import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
  * @since 2022/12/01
  */
 public class ListenerGroupMessage extends SimpleListenerHost {
-    private final String LOGIN_COMMAND = userCommand.getCommandPrefix() + userCommand.getLogin();
-    private final String EVENT_LIST = userCommand.getCommandPrefix() + userCommand.getGetCalendarEventList();
+    private final String LOGIN_COMMAND = command.getCommandPrefix() + command.getLogin();
+    private final String EVENT_LIST = command.getCommandPrefix() + command.getGetCalendarEventList();
     String message;
     GroupMessageEvent event;
 
@@ -31,7 +31,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         message = event.getMessage().contentToString();
         if (message.startsWith(LOGIN_COMMAND)) {
             String[] strings = splitMessage(message);
-            String userName = strings[1] + userConfig.getEmailSuffix();
+            String userName = strings[1] + setting.getEmailSuffix();
             String userToken = new LoginService().getUserToken(userName, strings[2]);
             if (!"true".equals(userToken)) {
                 event.getGroup().sendMessage(userToken);

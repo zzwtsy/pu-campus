@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.api.ApiUrl.LOGIN_URL;
-import static cn.zzwtsy.pu.tools.MyStatic.userConfig;
+import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
 /**
  * 获取令牌
@@ -27,28 +27,28 @@ public class LoginService {
      */
     public String getUserToken(String userName, String password) {
         ObjectMapper mapper = new ObjectMapper();
-        String sendPost;
+        String response;
         try {
-            sendPost = HttpHelper.sendPost(LOGIN_URL, MyHeaders.baseHeaders(), MyRequestBody.loginBody(userName, password));
+            response = HttpHelper.sendPost(LOGIN_URL, MyHeaders.baseHeaders(), MyRequestBody.loginBody(userName, password));
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("发送登录请求失败", e);
             return "发送登录请求失败";
         }
         JsonNode jsonNode;
         try {
-            jsonNode = mapper.readTree(sendPost);
+            jsonNode = mapper.readTree(response);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return e.getMessage();
         }
-        JsonNode content = jsonNode.get("content");
+        JsonNode contentNode = jsonNode.get("content");
         String message = jsonNode.get("message").asText();
         if ("success".equals(message)) {
-            String oauthToken = content.get("oauth_token").asText();
-            String oauthTokenSecret = content.get("oauth_token_secret").asText();
+            String oauthToken = contentNode.get("oauth_token").asText();
+            String oauthTokenSecret = contentNode.get("oauth_token_secret").asText();
             if (oauthTokenSecret != null && oauthToken != null) {
-                userConfig.setOauthToken(oauthToken);
-                userConfig.setOauthTokenSecret(oauthTokenSecret);
+                setting.setOauthToken(oauthToken);
+                setting.setOauthTokenSecret(oauthTokenSecret);
                 return "true";
             }
             return "登录失败";
