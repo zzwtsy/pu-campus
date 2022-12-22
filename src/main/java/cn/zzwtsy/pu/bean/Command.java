@@ -6,8 +6,8 @@ package cn.zzwtsy.pu.bean;
  * @author zzwtsy
  * @since 2022/11/29
  */
-public class UserCommand {
-    public static final UserCommand INSTANCE = new UserCommand();
+public class Command {
+    public static final Command INSTANCE = new Command();
     private String commandPrefix;
     private String login;
     private String queryNewEventList;
@@ -29,9 +29,9 @@ public class UserCommand {
      * 设置命令前缀
      *
      * @param commandPrefix 命令前缀
-     * @return {@link UserCommand}
+     * @return {@link Command}
      */
-    public UserCommand setCommandPrefix(String commandPrefix) {
+    public Command setCommandPrefix(String commandPrefix) {
         this.commandPrefix = commandPrefix;
         return this;
     }
@@ -49,9 +49,9 @@ public class UserCommand {
      * 设置登录
      *
      * @param login 登录
-     * @return {@link UserCommand}
+     * @return {@link Command}
      */
-    public UserCommand setLogin(String login) {
+    public Command setLogin(String login) {
         this.login = login;
         return this;
     }
@@ -69,9 +69,9 @@ public class UserCommand {
      * 设置查询新事件列表
      *
      * @param queryNewEventList 查询新事件列表
-     * @return {@link UserCommand}
+     * @return {@link Command}
      */
-    public UserCommand setQueryNewEventList(String queryNewEventList) {
+    public Command setQueryNewEventList(String queryNewEventList) {
         this.queryNewEventList = queryNewEventList;
         return this;
     }
@@ -89,9 +89,9 @@ public class UserCommand {
      * 在事件列表中设置查询签名
      *
      * @param querySignInEventList 查询登录事件列表
-     * @return {@link UserCommand}
+     * @return {@link Command}
      */
-    public UserCommand setQuerySignInEventList(String querySignInEventList) {
+    public Command setQuerySignInEventList(String querySignInEventList) {
         this.querySignInEventList = querySignInEventList;
         return this;
     }
@@ -109,9 +109,9 @@ public class UserCommand {
      * 设置查询注销事件列表
      *
      * @param querySignOutEventList 查询注销事件列表
-     * @return {@link UserCommand}
+     * @return {@link Command}
      */
-    public UserCommand setQuerySignOutEventList(String querySignOutEventList) {
+    public Command setQuerySignOutEventList(String querySignOutEventList) {
         this.querySignOutEventList = querySignOutEventList;
         return this;
     }
@@ -129,9 +129,9 @@ public class UserCommand {
      * 按id设置查询活动明细
      *
      * @param queryActivityDetailById 按id查询活动详情
-     * @return {@link UserCommand}
+     * @return {@link Command}
      */
-    public UserCommand setQueryActivityDetailById(String queryActivityDetailById) {
+    public Command setQueryActivityDetailById(String queryActivityDetailById) {
         this.queryActivityDetailById = queryActivityDetailById;
         return this;
     }
@@ -149,9 +149,9 @@ public class UserCommand {
      * 设置获取日历事件列表
      *
      * @param getCalendarEventList 获取日历事件列表
-     * @return {@link UserCommand}
+     * @return {@link Command}
      */
-    public UserCommand setGetCalendarEventList(String getCalendarEventList) {
+    public Command setGetCalendarEventList(String getCalendarEventList) {
         this.getCalendarEventList = getCalendarEventList;
         return this;
     }

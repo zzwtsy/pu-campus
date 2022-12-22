@@ -6,10 +6,31 @@ package cn.zzwtsy.pu.bean;
  * @author zzwtsy
  * @since 2022/11/29
  */
-public class UserConfig {
-    public static final UserConfig INSTANCE = new UserConfig();
+public class Setting {
+    public static final Setting INSTANCE = new Setting();
     private long groupId;
     private long adminId;
+    private String emailSuffix;
+
+    /**
+     * 获得电子邮件后缀
+     *
+     * @return {@link String}
+     */
+    public String getEmailSuffix() {
+        return emailSuffix;
+    }
+
+    /**
+     * 设置电子邮件后缀
+     *
+     * @param emailSuffix 电子邮件后缀
+     * @return {@link Setting}
+     */
+    public Setting setEmailSuffix(String emailSuffix) {
+        this.emailSuffix = emailSuffix;
+        return this;
+    }
 
     /**
      * 获取QQ群号
@@ -24,9 +45,9 @@ public class UserConfig {
      * 设置QQ群号
      *
      * @param groupId QQ群号
-     * @return {@link UserConfig}
+     * @return {@link Setting}
      */
-    public UserConfig setGroupId(long groupId) {
+    public Setting setGroupId(long groupId) {
         this.groupId = groupId;
         return this;
     }
@@ -44,9 +65,9 @@ public class UserConfig {
      * 设置管理员qq号
      *
      * @param adminId 管理员qq号
-     * @return {@link UserConfig}
+     * @return {@link Setting}
      */
-    public UserConfig setAdminId(long adminId) {
+    public Setting setAdminId(long adminId) {
         this.adminId = adminId;
         return this;
     }
