@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.bean;
 
 /**
- * 命令
+ * 命令 Bean
  *
  * @author zzwtsy
  * @since 2022/11/29

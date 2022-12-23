@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.bean;
 
 /**
- * 配置文件
+ * 配置文件 Bean
  *
  * @author zzwtsy
  * @since 2022/11/29

@@ -1,5 +1,12 @@
 package cn.zzwtsy.pu.bean;
 
+/**
+ * 用户 Bean
+ *
+ * @author zzwtsy
+ *
+ * @since 2022/12/23
+ */
 public class User {
     private String qqId;
     private String oauthToken;
