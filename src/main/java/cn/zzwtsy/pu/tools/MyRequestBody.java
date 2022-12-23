@@ -3,8 +3,6 @@ package cn.zzwtsy.pu.tools;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
-
 /**
  * 请求体
  *
@@ -12,8 +10,6 @@ import static cn.zzwtsy.pu.tools.MyStatic.setting;
  * @since 2022/11/30
  */
 public class MyRequestBody {
-    private static String oauthToken = setting.getOauthToken();
-    private static String oauthTokenSecret = setting.getOauthTokenSecret();
 
     public static RequestBody loginBody(String userName, String password) {
         return new FormBody.Builder()
@@ -23,7 +19,7 @@ public class MyRequestBody {
                 .build();
     }
 
-    public static RequestBody calendarEventListBody(String date) {
+    public static RequestBody calendarEventListBody(String date, String oauthToken, String oauthTokenSecret) {
         return new FormBody.Builder()
                 .add("day", date)
                 .add("oauth_token", oauthToken)
