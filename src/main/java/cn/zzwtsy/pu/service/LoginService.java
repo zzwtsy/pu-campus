@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.api.ApiUrl.LOGIN_URL;
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
 /**
  * 获取令牌
@@ -20,12 +19,13 @@ import static cn.zzwtsy.pu.tools.MyStatic.setting;
  * @since 2022/11/30
  */
 public class LoginService {
+
     /**
      * @param userName 用户名
      * @param password 用户密码
      * @return String
      */
-    public String getUserToken(String userName, String password) {
+    public String getUserToken(String qqId, String userName, String password) {
         ObjectMapper mapper = new ObjectMapper();
         String response;
         try {
@@ -47,9 +47,22 @@ public class LoginService {
             String oauthToken = contentNode.get("oauth_token").asText();
             String oauthTokenSecret = contentNode.get("oauth_token_secret").asText();
             if (oauthTokenSecret != null && oauthToken != null) {
-                setting.setOauthToken(oauthToken);
-                setting.setOauthTokenSecret(oauthTokenSecret);
-                return "true";
+                UserService userService = new UserService();
+                if (userService.getUser(qqId) != null) {
+                    int updateUserStatus = userService.updateUser(String.valueOf(qqId), oauthToken, oauthTokenSecret);
+                    if (updateUserStatus <= 0) {
+                        return "登录失败";
+                    } else {
+                        return "true";
+                    }
+                } else {
+                    int addUserStatus = userService.addUser(qqId, oauthToken, oauthTokenSecret);
+                    if (addUserStatus <= 0) {
+                        return "登录失败";
+                    } else {
+                        return "true";
+                    }
+                }
             }
             return "登录失败";
         }
