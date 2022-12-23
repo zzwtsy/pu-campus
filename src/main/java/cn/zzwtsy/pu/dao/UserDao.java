@@ -13,14 +13,18 @@ public class UserDao {
      * @param qqId 用户qq号
      * @return {@link User}
      */
-    public User getUser(String qqId) {
+    public User getUserByQQId(String qqId) {
         User user = new User();
         String sql = "SELECT * FROM user WHERE qqId = ?";
         try {
             Map<Object, Object> queryMap = DataBaseHelper.executeQueryMap(sql, qqId);
-            user.setOauthToken((String) queryMap.get("oauthToken"));
-            user.setOauthTokenSecret((String) queryMap.get("oauthTokenSecret"));
-            user.setQqId((String) queryMap.get("qqId"));
+            if (queryMap != null) {
+                user.setOauthToken((String) queryMap.get("oauthToken"));
+                user.setOauthTokenSecret((String) queryMap.get("oauthTokenSecret"));
+                user.setQqId((String) queryMap.get("qqId"));
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -30,7 +34,6 @@ public class UserDao {
     /**
      * 添加用户信息
      *
-     * @param qqId             qq号
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret
      * @return int
