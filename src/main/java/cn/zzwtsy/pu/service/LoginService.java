@@ -51,14 +51,14 @@ public class LoginService {
                 if (userService.getUser(qqId) != null) {
                     int updateUserStatus = userService.updateUser(String.valueOf(qqId), oauthToken, oauthTokenSecret);
                     if (updateUserStatus <= 0) {
-                        return "登录失败";
+                        return "登录失败:保存用户Token失败";
                     } else {
                         return "true";
                     }
                 } else {
                     int addUserStatus = userService.addUser(qqId, oauthToken, oauthTokenSecret);
                     if (addUserStatus <= 0) {
-                        return "登录失败";
+                        return "登录失败:保存用户Token失败";
                     } else {
                         return "true";
                     }
