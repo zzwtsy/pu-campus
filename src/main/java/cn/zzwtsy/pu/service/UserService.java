@@ -32,10 +32,20 @@ public class UserService {
      * @param qqId             qq号
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret
-     * @return 受影响的行数: >=1 更新成功
+     * @return 受影响的行数: >=1 添加成功
      */
     public int addUser(String qqId, String oauthToken, String oauthTokenSecret) {
         return userDao.addUser(qqId, oauthToken, oauthTokenSecret);
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param qqId qq号
+     * @return 受影响的行数: >=1 删除成功
+     */
+    public int delUser(String qqId) {
+        return userDao.delUser(qqId);
     }
 
     /**
