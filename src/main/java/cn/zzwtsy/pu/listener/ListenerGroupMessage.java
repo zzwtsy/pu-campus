@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.listener;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.LoginService;
+import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
@@ -32,6 +33,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         message = event.getMessage().contentToString();
         if (message.startsWith(LOGIN_COMMAND)) {
             String[] strings = splitMessage(message);
+            //补全用户账号: 用户账号加用户学校邮件后缀
             String userName = strings[1] + setting.getEmailSuffix();
             long userQQId = event.getSender().getId();
             String userToken = new LoginService().getUserToken(String.valueOf(userQQId), userName, strings[2]);
@@ -43,11 +45,16 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 } catch (IOException e) {
                     PuCampus.INSTANCE.getLogger().error("保存用户Token失败");
                 }
-                event.getGroup().sendMessage(new At(userQQId) + "登录成功");
+                event.getGroup().sendMessage(new At(userQQId).plus("登录成功"));
             }
         }
         if (message.startsWith(EVENT_LIST)) {
-            String[] strings = splitMessage(message);
+            long userQQId = event.getSender().getId();
+            if (!checkUserPermission(String.valueOf(userQQId))) {
+                event.getGroup().sendMessage(new At(userQQId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
+            } else {
+                String[] strings = splitMessage(message);
+            }
         }
     }
 
@@ -59,5 +66,15 @@ public class ListenerGroupMessage extends SimpleListenerHost {
      */
     private String[] splitMessage(@NotNull String message) {
         return message.split(" ");
+    }
+
+    /**
+     * 检查用户权限
+     *
+     * @param qqId 用户qq号
+     * @return boolean
+     */
+    private boolean checkUserPermission(String qqId) {
+        return new UserService().getUser(qqId) == null;
     }
 }
