@@ -5,12 +5,14 @@ import cn.zzwtsy.pu.tools.CheckConfigFile;
 import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.tools.LoadConfig;
 import cn.zzwtsy.pu.tools.SaveConfig;
+import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.GroupEvent;
+import org.jetbrains.annotations.NotNull;
 
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
@@ -31,7 +33,7 @@ public final class PuCampus extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
+    public void onLoad(@NotNull PluginComponentStorage $this$onLoad) {
         boolean check = new CheckConfigFile().check();
         if (!check) {
             if (new InitConfig().initConfig()) {
@@ -43,6 +45,10 @@ public final class PuCampus extends JavaPlugin {
         } else {
             LoadConfig.loadAllConfig();
         }
+    }
+
+    @Override
+    public void onEnable() {
         long groupId = setting.getGroupId();
         EventChannel<Event> filter = GlobalEventChannel.INSTANCE.filter(ev -> ev instanceof GroupEvent && ((GroupEvent) ev).getGroup().getId() == groupId);
         EventChannel<Event> eventChannel = filter.parentScope(this);
