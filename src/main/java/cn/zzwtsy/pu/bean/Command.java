@@ -37,7 +37,7 @@ public class Command {
     }
 
     /**
-     * 获取登录
+     * 获取登录命令
      *
      * @return {@link String}
      */
@@ -46,9 +46,9 @@ public class Command {
     }
 
     /**
-     * 设置登录
+     * 设置登录命令
      *
-     * @param login 登录
+     * @param login 登录命令
      * @return {@link Command}
      */
     public Command setLogin(String login) {
@@ -57,7 +57,7 @@ public class Command {
     }
 
     /**
-     * 获取查询新事件列表
+     * 获取查询新事件列表命令
      *
      * @return {@link String}
      */
@@ -66,9 +66,9 @@ public class Command {
     }
 
     /**
-     * 设置查询新事件列表
+     * 设置查询新事件列表命令
      *
-     * @param queryNewEventList 查询新事件列表
+     * @param queryNewEventList 查询新事件列表命令
      * @return {@link Command}
      */
     public Command setQueryNewEventList(String queryNewEventList) {
@@ -77,7 +77,7 @@ public class Command {
     }
 
     /**
-     * 获取查询登录事件列表
+     * 获取签到事件列表命令
      *
      * @return {@link String}
      */
@@ -86,9 +86,9 @@ public class Command {
     }
 
     /**
-     * 在事件列表中设置查询签名
+     * 设置查询签到事件列表命令
      *
-     * @param querySignInEventList 查询登录事件列表
+     * @param querySignInEventList 查询签到事件列表命令
      * @return {@link Command}
      */
     public Command setQuerySignInEventList(String querySignInEventList) {
@@ -97,7 +97,7 @@ public class Command {
     }
 
     /**
-     * 获取查询注销事件列表
+     * 获取签退事件列表命令
      *
      * @return {@link String}
      */
@@ -106,9 +106,9 @@ public class Command {
     }
 
     /**
-     * 设置查询注销事件列表
+     * 设置签退事件列表命令
      *
-     * @param querySignOutEventList 查询注销事件列表
+     * @param querySignOutEventList 查询签退事件列表命令
      * @return {@link Command}
      */
     public Command setQuerySignOutEventList(String querySignOutEventList) {
@@ -117,7 +117,7 @@ public class Command {
     }
 
     /**
-     * 通过id获取查询活动详细信息
+     * 获取通过id查询活动详细信息命令
      *
      * @return {@link String}
      */
@@ -126,7 +126,7 @@ public class Command {
     }
 
     /**
-     * 按id设置查询活动明细
+     * 设置按id设置查询活动详细信息命令
      *
      * @param queryActivityDetailById 按id查询活动详情
      * @return {@link Command}
@@ -137,7 +137,7 @@ public class Command {
     }
 
     /**
-     * 获取日历事件列表
+     * 获取通过日期获取事件列表命令
      *
      * @return {@link String}
      */
@@ -146,9 +146,9 @@ public class Command {
     }
 
     /**
-     * 设置获取日历事件列表
+     * 设置通过日期获取事件列表命令
      *
-     * @param getCalendarEventList 获取日历事件列表
+     * @param getCalendarEventList 通过日期获取事件列表命令
      * @return {@link Command}
      */
     public Command setGetCalendarEventList(String getCalendarEventList) {

@@ -21,17 +21,18 @@ public class InitConfig {
      * 初始化用户配置
      */
     public boolean initConfig() {
-        PuCampus.INSTANCE.getLogger().info("Init User Config");
+        PuCampus.INSTANCE.getLogger().info("Init Setting Config");
         Setting.INSTANCE.setAdminId(0)
-                .setGroupId(0);
+                .setGroupId(0)
+                .setEmailSuffix("");
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME)) {
-                PuCampus.INSTANCE.getLogger().info("Create user config successfully");
+                PuCampus.INSTANCE.getLogger().info("Create setting config successfully");
             } else {
-                PuCampus.INSTANCE.getLogger().error("Create user config failed");
+                PuCampus.INSTANCE.getLogger().error("Create setting config failed");
             }
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Create user config failed", e);
+            PuCampus.INSTANCE.getLogger().error("Create setting config failed", e);
             return false;
         }
         PuCampus.INSTANCE.getLogger().info("Init Command Config");

@@ -54,7 +54,7 @@ public class DataBaseHelper {
      * @throws SQLException sqlexception异常
      */
     public static List<Map<Object, Object>> executeQueryList(String sql, Object... object) throws SQLException {
-        List<Map<Object, Object>> listFromResultSet = null;
+        List<Map<Object, Object>> listFromResultSet;
         pstmt = getStatement(sql);
         for (int i = 0; i < object.length; i++) {
             pstmt.setObject(i + 1, object[i]);
@@ -111,7 +111,7 @@ public class DataBaseHelper {
             executeStatus = pstmt.executeUpdate();
             commit();
         } catch (SQLException e) {
-            conn.rollback();
+            rollback();
             e.printStackTrace();
         } finally {
             close();
