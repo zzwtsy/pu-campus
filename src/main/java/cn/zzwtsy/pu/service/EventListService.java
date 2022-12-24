@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.api.ApiUrl.CALENDAR_EVENT_LIST_URL;
 
@@ -30,9 +29,6 @@ public class EventListService {
      * @return {@link String}
      */
     public String getCalendarEventList(String qqId, String date) {
-        if (!checkDateFormat(date)) {
-            return "日期格式错误";
-        }
         ObjectMapper objectMapper = new ObjectMapper();
         String response;
         JsonNode jsonNode;
@@ -67,11 +63,14 @@ public class EventListService {
      * @return {@link String}
      */
     private String contentParse(JsonNode contentNode) {
-        String message = null;
+        String message;
+        long nowTimestamp = System.currentTimeMillis();
+        StringBuilder messagesList = new StringBuilder();
         for (int i = 0; i < contentNode.size(); i++) {
             JsonNode tempNode = contentNode.get(i);
             String eventStatus = tempNode.get("eventStatus").asText();
-            if ("4".equals(eventStatus)) {
+            long eventStartline = tempNode.get("startline").asLong();
+            if ("4".equals(eventStatus) || nowTimestamp < eventStartline) {
                 //活动标题
                 String title = tempNode.get("title").asText();
                 //活动开始时间
@@ -93,14 +92,10 @@ public class EventListService {
                         + "报名开始时间:" + startline + "\n"
                         + "报名结束时间" + deadline + "\n"
                         + "剩余可参加人数:" + limitCount + "\n"
-                        + "============";
+                        + "============" + "\n";
+                messagesList.append(message);
             }
         }
-        return message;
-    }
-
-    private boolean checkDateFormat(String date) {
-        String dateFormat = "^\\d{1,4}(-)(1[0-2]|0?[1-9])\\1(0?[1-9]|[1-2]\\d|30|31)$";
-        return Pattern.matches(dateFormat, date);
+        return messagesList.toString();
     }
 }
