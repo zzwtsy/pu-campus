@@ -21,7 +21,7 @@ public class UserDao {
      * @param qqId 用户qq号
      * @return {@link User}
      */
-    public User getUserByQQId(String qqId) {
+    public User getUserByQqId(String qqId) {
         User user = new User();
         String sql = "SELECT * FROM " + tableName + " WHERE qqId = ?";
         try {

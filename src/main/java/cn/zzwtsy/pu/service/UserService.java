@@ -23,7 +23,7 @@ public class UserService {
      * @return {@link User}
      */
     public User getUser(String qqId) {
-        return userDao.getUserByQQId(qqId);
+        return userDao.getUserByQqId(qqId);
     }
 
     /**

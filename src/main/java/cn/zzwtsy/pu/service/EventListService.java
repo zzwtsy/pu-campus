@@ -85,13 +85,13 @@ public class EventListService {
                 String limitCount = tempNode.get("limitCount").asText();
                 //活动地址
                 String address = tempNode.get("address").asText();
-                message = "活动名称:" + title + "\n"
-                        + "活动地址:" + address + "\n"
-                        + "活动开始时间:" + sTime + "\n"
-                        + "活动结束时间:" + eTime + "\n"
-                        + "报名开始时间:" + startline + "\n"
-                        + "报名结束时间" + deadline + "\n"
-                        + "剩余可参加人数:" + limitCount + "\n"
+                message = "活动名称：\n\t\t\t《" + title + "》\n"
+                        + "活动地址：\n\t\t\t『" + address + "』\n"
+                        + "活动开始时间：\n\t\t\t" + sTime + "\n"
+                        + "活动结束时间：\n\t\t\t" + eTime + "\n"
+                        + "报名开始时间：\n\t\t\t" + startline + "\n"
+                        + "报名结束时间：\n\t\t\t" + deadline + "\n"
+                        + "剩余可参加人数：" + limitCount + "\n"
                         + "============" + "\n";
                 messagesList.append(message);
             }

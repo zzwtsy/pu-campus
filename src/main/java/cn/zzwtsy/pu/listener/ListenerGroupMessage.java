@@ -41,7 +41,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 } else {
                     event.getGroup().sendMessage(new At(userQqId).plus("正在获取" + strings[1] + "活动列表"));
                     String eventList = new EventListService().getCalendarEventList(String.valueOf(userQqId), strings[1]);
-                    event.getGroup().sendMessage(new At(userQqId).plus("\n" + eventList));
+                    event.getGroup().sendMessage(new At(userQqId).plus("\n\n" + eventList));
                 }
             }
         }
