@@ -31,7 +31,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
 
         if (message.startsWith(EVENT_LIST)) {
             long userQqId = event.getSender().getId();
-            if (!checkUserPermission(String.valueOf(userQqId))) {
+            if (!checkUserLogin(String.valueOf(userQqId))) {
                 event.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
             } else {
                 String[] strings = splitMessage(message);
@@ -49,12 +49,12 @@ public class ListenerGroupMessage extends SimpleListenerHost {
 
 
     /**
-     * 检查用户权限
+     * 检查用户是否登录
      *
      * @param qqId 用户qq号
      * @return boolean
      */
-    private boolean checkUserPermission(String qqId) {
+    private boolean checkUserLogin(String qqId) {
         return new UserService().getUser(qqId) != null;
     }
 
