@@ -1,5 +1,6 @@
 package cn.zzwtsy.pu;
 
+import cn.zzwtsy.pu.listener.ListenerFriendMessage;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.tools.CheckConfigFile;
 import cn.zzwtsy.pu.init.InitConfig;
@@ -11,10 +12,8 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
-import net.mamoe.mirai.event.events.GroupEvent;
 import org.jetbrains.annotations.NotNull;
 
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
 
 /**
  * pu校园
@@ -49,10 +48,9 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        long groupId = setting.getGroupId();
-        EventChannel<Event> filter = GlobalEventChannel.INSTANCE.filter(ev -> ev instanceof GroupEvent && ((GroupEvent) ev).getGroup().getId() == groupId);
-        EventChannel<Event> eventChannel = filter.parentScope(this);
+        EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
+        eventChannel.registerListenerHost(new ListenerFriendMessage());
         getLogger().info("pu-campus Plugin loaded!");
     }
 
