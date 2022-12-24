@@ -13,10 +13,11 @@ import java.util.Objects;
  * @since 2022/11/28
  */
 public class HttpHelper {
-    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
-    private static Request request;
-    private static Response response;
-    private static String responseBody;
+    private static OkHttpClient OK_HTTP_CLIENT;
+
+    public HttpHelper() {
+        OK_HTTP_CLIENT = new OkHttpClient();
+    }
 
     /**
      * 发送GET请求
@@ -27,6 +28,9 @@ public class HttpHelper {
      */
     @NotNull
     public static String sendGet(String url, Headers headers) throws IOException {
+        Request request;
+        Response response = null;
+        String responseBody;
         request = new Request.Builder()
                 .url(url)
                 .get()
@@ -36,6 +40,7 @@ public class HttpHelper {
             response = OK_HTTP_CLIENT.newCall(request).execute();
             responseBody = Objects.requireNonNull(response.body()).string();
         } finally {
+            assert response != null;
             response.close();
         }
         return responseBody;
@@ -51,6 +56,9 @@ public class HttpHelper {
      */
     @NotNull
     public static String sendPost(String url, Headers headers, RequestBody requestBody) throws IOException {
+        Request request;
+        Response response = null;
+        String responseBody;
         request = new Request.Builder()
                 .url(url)
                 .post(requestBody)
@@ -60,6 +68,7 @@ public class HttpHelper {
             response = OK_HTTP_CLIENT.newCall(request).execute();
             responseBody = Objects.requireNonNull(response.body()).string();
         } finally {
+            assert response != null;
             response.close();
         }
         return responseBody;
