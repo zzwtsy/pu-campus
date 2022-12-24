@@ -23,7 +23,7 @@ public class MyRequestBody {
         return new FormBody.Builder()
                 .add("day", date)
                 .add("oauth_token", oauthToken)
-                .add("oauth_tokenSecret", oauthTokenSecret)
+                .add("oauth_token_secret", oauthTokenSecret)
                 .build();
     }
 }
