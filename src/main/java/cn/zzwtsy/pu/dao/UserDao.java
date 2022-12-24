@@ -29,7 +29,7 @@ public class UserDao {
             if (queryMap != null) {
                 user.setOauthToken((String) queryMap.get("oauthToken"));
                 user.setOauthTokenSecret((String) queryMap.get("oauthTokenSecret"));
-                user.setQqId((String) queryMap.get("qqId"));
+                user.setQqId((long) queryMap.get("qqId"));
             } else {
                 return null;
             }

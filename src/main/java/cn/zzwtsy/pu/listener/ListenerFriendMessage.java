@@ -1,14 +1,9 @@
 package cn.zzwtsy.pu.listener;
 
-
-import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.LoginService;
-import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
-
-import java.io.IOException;
 
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
@@ -36,14 +31,9 @@ public class ListenerFriendMessage extends SimpleListenerHost {
             long userQqId = event.getSender().getId();
             String getUserTokenStatus = new LoginService().getUserToken(String.valueOf(userQqId), userName, strings[2]);
             if (!"true".equals(getUserTokenStatus)) {
-                event.getFriend().sendMessage(getUserTokenStatus);
+                event.getSubject().sendMessage(getUserTokenStatus);
             } else {
-                try {
-                    SaveConfig.saveUserConfig();
-                } catch (IOException e) {
-                    PuCampus.INSTANCE.getLogger().error("保存用户Token失败");
-                }
-                event.getFriend().sendMessage("登录成功");
+                event.getSubject().sendMessage("登录成功");
             }
         }
     }

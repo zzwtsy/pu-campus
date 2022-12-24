@@ -13,11 +13,7 @@ import java.util.Objects;
  * @since 2022/11/28
  */
 public class HttpHelper {
-    private static OkHttpClient OK_HTTP_CLIENT;
-
-    public HttpHelper() {
-        OK_HTTP_CLIENT = new OkHttpClient();
-    }
+    private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
 
     /**
      * 发送GET请求
@@ -40,8 +36,9 @@ public class HttpHelper {
             response = OK_HTTP_CLIENT.newCall(request).execute();
             responseBody = Objects.requireNonNull(response.body()).string();
         } finally {
-            assert response != null;
-            response.close();
+            if (response != null) {
+                response.close();
+            }
         }
         return responseBody;
     }
@@ -68,8 +65,9 @@ public class HttpHelper {
             response = OK_HTTP_CLIENT.newCall(request).execute();
             responseBody = Objects.requireNonNull(response.body()).string();
         } finally {
-            assert response != null;
-            response.close();
+            if (response != null) {
+                response.close();
+            }
         }
         return responseBody;
     }

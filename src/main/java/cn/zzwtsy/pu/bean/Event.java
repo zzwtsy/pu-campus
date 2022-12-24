@@ -15,9 +15,7 @@ public class Event {
     private String deadline;
     private String address;
     private String description;
-    private String eventStatus;
     private String creditName;
-    private String isAllowEvent;
     private String isNeedSignOut;
 
 
@@ -184,26 +182,6 @@ public class Event {
         this.description = description;
     }
 
-    /**
-     * 获取活动状态
-     * 4：活动未参加且正在进行中
-     * 5：活动未参加且已结束
-     * 8：活动已参加且已结束
-     *
-     * @return {@link String}
-     */
-    public String getEventStatus() {
-        return eventStatus;
-    }
-
-    /**
-     * 设置活动状态
-     *
-     * @param eventStatus 活动状态
-     */
-    public void setEventStatus(String eventStatus) {
-        this.eventStatus = eventStatus;
-    }
 
     /**
      * 获取学分类型
@@ -223,25 +201,4 @@ public class Event {
         this.creditName = creditName;
     }
 
-    /**
-     * 获取活动是否可报名状态
-     * 1：可报名
-     * 0：不可报名
-     *
-     * @return {@link String}
-     */
-    public String getIsAllowEvent() {
-        return isAllowEvent;
-    }
-
-    /**
-     * 设置活动是否可报名状态
-     * 1：可报名
-     * 0：不可报名
-     *
-     * @param isAllowEvent 活动是否可报名状态
-     */
-    public void setIsAllowEvent(String isAllowEvent) {
-        this.isAllowEvent = isAllowEvent;
-    }
 }

@@ -8,15 +8,15 @@ package cn.zzwtsy.pu.bean;
  * @since 2022/12/23
  */
 public class User {
-    private String qqId;
+    private long qqId;
     private String oauthToken;
     private String oauthTokenSecret;
 
-    public String getQqId() {
+    public long getQqId() {
         return qqId;
     }
 
-    public void setQqId(String qqId) {
+    public void setQqId(long qqId) {
         this.qqId = qqId;
     }
 
