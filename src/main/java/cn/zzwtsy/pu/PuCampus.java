@@ -2,7 +2,7 @@ package cn.zzwtsy.pu;
 
 import cn.zzwtsy.pu.database.DataBaseHelper;
 import cn.zzwtsy.pu.init.InitDataBase;
-import cn.zzwtsy.pu.listener.ListenerFriendMessage;
+import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.tools.CheckConfigFile;
 import cn.zzwtsy.pu.init.InitConfig;
@@ -54,7 +54,7 @@ public final class PuCampus extends JavaPlugin {
         }
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
-        eventChannel.registerListenerHost(new ListenerFriendMessage());
+        eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
         getLogger().info("pu-campus Plugin loaded!");
     }
 
