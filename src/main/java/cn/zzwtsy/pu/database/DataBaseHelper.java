@@ -16,7 +16,10 @@ public class DataBaseHelper {
     private static PreparedStatement pstmt = null;
     private static ResultSet rs = null;
 
-    static {
+    /**
+     * 注册数据库
+     */
+    public static void registerDataBase() {
         try {
             Class.forName(DRIVER_CLASS_NAME);
         } catch (ClassNotFoundException e) {
