@@ -1,5 +1,6 @@
 package cn.zzwtsy.pu.listener;
 
+import cn.zzwtsy.pu.service.EventListService;
 import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
@@ -31,6 +32,8 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 event.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
             } else {
                 String[] strings = splitMessage(message);
+                String eventList = new EventListService().getCalendarEventList(String.valueOf(userQqId), strings[1]);
+                event.getGroup().sendMessage(new At(userQqId).plus(eventList));
             }
         }
     }
