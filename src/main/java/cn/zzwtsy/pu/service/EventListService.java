@@ -52,6 +52,9 @@ public class EventListService {
         if (!"success".equals(jsonNode.get("message").asText())) {
             return jsonNode.get("message").asText();
         }
+        if (jsonNode.get("content").size() == 0) {
+            return "获取活动列表失败";
+        }
         return contentParse(jsonNode.get("content"));
     }
 
