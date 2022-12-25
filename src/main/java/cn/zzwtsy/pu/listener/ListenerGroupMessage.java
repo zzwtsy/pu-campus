@@ -8,16 +8,13 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;
+import static cn.zzwtsy.pu.utils.DateUtil.*;
 
 /**
  * 监听群消息
@@ -88,41 +85,5 @@ public class ListenerGroupMessage extends SimpleListenerHost {
      */
     private boolean checkUserLogin(String qqId) {
         return new UserService().getUser(qqId) != null;
-    }
-
-    /**
-     * 检查日期格式
-     *
-     * @param date 日期
-     * @return boolean
-     */
-    private boolean checkDateFormat(String date) {
-        String dateFormat = "^\\d{1,2}-\\d{1,2}";
-        return Pattern.matches(dateFormat, date);
-    }
-
-    /**
-     * 日期计算
-     *
-     * @param amount 加减日期天数
-     * @return {@link String}
-     */
-    private String dateCalculate(int amount) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.DATE, amount);
-        return dateFormat.format(calendar.getTime());
-    }
-
-    /**
-     * 添加年份
-     *
-     * @param date 日期
-     * @return {@link String}
-     */
-    private String addYear(String date) {
-        Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.YEAR) + "-" + date;
     }
 }

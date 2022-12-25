@@ -2,7 +2,6 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.bean.User;
-import cn.zzwtsy.pu.tools.FormatTime;
 import cn.zzwtsy.pu.tools.MyHeaders;
 import cn.zzwtsy.pu.tools.MyRequestBody;
 import cn.zzwtsy.pu.utils.HttpHelper;
@@ -13,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.api.ApiUrl.CALENDAR_EVENT_LIST_URL;
+import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
 
 /**
  * 事件列表
@@ -74,13 +74,13 @@ public class EventListService {
                 //活动标题
                 String title = tempNode.get("title").asText();
                 //活动开始时间
-                String sTime = FormatTime.formatUnixTimestamp(tempNode.get("sTime").asLong());
+                String sTime = formatUnixTimestamp(tempNode.get("sTime").asLong());
                 //活动结束时间
-                String eTime = FormatTime.formatUnixTimestamp(tempNode.get("eTime").asLong());
+                String eTime = formatUnixTimestamp(tempNode.get("eTime").asLong());
                 //报名开始时间
-                String startline = FormatTime.formatUnixTimestamp(tempNode.get("startline").asLong());
+                String startline = formatUnixTimestamp(tempNode.get("startline").asLong());
                 //报名结束时间
-                String deadline = FormatTime.formatUnixTimestamp(tempNode.get("deadline").asLong());
+                String deadline = formatUnixTimestamp(tempNode.get("deadline").asLong());
                 //剩余可参加人数
                 String limitCount = tempNode.get("limitCount").asText();
                 //活动地址
