@@ -7,6 +7,10 @@ import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
 import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;
@@ -22,19 +26,25 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
+    ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
+            5,
+            10,
+            TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<>(2),
+            new ThreadPoolExecutor.DiscardPolicy());
 
     @EventHandler
     private void onEvent(FriendMessageEvent event) {
         this.friendMessageEvent = event;
         message = friendMessageEvent.getMessage().contentToString();
-        login(message, friendMessageEvent);
+        executor.execute(() -> login(message, friendMessageEvent));
     }
 
     @EventHandler
     private void onEvent(GroupTempMessageEvent event) {
         this.groupTempMessageEvent = event;
         message = groupTempMessageEvent.getMessage().contentToString();
-        login(message, groupTempMessageEvent);
+        executor.execute(() -> login(message, friendMessageEvent));
     }
 
     private void login(String message, MessageEvent messageEvent) {
