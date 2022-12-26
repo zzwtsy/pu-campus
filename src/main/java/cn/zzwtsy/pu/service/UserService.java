@@ -44,7 +44,7 @@ public class UserService {
      * @param qqId qq号
      * @return 受影响的行数: >=1 删除成功
      */
-    public int delUser(String qqId) {
+    public int deleteUser(String qqId) {
         return userDao.delUser(qqId);
     }
 
