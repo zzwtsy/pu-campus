@@ -44,7 +44,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private void onEvent(GroupTempMessageEvent event) {
         this.groupTempMessageEvent = event;
         message = groupTempMessageEvent.getMessage().contentToString();
-        executor.execute(() -> login(message, friendMessageEvent));
+        executor.execute(() -> login(message, groupTempMessageEvent));
     }
 
     private void login(String message, MessageEvent messageEvent) {
