@@ -25,7 +25,7 @@ import static cn.zzwtsy.pu.utils.DateUtil.*;
 public class ListenerGroupMessage extends SimpleListenerHost {
     private final String EVENT_LIST = command.getCommandPrefix() + command.getGetCalendarEventList();
     String message;
-    GroupMessageEvent event;
+    GroupMessageEvent groupMessageEvent;
     ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
             5,
             10,
@@ -35,33 +35,37 @@ public class ListenerGroupMessage extends SimpleListenerHost {
 
     @EventHandler
     private void onEvent(GroupMessageEvent event) {
-        this.event = event;
-        message = event.getMessage().contentToString();
+        this.groupMessageEvent = event;
+        message = groupMessageEvent.getMessage().contentToString();
+        run();
+    }
+
+    private void run() {
         executor.execute(() -> {
             if (message.startsWith(EVENT_LIST)) {
                 String[] strings = splitMessage(message);
                 switch (strings[1]) {
                     case "今日":
                     case "今天":
-                        getEventList(dateCalculate(0), event, false);
+                        getEventList(dateCalculate(0), false);
                         break;
                     case "明日":
                     case "明天":
-                        getEventList(dateCalculate(+1), event, false);
+                        getEventList(dateCalculate(+1), false);
                         break;
                     case "昨日":
                     case "昨天":
-                        getEventList(dateCalculate(-1), event, false);
+                        getEventList(dateCalculate(-1), false);
                         break;
                     default:
-                        getEventList(addYear(strings[1]), event, true);
+                        getEventList(addYear(strings[1]), true);
                         break;
                 }
             }
         });
     }
 
-    private void getEventList(String date, GroupMessageEvent groupMessageEvent, boolean isCheckDateFormat) {
+    private void getEventList(String date, boolean isCheckDateFormat) {
         long userQqId = groupMessageEvent.getSender().getId();
         if (!checkUserLogin(String.valueOf(userQqId))) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));

@@ -26,6 +26,7 @@ public class LoginService {
      * @return String
      */
     public String getUserToken(String qqId, String userName, String password) {
+        String getUserTokenSuccess = "success";
         ObjectMapper mapper = new ObjectMapper();
         String response;
         try {
@@ -43,29 +44,29 @@ public class LoginService {
         }
         JsonNode contentNode = jsonNode.get("content");
         String message = jsonNode.get("message").asText();
-        if ("success".equals(message)) {
-            String oauthToken = contentNode.get("oauth_token").asText();
-            String oauthTokenSecret = contentNode.get("oauth_token_secret").asText();
-            if (oauthTokenSecret != null && oauthToken != null) {
-                UserService userService = new UserService();
-                if (userService.getUser(qqId) != null) {
-                    int updateUserStatus = userService.updateUser(String.valueOf(qqId), oauthToken, oauthTokenSecret);
-                    if (updateUserStatus <= 0) {
-                        return "登录失败:保存用户Token失败";
-                    } else {
-                        return "true";
-                    }
-                } else {
-                    int addUserStatus = userService.addUser(qqId, oauthToken, oauthTokenSecret);
-                    if (addUserStatus <= 0) {
-                        return "登录失败:保存用户Token失败";
-                    } else {
-                        return "true";
-                    }
-                }
-            }
-            return "登录失败";
+        if (!getUserTokenSuccess.equals(message)) {
+            return message;
         }
-        return message;
+        String oauthToken = contentNode.get("oauth_token").asText();
+        String oauthTokenSecret = contentNode.get("oauth_token_secret").asText();
+        if (oauthTokenSecret == null && oauthToken == null) {
+            return "获取用户Token失败";
+        }
+        UserService userService = new UserService();
+        if (userService.getUser(qqId) != null) {
+            //用户已存在，更新用户Token
+            int updateUserStatus = userService.updateUser(String.valueOf(qqId), oauthToken, oauthTokenSecret);
+            if (updateUserStatus <= 0) {
+                return "登录失败:更新用户Token失败";
+            }
+            return "true";
+        } else {
+            //用户不存在，添加用户
+            int addUserStatus = userService.addUser(qqId, oauthToken, oauthTokenSecret);
+            if (addUserStatus <= 0) {
+                return "登录失败:添加用户Token失败";
+            }
+            return "true";
+        }
     }
 }

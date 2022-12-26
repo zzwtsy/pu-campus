@@ -41,56 +41,60 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private void onEvent(FriendMessageEvent event) {
         this.friendMessageEvent = event;
         message = friendMessageEvent.getMessage().contentToString();
-        executor.execute(() -> {
-            if (message.startsWith(loginCommand)) {
-                login(message, friendMessageEvent);
-                return;
-            }
-            if (message.startsWith(deleteUserCommand)) {
-                deleteUser(friendMessageEvent);
-                return;
-            }
-            if (message.startsWith(adminDeleteUserCommand) &&
-                    checkAdminQqId(friendMessageEvent.getSender().getId())) {
-                adminDeleteUser(message, friendMessageEvent);
-            }
-        });
+        run(friendMessageEvent);
     }
 
     @EventHandler
     private void onEvent(GroupTempMessageEvent event) {
         this.groupTempMessageEvent = event;
         message = groupTempMessageEvent.getMessage().contentToString();
+        run(groupTempMessageEvent);
+    }
+
+    private void run(MessageEvent messageEvent) {
         executor.execute(() -> {
             if (message.startsWith(loginCommand)) {
-                login(message, friendMessageEvent);
+                login(message, messageEvent);
                 return;
             }
             if (message.startsWith(deleteUserCommand)) {
-                deleteUser(friendMessageEvent);
+                deleteUser(messageEvent);
                 return;
             }
             if (message.startsWith(adminDeleteUserCommand) &&
-                    checkAdminQqId(groupTempMessageEvent.getSender().getId())) {
-                adminDeleteUser(message, groupTempMessageEvent);
+                    checkAdminQqId(messageEvent.getSender().getId())) {
+                adminDeleteUser(message, messageEvent);
             }
         });
     }
 
+    /**
+     * 登录
+     *
+     * @param message      消息
+     * @param messageEvent 消息事件
+     */
     private void login(String message, MessageEvent messageEvent) {
+        String getUserTokenSuccess = "true";
         messageEvent.getSender().sendMessage("正在登录,请稍后...");
         String[] strings = splitMessage(message);
         //补全用户账号: 用户账号加用户学校邮件后缀
         String userName = strings[1] + setting.getEmailSuffix();
         long userQqId = messageEvent.getSender().getId();
         String getUserTokenStatus = new LoginService().getUserToken(String.valueOf(userQqId), userName, strings[2]);
-        if (!"true".equals(getUserTokenStatus)) {
+        if (!getUserTokenSuccess.equals(getUserTokenStatus)) {
+            //获取用户Token失败，发送失败信息
             messageEvent.getSender().sendMessage(getUserTokenStatus);
         } else {
             messageEvent.getSender().sendMessage("登录成功");
         }
     }
 
+    /**
+     * 删除用户
+     *
+     * @param messageEvent 消息事件
+     */
     private void deleteUser(MessageEvent messageEvent) {
         long userQqId = messageEvent.getSender().getId();
         int delUserStatus = new UserService().delUser(String.valueOf(userQqId));
@@ -101,18 +105,25 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         }
     }
 
+    /**
+     * 管理员删除用户
+     *
+     * @param message      消息
+     * @param messageEvent 消息事件
+     */
     private void adminDeleteUser(String message, MessageEvent messageEvent) {
         String[] strings = splitMessage(message);
         if (!checkUserQqId(strings[1])) {
             messageEvent.getSender().sendMessage("用户qq号错误");
-        } else {
-            int deleteUserStatus = new UserService().delUser(strings[1]);
-            if (deleteUserStatus <= 0) {
-                messageEvent.getSender().sendMessage("删除" + strings[1] + "用户信息失败");
-            } else {
-                messageEvent.getSender().sendMessage("删除" + strings[1] + "用户信息成功");
-            }
+            return;
         }
+        int deleteUserStatus = new UserService().delUser(strings[1]);
+        if (deleteUserStatus <= 0) {
+            messageEvent.getSender().sendMessage("删除" + strings[1] + "用户信息失败");
+        } else {
+            messageEvent.getSender().sendMessage("删除" + strings[1] + "用户信息成功");
+        }
+
     }
 
     /**

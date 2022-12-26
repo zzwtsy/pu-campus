@@ -21,6 +21,7 @@ import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
  * @since 2022/12/05
  */
 public class EventListService {
+
     /**
      * 根据日期获取事件列表
      *
@@ -29,6 +30,9 @@ public class EventListService {
      * @return {@link String}
      */
     public String getCalendarEventList(String qqId, String date) {
+        String getEventListSuccess = "success";
+        String getEventMessageNode = "message";
+        String getEventContentNode = "content";
         ObjectMapper objectMapper = new ObjectMapper();
         String response;
         JsonNode jsonNode;
@@ -49,10 +53,10 @@ public class EventListService {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return e.getMessage();
         }
-        if (!"success".equals(jsonNode.get("message").asText())) {
+        if (!getEventListSuccess.equals(jsonNode.get(getEventMessageNode).asText())) {
             return jsonNode.get("message").asText();
         }
-        if (jsonNode.get("content").size() == 0) {
+        if (jsonNode.get(getEventContentNode).size() == 0) {
             return "获取活动列表失败";
         }
         return contentParse(jsonNode.get("content"));

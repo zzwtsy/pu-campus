@@ -19,7 +19,7 @@ public class DateUtil {
      * @return {@link String}
      */
     public static String formatUnixTimestamp(long timestamp) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date time = new Date(timestamp * 1000L);
         return simpleDateFormat.format(time);
     }
