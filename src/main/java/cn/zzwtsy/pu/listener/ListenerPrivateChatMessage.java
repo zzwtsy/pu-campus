@@ -7,12 +7,13 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.message.data.At;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
+import static cn.zzwtsy.pu.tools.CheckUser.*;
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
 import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;
@@ -97,7 +98,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      */
     private void deleteUser(MessageEvent messageEvent) {
         long userQqId = messageEvent.getSender().getId();
-        int delUserStatus = new UserService().delUser(String.valueOf(userQqId));
+        if (!checkUserLogin(String.valueOf(userQqId))) {
+            messageEvent.getSender().sendMessage(new At(userQqId).plus("无法删除，没有你的用户信息"));
+            return;
+        }
+        int delUserStatus = new UserService().deleteUser(String.valueOf(userQqId));
         if (delUserStatus <= 0) {
             messageEvent.getSender().sendMessage("删除用户信息失败");
         } else {
@@ -112,38 +117,20 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param messageEvent 消息事件
      */
     private void adminDeleteUser(String message, MessageEvent messageEvent) {
-        String[] strings = splitMessage(message);
-        if (!checkUserQqId(strings[1])) {
-            messageEvent.getSender().sendMessage("用户qq号错误");
+        String qqId = splitMessage(message)[1];
+        if (!checkUserQqId(qqId)) {
+            messageEvent.getSender().sendMessage("用户『" + qqId + "』qq号错误");
             return;
         }
-        int deleteUserStatus = new UserService().delUser(strings[1]);
-        if (deleteUserStatus <= 0) {
-            messageEvent.getSender().sendMessage("删除" + strings[1] + "用户信息失败");
-        } else {
-            messageEvent.getSender().sendMessage("删除" + strings[1] + "用户信息成功");
+        if (!checkUserLogin(qqId)) {
+            messageEvent.getSender().sendMessage("没有『" + qqId + "』用户信息");
+            return;
         }
-
-    }
-
-    /**
-     * 检查用户qq号是否正确
-     *
-     * @param qqId qq号
-     * @return boolean
-     */
-    private boolean checkUserQqId(String qqId) {
-        String qqIdFormat = "^[1-9][0-9]{4,10}$";
-        return Pattern.matches(qqIdFormat, qqId);
-    }
-
-    /**
-     * 检查管理用户是否为管理员
-     *
-     * @param qqId qq号
-     * @return boolean
-     */
-    private boolean checkAdminQqId(long qqId) {
-        return qqId == setting.getAdminId();
+        int deleteUserStatus = new UserService().deleteUser(qqId);
+        if (deleteUserStatus <= 0) {
+            messageEvent.getSender().sendMessage("删除『" + qqId + "』用户信息失败");
+        } else {
+            messageEvent.getSender().sendMessage("删除『" + qqId + "』用户信息成功");
+        }
     }
 }

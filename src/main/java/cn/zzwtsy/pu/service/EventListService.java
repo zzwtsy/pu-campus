@@ -54,12 +54,12 @@ public class EventListService {
             return e.getMessage();
         }
         if (!getEventListSuccess.equals(jsonNode.get(getEventMessageNode).asText())) {
-            return jsonNode.get("message").asText();
+            return jsonNode.get(getEventMessageNode).asText();
         }
         if (jsonNode.get(getEventContentNode).size() == 0) {
             return "获取活动列表失败";
         }
-        return contentParse(jsonNode.get("content"));
+        return contentParse(jsonNode.get(getEventContentNode));
     }
 
 
@@ -77,7 +77,7 @@ public class EventListService {
             JsonNode tempNode = contentNode.get(i);
             String eventStatus = tempNode.get("eventStatus").asText();
             long eventStartline = tempNode.get("startline").asLong();
-            if ("4".equals(eventStatus) || nowTimestamp < eventStartline) {
+            if ("4".equals(eventStatus) && nowTimestamp < eventStartline) {
                 //活动标题
                 String title = tempNode.get("title").asText();
                 //活动开始时间
@@ -85,7 +85,7 @@ public class EventListService {
                 //活动结束时间
                 String eTime = formatUnixTimestamp(tempNode.get("eTime").asLong());
                 //报名开始时间
-                String startline = formatUnixTimestamp(tempNode.get("startline").asLong());
+                String startline = formatUnixTimestamp(eventStartline);
                 //报名结束时间
                 String deadline = formatUnixTimestamp(tempNode.get("deadline").asLong());
                 //剩余可参加人数
