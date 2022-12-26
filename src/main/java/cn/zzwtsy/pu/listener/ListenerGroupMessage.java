@@ -24,6 +24,7 @@ import static cn.zzwtsy.pu.utils.DateUtil.*;
 public class ListenerGroupMessage extends SimpleListenerHost {
     private final String EVENT_LIST_COMMAND = command.getCommandPrefix() + command.getGetCalendarEventList();
     private final String HELP_COMMAND = command.getCommandPrefix() + command.getHelp();
+    private final String LOGIN_COMMAND = command.getCommandPrefix() + command.getLogin();
     String message;
     GroupMessageEvent groupMessageEvent;
     ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
@@ -36,11 +37,11 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     @EventHandler
     private void onEvent(GroupMessageEvent event) {
         this.groupMessageEvent = event;
-        message = groupMessageEvent.getMessage().contentToString();
-        run();
+        run(groupMessageEvent);
     }
 
-    private void run() {
+    private void run(GroupMessageEvent groupMessageEvent) {
+        message = groupMessageEvent.getMessage().contentToString();
         executor.execute(() -> {
             if (message.startsWith(EVENT_LIST_COMMAND)) {
                 String[] strings = splitMessage(message);
@@ -63,8 +64,13 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 }
                 return;
             }
-            if (!message.startsWith(HELP_COMMAND)) {
+            if (message.startsWith(HELP_COMMAND)) {
                 helpInfo();
+                return;
+            }
+            if (message.startsWith(LOGIN_COMMAND)) {
+                long userQqId = groupMessageEvent.getSender().getId();
+                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("请私聊机器人登录"));
             }
         });
     }
@@ -95,14 +101,14 @@ public class ListenerGroupMessage extends SimpleListenerHost {
      */
     private void helpInfo() {
         String helpMessage = "用户命令：\n"
-                + command.getDeleteUser() + "：删除自己的用户信息"
-                + command.getGetCalendarEventList() + " <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表"
-                + command.getLogin() + " <用户名> <用户密码>：登录PU校园"
-                + command.getQuerySignInEventList() + "：查询待签到活动列表"
-                + command.getQuerySignOutEventList() + "：查询待签退活动列表"
-                + command.getQueryActivityDetailById() + "：查询活动详细信息"
-                + command.getQueryNewEventList() + "获取新活动列表"
-                + command.getHelp() + "：获取帮助信息";
+                + command.getCommandPrefix() + command.getDeleteUser() + "：删除自己的用户信息\n"
+                + command.getCommandPrefix() + command.getGetCalendarEventList() + " <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表\n"
+                + command.getCommandPrefix() + command.getLogin() + " <用户名> <用户密码>：登录PU校园\n"
+                + command.getCommandPrefix() + command.getQuerySignInEventList() + "：查询待签到活动列表\n"
+                + command.getCommandPrefix() + command.getQuerySignOutEventList() + "：查询待签退活动列表\n"
+                + command.getCommandPrefix() + command.getQueryActivityDetailById() + "：查询活动详细信息\n"
+                + command.getCommandPrefix() + command.getQueryNewEventList() + "获取新活动列表\n"
+                + command.getCommandPrefix() + command.getHelp() + "：获取帮助信息\n";
         groupMessageEvent.getGroup().sendMessage(helpMessage);
     }
 }
