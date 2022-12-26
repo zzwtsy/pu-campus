@@ -123,6 +123,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 + command.getCommandPrefix() + command.getQuerySignOutEventList() + "：查询待签退活动列表\n"
                 + command.getCommandPrefix() + command.getQueryActivityDetailById() + "：查询活动详细信息\n"
                 + command.getCommandPrefix() + command.getQueryNewEventList() + "获取新活动列表\n"
+                + command.getCommandPrefix() + command.getQueryUserCreditInfo() + "获取个人学分信息\n"
                 + command.getCommandPrefix() + command.getHelp() + "：获取帮助信息\n";
         groupMessageEvent.getGroup().sendMessage(helpMessage);
     }
