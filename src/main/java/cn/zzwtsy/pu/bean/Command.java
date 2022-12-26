@@ -10,6 +10,7 @@ public class Command {
     public static final Command INSTANCE = new Command();
     private String commandPrefix;
     private String login;
+    private String help;
     private String deleteUser;
     private String adminDeleteUser;
     private String queryNewEventList;
@@ -17,6 +18,26 @@ public class Command {
     private String querySignOutEventList;
     private String queryActivityDetailById;
     private String getCalendarEventList;
+
+    /**
+     * 获取帮助命令
+     *
+     * @return {@link String}
+     */
+    public String getHelp() {
+        return help;
+    }
+
+    /**
+     * 设置帮助命令
+     *
+     * @param help 帮助命令
+     * @return {@link Command}
+     */
+    public Command setHelp(String help) {
+        this.help = help;
+        return this;
+    }
 
     /**
      * 得获取管理员删除用户命令

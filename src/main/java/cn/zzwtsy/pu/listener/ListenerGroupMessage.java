@@ -1,8 +1,6 @@
 package cn.zzwtsy.pu.listener;
 
-import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.EventListService;
-import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -12,6 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static cn.zzwtsy.pu.tools.CheckUser.checkUserLogin;
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;
 import static cn.zzwtsy.pu.utils.DateUtil.*;
@@ -23,7 +22,8 @@ import static cn.zzwtsy.pu.utils.DateUtil.*;
  * @since 2022/12/01
  */
 public class ListenerGroupMessage extends SimpleListenerHost {
-    private final String EVENT_LIST = command.getCommandPrefix() + command.getGetCalendarEventList();
+    private final String EVENT_LIST_COMMAND = command.getCommandPrefix() + command.getGetCalendarEventList();
+    private final String HELP_COMMAND = command.getCommandPrefix() + command.getHelp();
     String message;
     GroupMessageEvent groupMessageEvent;
     ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
@@ -42,7 +42,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
 
     private void run() {
         executor.execute(() -> {
-            if (message.startsWith(EVENT_LIST)) {
+            if (message.startsWith(EVENT_LIST_COMMAND)) {
                 String[] strings = splitMessage(message);
                 switch (strings[1]) {
                     case "今日":
@@ -61,33 +61,48 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                         getEventList(addYear(strings[1]), true);
                         break;
                 }
+                return;
+            }
+            if (!message.startsWith(HELP_COMMAND)) {
+                helpInfo();
             }
         });
     }
 
-    private void getEventList(String date, boolean isCheckDateFormat) {
+    /**
+     * 获取事件列表
+     *
+     * @param date            日期
+     * @param checkDateFormat 是否检查日期格式
+     */
+    private void getEventList(String date, boolean checkDateFormat) {
         long userQqId = groupMessageEvent.getSender().getId();
         if (!checkUserLogin(String.valueOf(userQqId))) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
+            return;
+        }
+        if (checkDateFormat && !checkDateFormat(date)) {
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
         } else {
-            PuCampus.INSTANCE.getLogger().error(date);
-            if (isCheckDateFormat && !checkDateFormat(date)) {
-                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
-            } else {
-                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("正在获取" + date + "活动列表"));
-                String eventList = new EventListService().getCalendarEventList(String.valueOf(userQqId), date);
-                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n" + eventList));
-            }
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("正在获取" + date + "活动列表"));
+            String eventList = new EventListService().getCalendarEventList(String.valueOf(userQqId), date);
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n" + eventList));
         }
     }
 
     /**
-     * 检查用户是否登录
-     *
-     * @param qqId 用户qq号
-     * @return boolean
+     * 帮助信息
      */
-    private boolean checkUserLogin(String qqId) {
-        return new UserService().getUser(qqId) != null;
+    private void helpInfo() {
+        String helpMessage = "用户命令：\n"
+                + command.getDeleteUser() + "：删除自己的用户信息"
+                + command.getGetCalendarEventList() + " <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表"
+                + command.getLogin() + " <用户名> <用户密码>：登录PU校园"
+                + command.getQuerySignInEventList() + "：查询待签到活动列表"
+                + command.getQuerySignOutEventList() + "：查询待签退活动列表"
+                + command.getQueryActivityDetailById() + "：查询活动详细信息"
+                + command.getQueryNewEventList() + "获取新活动列表"
+                + command.getHelp() + "：获取帮助信息";
+        groupMessageEvent.getGroup().sendMessage(helpMessage);
     }
 }
