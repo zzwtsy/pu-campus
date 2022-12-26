@@ -14,14 +14,23 @@ import static cn.zzwtsy.pu.tools.MyStatic.*;
  */
 public class CheckConfigFile {
     /**
-     * 检查配置文件是否存在
+     * 检查设置文件是否存在
      *
      * @return boolean
      */
-    public boolean checkConfigFile() {
-        File userFile = new File("config/" + PATH_NAME + "/" + USER_CONFIG_FILE_NAME + ".json");
+    public boolean checkSettingFile() {
+        File settingFile = new File("config/" + PATH_NAME + "/" + SETTING_FILE_NAME + ".json");
+        return settingFile.exists();
+    }
+
+    /**
+     * 检查命令文件是否存在
+     *
+     * @return boolean
+     */
+    public boolean checkCommandFile() {
         File commandFile = new File("config/" + PATH_NAME + "/" + COMMAND_FILE_NAME + ".json");
-        return userFile.exists() && commandFile.exists();
+        return commandFile.exists();
     }
 
     /**
@@ -35,6 +44,5 @@ public class CheckConfigFile {
         } else {
             return new File(DB_FILE_PATH).mkdirs();
         }
-
     }
 }

@@ -34,16 +34,22 @@ public final class PuCampus extends JavaPlugin {
     @Override
     public void onEnable() {
         CheckConfigFile checkConfigFile = new CheckConfigFile();
-        if (!checkConfigFile.checkConfigFile()) {
-            if (new InitConfig().initConfig()) {
-                getLogger().info("Init Config file successfully,Please modify the config file and try again");
+        InitConfig initConfig = new InitConfig();
+        if (!checkConfigFile.checkSettingFile()) {
+            if (initConfig.initSettingConfig()) {
+                getLogger().info("Init Setting file successfully,Please modify the config file and try again");
             } else {
-                getLogger().error("Init Config file failed");
+                getLogger().error("Init Setting file failed");
             }
-            LoadConfig.loadAllConfig();
-        } else {
-            LoadConfig.loadAllConfig();
         }
+        if (!checkConfigFile.checkCommandFile()) {
+            if (initConfig.initCommandConfig()) {
+                getLogger().info("Init Command file successfully,Please modify the config file and try again");
+            } else {
+                getLogger().error("Init Command file failed");
+            }
+        }
+        LoadConfig.loadAllConfig();
         if (!checkConfigFile.checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");
             DataBaseHelper.registerDataBase();
@@ -60,6 +66,10 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        SaveConfig.saveAllConfig();
+        if (SaveConfig.saveAllConfig()) {
+            PuCampus.INSTANCE.getLogger().info("Save All config success");
+        } else {
+            PuCampus.INSTANCE.getLogger().info("Save All config failed");
+        }
     }
 }

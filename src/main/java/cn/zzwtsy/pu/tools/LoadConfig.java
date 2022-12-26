@@ -20,11 +20,11 @@ public class LoadConfig {
      * 加载所有配置
      */
     public static void loadAllConfig() {
-        PuCampus.INSTANCE.getLogger().info("Loading user config file");
+        PuCampus.INSTANCE.getLogger().info("Loading setting config file");
         try {
-            setting = ConfigHelper.getConfigFromFile(PATH_NAME, USER_CONFIG_FILE_NAME, Setting.class);
+            setting = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, Setting.class);
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Loading user config file error", e);
+            PuCampus.INSTANCE.getLogger().error("Loading setting config file error", e);
         }
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
@@ -40,7 +40,7 @@ public class LoadConfig {
     public static void loadUserConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
-            setting = ConfigHelper.getConfigFromFile(PATH_NAME, USER_CONFIG_FILE_NAME, Setting.class);
+            setting = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, Setting.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading user config file error", e);
         }

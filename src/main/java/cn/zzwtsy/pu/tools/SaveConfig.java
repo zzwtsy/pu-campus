@@ -21,9 +21,9 @@ public class SaveConfig {
      */
     public static boolean saveAllConfig() {
         try {
-            ConfigHelper.setConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME, setting);
+            ConfigHelper.setConfigFile(PATH_NAME, SETTING_FILE_NAME, setting);
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Save user config file failed", e);
+            PuCampus.INSTANCE.getLogger().error("Save setting config file failed", e);
             return false;
         }
         try {
@@ -37,19 +37,27 @@ public class SaveConfig {
 
     /**
      * 保存用户配置
-     *
-     * @throws IOException ioexception
      */
-    public static void saveUserConfig() throws IOException {
-        ConfigHelper.setConfigFile(PATH_NAME, "userConfig", setting);
+    public static boolean saveSettingConfig(Object object) {
+        try {
+            ConfigHelper.setConfigFile(PATH_NAME, SETTING_FILE_NAME, object);
+        } catch (IOException e) {
+            PuCampus.INSTANCE.getLogger().error("Save setting config file failed", e);
+            return false;
+        }
+        return true;
     }
 
     /**
      * 保存命令配置
-     *
-     * @throws IOException ioexception
      */
-    public static void saveCommandConfig() throws IOException {
-        ConfigHelper.setConfigFile(PATH_NAME, "commandConfig", command);
+    public static boolean saveCommandConfig(Object object) {
+        try {
+            ConfigHelper.setConfigFile(PATH_NAME, COMMAND_FILE_NAME, object);
+        } catch (IOException e) {
+            PuCampus.INSTANCE.getLogger().error("Save command config file failed", e);
+            return false;
+        }
+        return true;
     }
 }

@@ -18,15 +18,17 @@ import static cn.zzwtsy.pu.tools.MyStatic.*;
  */
 public class InitConfig {
     /**
-     * 初始化用户配置
+     * 初始化设置配置
+     *
+     * @return boolean
      */
-    public boolean initConfig() {
+    public boolean initSettingConfig() {
         PuCampus.INSTANCE.getLogger().info("Init Setting Config");
         Setting.INSTANCE.setAdminId(0)
                 .setGroupId(0)
                 .setEmailSuffix("");
         try {
-            if (ConfigHelper.createConfigFile(PATH_NAME, USER_CONFIG_FILE_NAME)) {
+            if (ConfigHelper.createConfigFile(PATH_NAME, SETTING_FILE_NAME)) {
                 PuCampus.INSTANCE.getLogger().info("Create setting config successfully");
             } else {
                 PuCampus.INSTANCE.getLogger().error("Create setting config failed");
@@ -35,6 +37,10 @@ public class InitConfig {
             PuCampus.INSTANCE.getLogger().error("Create setting config failed", e);
             return false;
         }
+        return SaveConfig.saveSettingConfig(Setting.INSTANCE);
+    }
+
+    public boolean initCommandConfig() {
         PuCampus.INSTANCE.getLogger().info("Init Command Config");
         Command.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
@@ -56,6 +62,6 @@ public class InitConfig {
             PuCampus.INSTANCE.getLogger().error("Create command config failed", e);
             return false;
         }
-        return SaveConfig.saveAllConfig();
+        return SaveConfig.saveCommandConfig(Command.INSTANCE);
     }
 }
