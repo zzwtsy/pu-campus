@@ -38,6 +38,8 @@ public class InitConfig {
         PuCampus.INSTANCE.getLogger().info("Init Command Config");
         Command.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
+                .setDeleteUser("删除我的信息")
+                .setAdminDeleteUser("删除用户")
                 .setGetCalendarEventList("获取活动列表")
                 .setQueryNewEventList("新活动列表")
                 .setQuerySignInEventList("待签到活动")

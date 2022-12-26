@@ -10,11 +10,52 @@ public class Command {
     public static final Command INSTANCE = new Command();
     private String commandPrefix;
     private String login;
+    private String deleteUser;
+    private String adminDeleteUser;
     private String queryNewEventList;
     private String querySignInEventList;
     private String querySignOutEventList;
     private String queryActivityDetailById;
     private String getCalendarEventList;
+
+    /**
+     * 得获取管理员删除用户命令
+     *
+     * @return {@link String}
+     */
+    public String getAdminDeleteUser() {
+        return adminDeleteUser;
+    }
+
+    /**
+     * 设置管理员删除用户命令
+     *
+     * @param adminDeleteUser 管理员删除用户命令
+     * @return {@link Command}
+     */
+    public Command setAdminDeleteUser(String adminDeleteUser) {
+        this.adminDeleteUser = adminDeleteUser;
+        return this;
+    }
+
+    /**
+     * 获取删除用户命令
+     *
+     * @return {@link String}
+     */
+    public String getDeleteUser() {
+        return deleteUser;
+    }
+
+    /**
+     * 设置删除用户命令
+     *
+     * @param deleteUser 删除用户
+     */
+    public Command setDeleteUser(String deleteUser) {
+        this.deleteUser = deleteUser;
+        return this;
+    }
 
     /**
      * 获取命令前缀
