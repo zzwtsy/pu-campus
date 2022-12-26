@@ -24,4 +24,12 @@ public class ApiUrl {
      * 根据日期获取活动列表
      */
     public static final String CALENDAR_EVENT_LIST_URL = HOST + "/index.php?app=api&mod=Event&act=calendarEventList";
+    /**
+     * 活动类学分信息
+     */
+    public static final String ACTIVE_CREDIT_URL = HOST + "/index.php?app=api&mod=UserCredit&act=getEventActive";
+    /**
+     * 申请类学分信息
+     */
+    public static final String APPLY_CREDIT_URL = HOST + "/index.php?app=api&mod=UserCredit&act=getEventApply";
 }

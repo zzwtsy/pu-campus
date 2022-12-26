@@ -1,6 +1,9 @@
 package cn.zzwtsy.pu.listener;
 
+import cn.zzwtsy.pu.bean.User;
 import cn.zzwtsy.pu.service.EventListService;
+import cn.zzwtsy.pu.service.UserCreditService;
+import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -25,6 +28,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private final String EVENT_LIST_COMMAND = command.getCommandPrefix() + command.getGetCalendarEventList();
     private final String HELP_COMMAND = command.getCommandPrefix() + command.getHelp();
     private final String LOGIN_COMMAND = command.getCommandPrefix() + command.getLogin();
+    private final String QUERY_USER_CREDIT_INFO_COMMAND = command.getCommandPrefix() + command.getQueryUserCreditInfo();
     String message;
     GroupMessageEvent groupMessageEvent;
     ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
@@ -71,6 +75,17 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             if (message.startsWith(LOGIN_COMMAND)) {
                 long userQqId = groupMessageEvent.getSender().getId();
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("请私聊机器人登录"));
+                return;
+            }
+            if (message.startsWith(QUERY_USER_CREDIT_INFO_COMMAND)) {
+                long userQqId = groupMessageEvent.getSender().getId();
+                if (!checkUserLogin(String.valueOf(userQqId))) {
+                    groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆，请私聊机器人登录PU校园"));
+                    return;
+                }
+                User user = new UserService().getUser(String.valueOf(userQqId));
+                String userCreditInfoMessage = new UserCreditService().userCredit(user.getOauthToken(), user.getOauthTokenSecret());
+                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(userCreditInfoMessage));
             }
         });
     }

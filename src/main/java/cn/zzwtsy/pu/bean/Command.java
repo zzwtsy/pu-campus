@@ -14,10 +14,31 @@ public class Command {
     private String deleteUser;
     private String adminDeleteUser;
     private String queryNewEventList;
+    private String queryUserCreditInfo;
     private String querySignInEventList;
     private String querySignOutEventList;
     private String queryActivityDetailById;
     private String getCalendarEventList;
+
+    /**
+     * 获取查询用户学分信息命令
+     *
+     * @return {@link String}
+     */
+    public String getQueryUserCreditInfo() {
+        return queryUserCreditInfo;
+    }
+
+    /**
+     * 设置查询用户学分信息命令
+     *
+     * @param queryUserCreditInfo 查询用户学分信息命令
+     * @return {@link Command}
+     */
+    public Command setQueryUserCreditInfo(String queryUserCreditInfo) {
+        this.queryUserCreditInfo = queryUserCreditInfo;
+        return this;
+    }
 
     /**
      * 获取帮助命令

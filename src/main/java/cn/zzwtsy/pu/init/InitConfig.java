@@ -47,11 +47,12 @@ public class InitConfig {
                 .setHelp("帮助信息")
                 .setDeleteUser("删除我的信息")
                 .setAdminDeleteUser("删除用户")
-                .setGetCalendarEventList("获取活动列表")
                 .setQueryNewEventList("新活动列表")
+                .setQueryUserCreditInfo("学分信息")
                 .setQuerySignInEventList("待签到活动")
                 .setQuerySignOutEventList("待签退活动")
-                .setQueryActivityDetailById("活动信息");
+                .setQueryActivityDetailById("活动信息")
+                .setGetCalendarEventList("获取活动列表");
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, COMMAND_FILE_NAME)) {
                 PuCampus.INSTANCE.getLogger().info("Create command config successfully");
