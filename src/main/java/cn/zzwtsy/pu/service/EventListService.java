@@ -59,7 +59,8 @@ public class EventListService {
         if (jsonNode.get(getEventContentNode).size() == 0) {
             return "获取活动列表失败";
         }
-        return contentParse(jsonNode.get(getEventContentNode));
+        String contentParse = contentParse(jsonNode.get(getEventContentNode));
+        return "".equals(contentParse) ? "暂无可报名活动" : contentParse;
     }
 
 
@@ -71,12 +72,14 @@ public class EventListService {
      */
     private String contentParse(JsonNode contentNode) {
         String message;
-        long nowTimestamp = System.currentTimeMillis();
+        JsonNode tempNode;
+        //获取当前时间戳（转换为10位）
+        long nowTimestamp = System.currentTimeMillis() / 1000;
         StringBuilder messagesList = new StringBuilder();
         for (int i = 0; i < contentNode.size(); i++) {
-            JsonNode tempNode = contentNode.get(i);
+            tempNode = contentNode.get(i);
             String eventStatus = tempNode.get("eventStatus").asText();
-            long eventStartline = tempNode.get("startline").asLong();
+            long eventStartline = tempNode.get("deadline").asLong();
             if ("4".equals(eventStatus) && nowTimestamp < eventStartline) {
                 //活动标题
                 String title = tempNode.get("title").asText();
