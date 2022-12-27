@@ -71,16 +71,20 @@ public class EventListService {
      * @return {@link String}
      */
     private String contentParse(JsonNode contentNode) {
-        String message;
+        String event;
         JsonNode tempNode;
         //获取当前时间戳（转换为10位）
         long nowTimestamp = System.currentTimeMillis() / 1000;
-        StringBuilder messagesList = new StringBuilder();
-        for (int i = 0; i < contentNode.size(); i++) {
+        StringBuilder eventList = new StringBuilder();
+        int contentLength = contentNode.size();
+        for (int i = 0; i < contentLength; i++) {
             tempNode = contentNode.get(i);
+            //活动状态
             String eventStatus = tempNode.get("eventStatus").asText();
-            long eventStartline = tempNode.get("deadline").asLong();
-            if ("4".equals(eventStatus) && nowTimestamp < eventStartline) {
+            //报名结束时间
+            long eventRegistrationCloseTime = tempNode.get("deadline").asLong();
+            //判断活动是否仍在进行和当前时间小于报名结束时间
+            if ("4".equals(eventStatus) && nowTimestamp < eventRegistrationCloseTime) {
                 //活动标题
                 String title = tempNode.get("title").asText();
                 //活动开始时间
@@ -88,14 +92,14 @@ public class EventListService {
                 //活动结束时间
                 String eTime = formatUnixTimestamp(tempNode.get("eTime").asLong());
                 //报名开始时间
-                String startline = formatUnixTimestamp(eventStartline);
+                String startline = formatUnixTimestamp(tempNode.get("startline").asLong());
                 //报名结束时间
-                String deadline = formatUnixTimestamp(tempNode.get("deadline").asLong());
+                String deadline = formatUnixTimestamp(eventRegistrationCloseTime);
                 //剩余可参加人数
                 String limitCount = tempNode.get("limitCount").asText();
                 //活动地址
                 String address = tempNode.get("address").asText();
-                message = "活动名称：\n\t\t\t《" + title + "》\n"
+                event = "活动名称：\n\t\t\t《" + title + "》\n"
                         + "活动地址：\n\t\t\t『" + address + "』\n"
                         + "活动开始时间：\n\t\t\t" + sTime + "\n"
                         + "活动结束时间：\n\t\t\t" + eTime + "\n"
@@ -103,9 +107,9 @@ public class EventListService {
                         + "报名结束时间：\n\t\t\t" + deadline + "\n"
                         + "剩余可参加人数：" + limitCount + "\n"
                         + "============" + "\n";
-                messagesList.append(message);
+                eventList.append(event);
             }
         }
-        return messagesList.toString();
+        return eventList.toString();
     }
 }

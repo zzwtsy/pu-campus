@@ -7,7 +7,6 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
-import net.mamoe.mirai.message.data.At;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -76,19 +75,13 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param messageEvent 消息事件
      */
     private void login(String message, MessageEvent messageEvent) {
-        String getUserTokenSuccess = "true";
         messageEvent.getSender().sendMessage("正在登录,请稍后...");
         String[] strings = splitMessage(message);
         //补全用户账号: 用户账号加用户学校邮件后缀
         String userName = strings[1] + setting.getEmailSuffix();
         long userQqId = messageEvent.getSender().getId();
         String getUserTokenStatus = new LoginService().getUserToken(String.valueOf(userQqId), userName, strings[2]);
-        if (!getUserTokenSuccess.equals(getUserTokenStatus)) {
-            //获取用户Token失败，发送失败信息
-            messageEvent.getSender().sendMessage(getUserTokenStatus);
-        } else {
-            messageEvent.getSender().sendMessage("登录成功");
-        }
+        messageEvent.getSender().sendMessage(getUserTokenStatus);
     }
 
     /**
@@ -99,7 +92,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private void deleteUser(MessageEvent messageEvent) {
         long userQqId = messageEvent.getSender().getId();
         if (!checkUserLogin(String.valueOf(userQqId))) {
-            messageEvent.getSender().sendMessage(new At(userQqId).plus("无法删除，没有你的用户信息"));
+            messageEvent.getSender().sendMessage("无法删除，没有你的用户信息");
             return;
         }
         int delUserStatus = new UserService().deleteUser(String.valueOf(userQqId));

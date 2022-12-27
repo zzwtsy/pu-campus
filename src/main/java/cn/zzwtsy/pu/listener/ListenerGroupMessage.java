@@ -25,10 +25,10 @@ import static cn.zzwtsy.pu.utils.DateUtil.*;
  * @since 2022/12/01
  */
 public class ListenerGroupMessage extends SimpleListenerHost {
-    private final String EVENT_LIST_COMMAND = command.getCommandPrefix() + command.getGetCalendarEventList();
-    private final String HELP_COMMAND = command.getCommandPrefix() + command.getHelp();
-    private final String LOGIN_COMMAND = command.getCommandPrefix() + command.getLogin();
-    private final String QUERY_USER_CREDIT_INFO_COMMAND = command.getCommandPrefix() + command.getQueryUserCreditInfo();
+    private final String eventListCommand = command.getCommandPrefix() + command.getGetCalendarEventList();
+    private final String helpCommand = command.getCommandPrefix() + command.getHelp();
+    private final String loginCommand = command.getCommandPrefix() + command.getLogin();
+    private final String queryUserCreditInfoCommand = command.getCommandPrefix() + command.getQueryUserCreditInfo();
     String message;
     GroupMessageEvent groupMessageEvent;
     ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
@@ -47,7 +47,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
         executor.execute(() -> {
-            if (message.startsWith(EVENT_LIST_COMMAND)) {
+            if (message.startsWith(eventListCommand)) {
                 String[] strings = splitMessage(message);
                 switch (strings[1]) {
                     case "今日":
@@ -68,16 +68,16 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 }
                 return;
             }
-            if (message.startsWith(HELP_COMMAND)) {
+            if (message.startsWith(helpCommand)) {
                 helpInfo();
                 return;
             }
-            if (message.startsWith(LOGIN_COMMAND)) {
+            if (message.startsWith(loginCommand)) {
                 long userQqId = groupMessageEvent.getSender().getId();
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("请私聊机器人登录"));
                 return;
             }
-            if (message.startsWith(QUERY_USER_CREDIT_INFO_COMMAND)) {
+            if (message.startsWith(queryUserCreditInfoCommand)) {
                 long userQqId = groupMessageEvent.getSender().getId();
                 if (!checkUserLogin(String.valueOf(userQqId))) {
                     groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆，请私聊机器人登录PU校园"));

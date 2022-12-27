@@ -49,7 +49,7 @@ public class LoginService {
         }
         String oauthToken = contentNode.get("oauth_token").asText();
         String oauthTokenSecret = contentNode.get("oauth_token_secret").asText();
-        if (oauthTokenSecret == null && oauthToken == null) {
+        if (oauthToken == null || oauthTokenSecret == null || oauthToken.isEmpty() || oauthTokenSecret.isEmpty()) {
             return "获取用户Token失败";
         }
         UserService userService = new UserService();
@@ -59,14 +59,13 @@ public class LoginService {
             if (updateUserStatus <= 0) {
                 return "登录失败:更新用户Token失败";
             }
-            return "true";
-        } else {
-            //用户不存在，添加用户
-            int addUserStatus = userService.addUser(qqId, oauthToken, oauthTokenSecret);
-            if (addUserStatus <= 0) {
-                return "登录失败:添加用户Token失败";
-            }
-            return "true";
+            return "更新用户信息成功";
         }
+        //用户不存在，添加用户
+        int addUserStatus = userService.addUser(qqId, oauthToken, oauthTokenSecret);
+        if (addUserStatus <= 0) {
+            return "登录失败:添加用户Token失败";
+        }
+        return "登陆成功";
     }
 }
