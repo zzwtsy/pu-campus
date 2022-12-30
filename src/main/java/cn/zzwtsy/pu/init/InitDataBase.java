@@ -15,6 +15,7 @@ public class InitDataBase {
     public void initDataBase() {
         String createUserTableSql = "CREATE TABLE \"user\" (\n" +
                 "  \"qqId\" INTEGER(12) NOT NULL,\n" +
+                "  \"uid\" TEXT NOT NULL,\n" +
                 "  \"oauthToken\" TEXT NOT NULL,\n" +
                 "  \"oauthTokenSecret\" TEXT NOT NULL,\n" +
                 "  PRIMARY KEY (\"qqId\")\n" +

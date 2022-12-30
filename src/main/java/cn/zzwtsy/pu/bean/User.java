@@ -4,13 +4,22 @@ package cn.zzwtsy.pu.bean;
  * 用户 Bean
  *
  * @author zzwtsy
- *
  * @since 2022/12/23
  */
 public class User {
     private long qqId;
+    private String uid;
     private String oauthToken;
     private String oauthTokenSecret;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public User setUid(String uid) {
+        this.uid = uid;
+        return this;
+    }
 
     public long getQqId() {
         return qqId;
