@@ -1,6 +1,9 @@
 package cn.zzwtsy.pu.utils;
 
-import okhttp3.*;
+import okhttp3.Headers;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -27,7 +30,7 @@ public class HttpHelper {
         Request request;
         Response response = null;
         String responseBody;
-        request = new Request.Builder()
+        request = new okhttp3.Request.Builder()
                 .url(url)
                 .get()
                 .headers(headers)
@@ -52,11 +55,11 @@ public class HttpHelper {
      * @return 远程资源的响应结果
      */
     @NotNull
-    public static String sendPost(String url, Headers headers, RequestBody requestBody) throws IOException {
+    public static String sendPost(String url, Headers headers, okhttp3.RequestBody requestBody) throws IOException {
         Request request;
         Response response = null;
         String responseBody;
-        request = new Request.Builder()
+        request = new okhttp3.Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .headers(headers)

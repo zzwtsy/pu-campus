@@ -7,7 +7,12 @@ import cn.zzwtsy.pu.utils.ConfigHelper;
 
 import java.io.IOException;
 
-import static cn.zzwtsy.pu.tools.MyStatic.*;
+import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.setting;
+import static cn.zzwtsy.pu.tools.MyStatic.command;
+
 
 /**
  * 保存配置

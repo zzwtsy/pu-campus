@@ -1,7 +1,5 @@
 package cn.zzwtsy.pu.tools;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * 拆分消息
  *
@@ -15,7 +13,7 @@ public class SplitMessage {
      * @param message 消息
      * @return {@link String[]}
      */
-    public static String[] splitMessage(@NotNull String message) {
+    public static String[] splitMessage(String message) {
         return message.split(" ");
     }
 }

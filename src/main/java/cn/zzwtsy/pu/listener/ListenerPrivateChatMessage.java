@@ -12,7 +12,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import static cn.zzwtsy.pu.tools.CheckUser.*;
+
+import static cn.zzwtsy.pu.tools.CheckUser.checkAdminQqId;
+import static cn.zzwtsy.pu.tools.CheckUser.checkUserLogin;
+import static cn.zzwtsy.pu.tools.CheckUser.checkUserQqId;
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
 import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;

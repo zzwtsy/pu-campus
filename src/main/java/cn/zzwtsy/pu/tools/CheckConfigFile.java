@@ -4,7 +4,10 @@ import java.io.File;
 
 import static cn.zzwtsy.pu.tools.DataBaseStatic.DB_FILE_FULL_PATH;
 import static cn.zzwtsy.pu.tools.DataBaseStatic.DB_FILE_PATH;
-import static cn.zzwtsy.pu.tools.MyStatic.*;
+import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
+import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
+
 
 /**
  * 检查配置文件
