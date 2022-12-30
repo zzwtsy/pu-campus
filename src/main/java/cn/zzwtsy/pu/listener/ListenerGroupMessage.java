@@ -58,8 +58,8 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
                 return;
             }
-            String newEventList = "\n" + new NewEventListService().getNewEventList(String.valueOf(userQqId));
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(newEventList));
+            String newEventList = new NewEventListService().getNewEventList(String.valueOf(userQqId));
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(newEventList));
             return;
         }
         if (message.startsWith(eventListCommand)) {

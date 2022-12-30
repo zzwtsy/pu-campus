@@ -128,5 +128,6 @@ src/test/kotlin/RunTerminal.kt
 /bots
 
 # Local Test Launch Point working directory
+.vscode
 /debug-sandbox
 /bin
