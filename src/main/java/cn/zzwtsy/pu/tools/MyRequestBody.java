@@ -26,4 +26,11 @@ public class MyRequestBody {
                 .add("oauth_token_secret", oauthTokenSecret)
                 .build();
     }
+    public static RequestBody newEventListBody(String oauthToken, String oauthTokenSecret) {
+        return new FormBody.Builder()
+                .add("page", "1")
+                .add("oauth_token", oauthToken)
+                .add("oauth_token_secret", oauthTokenSecret)
+                .build();
+    }
 }

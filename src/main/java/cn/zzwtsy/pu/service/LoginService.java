@@ -1,16 +1,12 @@
 package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.tools.MyHeaders;
-import cn.zzwtsy.pu.tools.MyRequestBody;
-import cn.zzwtsy.pu.utils.HttpHelper;
+import cn.zzwtsy.pu.api.Api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-
-import static cn.zzwtsy.pu.api.ApiUrl.LOGIN_URL;
 
 /**
  * 获取令牌
@@ -30,7 +26,7 @@ public class LoginService {
         ObjectMapper mapper = new ObjectMapper();
         String response;
         try {
-            response = HttpHelper.sendPost(LOGIN_URL, MyHeaders.baseHeaders(), MyRequestBody.loginBody(userName, password));
+            response = new Api().getLoginInfo(userName, password);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("发送登录请求失败", e);
             return "发送登录请求失败";

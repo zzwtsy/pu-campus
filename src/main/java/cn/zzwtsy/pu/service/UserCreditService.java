@@ -1,17 +1,13 @@
 package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.tools.MyHeaders;
-import cn.zzwtsy.pu.utils.HttpHelper;
+import cn.zzwtsy.pu.api.Api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.util.HashMap;
-
-import static cn.zzwtsy.pu.api.ApiUrl.ACTIVE_CREDIT_URL;
-import static cn.zzwtsy.pu.api.ApiUrl.APPLY_CREDIT_URL;
 
 /**
  * 用户学分
@@ -23,15 +19,14 @@ public class UserCreditService {
     private final HashMap<String, Double> creditTotalMap = new HashMap<>(2);
 
     public String userCredit(String oauthToken, String oauthTokenSecret) {
+        Api api = new Api();
         String getCreditInfoSuccess = "学分类型";
         StringBuilder stringBuilder = new StringBuilder();
         String activeCreditResponse;
         String applyCreditResponse;
-        String activeCreditFullUrl = ACTIVE_CREDIT_URL + "&oauth_token=" + oauthToken + "&oauth_token_secret=" + oauthTokenSecret;
-        String applyCreditFullUrl = APPLY_CREDIT_URL + "&oauth_token=" + oauthToken + "&oauth_token_secret=" + oauthTokenSecret;
         try {
-            activeCreditResponse = HttpHelper.sendGet(activeCreditFullUrl, MyHeaders.creditHeaders());
-            applyCreditResponse = HttpHelper.sendGet(applyCreditFullUrl, MyHeaders.creditHeaders());
+            activeCreditResponse = api.getActiveCredit(oauthToken, oauthTokenSecret);
+            applyCreditResponse = api.getApplyCredit(oauthToken, oauthTokenSecret);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("获取学分信息失败");
             return "获取学分信息失败：" + e.getMessage();
