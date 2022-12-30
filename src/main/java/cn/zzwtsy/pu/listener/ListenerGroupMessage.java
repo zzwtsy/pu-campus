@@ -17,7 +17,6 @@ import static cn.zzwtsy.pu.utils.DateUtil.addYear;
 import static cn.zzwtsy.pu.utils.DateUtil.checkDateFormat;
 import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
 
-
 /**
  * 监听群消息
  *
@@ -30,6 +29,8 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private final String loginCommand = command.getCommandPrefix() + command.getLogin();
     private final String queryUserCreditInfoCommand = command.getCommandPrefix() + command.getQueryUserCreditInfo();
     private final String queryNewEventListCommand = command.getCommandPrefix() + command.getQueryNewEventList();
+    private final String querySignInEventListCommand = command.getCommandPrefix() + command.getQuerySignInEventList();
+    private final String querySignOutEventListCommand = command.getCommandPrefix() + command.getQuerySignOutEventList();
     String message;
     GroupMessageEvent groupMessageEvent;
 
@@ -42,6 +43,16 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
         long userQqId = groupMessageEvent.getSender().getId();
+        if (message.startsWith(querySignInEventListCommand)) {
+            User user;
+            user = new UserService().getUser(String.valueOf(userQqId));
+            String message = new EventListService().getUserCanSignInEventList(user.getOauthToken(), user.getOauthTokenSecret());
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
+            return;
+        }
+        if (message.startsWith(querySignOutEventListCommand)) {
+            return;
+        }
         if (message.startsWith(queryNewEventListCommand)) {
             if (!checkUserLogin(String.valueOf(userQqId))) {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
@@ -90,7 +101,8 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 return;
             }
             User user = new UserService().getUser(String.valueOf(userQqId));
-            String userCreditInfoMessage = new UserCreditService().userCredit(user.getOauthToken(), user.getOauthTokenSecret());
+            String userCreditInfoMessage = new UserCreditService().userCredit(user.getOauthToken(),
+                    user.getOauthTokenSecret());
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(userCreditInfoMessage));
         }
     }
@@ -122,7 +134,8 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void helpInfo() {
         String helpMessage = "用户命令：\n"
                 + command.getCommandPrefix() + command.getDeleteUser() + "：删除自己的用户信息\n"
-                + command.getCommandPrefix() + command.getGetCalendarEventList() + " <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表\n"
+                + command.getCommandPrefix() + command.getGetCalendarEventList()
+                + " <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表\n"
                 + command.getCommandPrefix() + command.getLogin() + " <用户名> <用户密码>：登录PU校园\n"
                 + command.getCommandPrefix() + command.getQuerySignInEventList() + "：查询待签到活动列表\n"
                 + command.getCommandPrefix() + command.getQuerySignOutEventList() + "：查询待签退活动列表\n"

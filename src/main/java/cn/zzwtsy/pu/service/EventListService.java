@@ -17,6 +17,16 @@ import java.io.IOException;
  * @since 2022/12/05
  */
 public class EventListService {
+    private final String getEventListSuccess = "success";
+    private final String getEventMessageNode = "message";
+    private final String getEventContentNode = "content";
+    Api api;
+    ObjectMapper mapper;
+
+    public EventListService() {
+        api = new Api();
+        mapper = new ObjectMapper();
+    }
 
     /**
      * 根据日期获取事件列表
@@ -26,34 +36,64 @@ public class EventListService {
      * @return {@link String}
      */
     public String getCalendarEventList(String qqId, String date) {
-        String getEventListSuccess = "success";
-        String getEventMessageNode = "message";
-        String getEventContentNode = "content";
-        ObjectMapper objectMapper = new ObjectMapper();
         String response;
         JsonNode jsonNode;
         User user = new UserService().getUser(qqId);
         String oauthToken = user.getOauthToken();
         String oauthTokenSecret = user.getOauthTokenSecret();
         try {
-            response = new Api().getCalendarEventList(date, oauthToken, oauthTokenSecret);
+            response = api.getCalendarEventList(date, oauthToken, oauthTokenSecret);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("获取活动列表失败", e);
             return "获取活动列表失败";
         }
         try {
-            jsonNode = objectMapper.readTree(response);
+            jsonNode = mapper.readTree(response);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return e.getMessage();
         }
-        if (!getEventListSuccess.equals(jsonNode.get(getEventMessageNode).asText())) {
-            return jsonNode.get(getEventMessageNode).asText();
+        String eventMessage = jsonNode.get(getEventMessageNode).asText();
+        if (!getEventListSuccess.equals(eventMessage)) {
+            return eventMessage;
         }
-        if (jsonNode.get(getEventContentNode).size() == 0) {
-            return "获取活动列表失败";
+        JsonNode contentNode = jsonNode.get(getEventContentNode);
+        if (contentNode.isEmpty()) {
+            return "暂无可报名活动";
         }
-        String contentParse = new JsonParse().eventListParse(jsonNode.get(getEventContentNode));
-        return "".equals(contentParse) ? "暂无可报名活动" : contentParse;
+        return new JsonParse().eventListParse(contentNode);
+    }
+
+    /**
+     * 获取待签到列表
+     *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @return {@link String}
+     */
+    public String getUserCanSignInEventList(String oauthToken, String oauthTokenSecret) {
+        String response;
+        JsonNode jsonNode;
+        try {
+            response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);
+        } catch (IOException e) {
+            PuCampus.INSTANCE.getLogger().error(e);
+            return "获取待签到列表时发生错误";
+        }
+        try {
+            jsonNode = mapper.readTree(response);
+        } catch (JsonProcessingException e) {
+            PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
+            return e.getMessage();
+        }
+        String eventMessage = jsonNode.get(getEventMessageNode).asText();
+        if (!getEventListSuccess.equals(eventMessage)) {
+            return eventMessage;
+        }
+        JsonNode contentNode = jsonNode.get(getEventContentNode);
+        if (contentNode.isEmpty()) {
+            return "暂无待签到活动";
+        }
+        return new JsonParse().eventListParse(contentNode);
     }
 }

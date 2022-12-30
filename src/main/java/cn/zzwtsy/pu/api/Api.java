@@ -22,9 +22,11 @@ public class Api {
      * @param count            活动个数
      * @return {@link String}
      */
-    public String getMySingOutEventList(String userId, String count, String oauthToken, String oauthTokenSecret) throws IOException {
+    public String getMySingOutEventList(String userId, String count, String oauthToken, String oauthTokenSecret)
+            throws IOException {
         String myEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myEventList";
-        return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.myEventListBody(userId, "3", count, oauthToken, oauthTokenSecret));
+        return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(),
+                MyRequestBody.myEventListBody(userId, "3", count, oauthToken, oauthTokenSecret));
     }
 
     /**
@@ -36,9 +38,11 @@ public class Api {
      * @param count            活动个数
      * @return {@link String}
      */
-    public String getMySingInEventList(String userId, String count, String oauthToken, String oauthTokenSecret) throws IOException {
+    public String getUserSingInEventList(String userId, String count, String oauthToken, String oauthTokenSecret)
+            throws IOException {
         String myEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myEventList";
-        return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.myEventListBody(userId, "4", count, oauthToken, oauthTokenSecret));
+        return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(),
+                MyRequestBody.myEventListBody(userId, "4", count, oauthToken, oauthTokenSecret));
     }
 
     /**
@@ -49,9 +53,10 @@ public class Api {
      * @return {@link String}
      * @throws IOException ioexception
      */
-    public String getSingOutEventList(String oauthToken, String oauthTokenSecret) throws IOException {
+    public String getUserCanSingOutEventList(String oauthToken, String oauthTokenSecret) throws IOException {
         String signOutEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myCanSignOutEventList&page=1";
-        return HttpHelper.sendPost(signOutEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.tokenBody(oauthToken, oauthTokenSecret));
+        return HttpHelper.sendPost(signOutEventListUrl, MyHeaders.baseHeaders(),
+                MyRequestBody.tokenBody(oauthToken, oauthTokenSecret));
     }
 
     /**
@@ -62,9 +67,10 @@ public class Api {
      * @return {@link String}
      * @throws IOException ioexception
      */
-    public String getSignInEventList(String oauthToken, String oauthTokenSecret) throws IOException {
+    public String getUserCanSignInEventList(String oauthToken, String oauthTokenSecret) throws IOException {
         String signInEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myCanSignInEventList&page=1";
-        return HttpHelper.sendPost(signInEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.tokenBody(oauthToken, oauthTokenSecret));
+        return HttpHelper.sendPost(signInEventListUrl, MyHeaders.baseHeaders(),
+                MyRequestBody.tokenBody(oauthToken, oauthTokenSecret));
     }
 
     /**
@@ -106,7 +112,8 @@ public class Api {
      */
     public String getNewEventList(String oauthToken, String oauthTokenSecret) throws IOException {
         String newEventListUrl = HOST + "/index.php?app=api&mod=Event&act=newEventList";
-        return HttpHelper.sendPost(newEventListUrl, MyHeaders.tokenHeaders(oauthToken, oauthTokenSecret), MyRequestBody.newEventListBody(oauthToken, oauthTokenSecret));
+        return HttpHelper.sendPost(newEventListUrl, MyHeaders.tokenHeaders(oauthToken, oauthTokenSecret),
+                MyRequestBody.newEventListBody(oauthToken, oauthTokenSecret));
     }
 
     /**
@@ -118,7 +125,8 @@ public class Api {
      * @throws IOException ioexception
      */
     public String getActiveCredit(String oauthToken, String oauthTokenSecret) throws IOException {
-        String activeCreditUrl = HOST + "/index.php?app=api&mod=UserCredit&act=getEventActive&oauth_token=" + oauthToken + "&oauth_token_secret=" + oauthTokenSecret;
+        String activeCreditUrl = HOST + "/index.php?app=api&mod=UserCredit&act=getEventActive&oauth_token=" + oauthToken
+                + "&oauth_token_secret=" + oauthTokenSecret;
         return HttpHelper.sendGet(activeCreditUrl, MyHeaders.creditHeaders());
     }
 
@@ -131,7 +139,8 @@ public class Api {
      * @throws IOException ioexception
      */
     public String getApplyCredit(String oauthToken, String oauthTokenSecret) throws IOException {
-        String applyCreditUrl = HOST + "/index.php?app=api&mod=UserCredit&act=getEventApply&oauth_token=" + oauthToken + "&oauth_token_secret=" + oauthTokenSecret;
+        String applyCreditUrl = HOST + "/index.php?app=api&mod=UserCredit&act=getEventApply&oauth_token=" + oauthToken
+                + "&oauth_token_secret=" + oauthTokenSecret;
         return HttpHelper.sendGet(applyCreditUrl, MyHeaders.creditHeaders());
     }
 }
