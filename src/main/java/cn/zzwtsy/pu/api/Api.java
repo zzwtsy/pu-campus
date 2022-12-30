@@ -12,19 +12,60 @@ import java.io.IOException;
  */
 public class Api {
     private final String HOST = "https://pocketuni.net";
-    private final String SCHOOLS_INFO_URL = HOST + "/index.php?app=api&mod=Sitelist&act=getSchools";
+
     /**
-     * 待签到事件列表
+     * 获取待签退列表
+     *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @param userId           用户id
+     * @param count            活动个数
+     * @return {@link String}
      */
-    private final String SIGN_IN_EVENT_LIST_URL = HOST + "/index.php?app=api&mod=Event&act=myCanSignInEventList&page=1";
+    public String getMySingOutEventList(String userId, String count, String oauthToken, String oauthTokenSecret) throws IOException {
+        String myEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myEventList";
+        return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.myEventListBody(userId, "3", count, oauthToken, oauthTokenSecret));
+    }
+
     /**
-     * 待签退事件列表
+     * 获取待签到列表
+     *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @param userId           用户id
+     * @param count            活动个数
+     * @return {@link String}
      */
-    public final String SIGN_OUT_EVENT_LIST_URL = HOST + "/index.php?app=api&mod=Event&act=myCanSignOutEventList&page=1";
+    public String getMySingInEventList(String userId, String count, String oauthToken, String oauthTokenSecret) throws IOException {
+        String myEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myEventList";
+        return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.myEventListBody(userId, "4", count, oauthToken, oauthTokenSecret));
+    }
+
     /**
-     * 已签到列表
+     * 获得待签退事件列表
+     *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @return {@link String}
+     * @throws IOException ioexception
      */
-    public final String SIGN_RECORDS_URL = HOST + "/index.php?app=api&mod=Event&act=signRecords";
+    public String getSingOutEventList(String oauthToken, String oauthTokenSecret) throws IOException {
+        String signOutEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myCanSignOutEventList&page=1";
+        return HttpHelper.sendPost(signOutEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.tokenBody(oauthToken, oauthTokenSecret));
+    }
+
+    /**
+     * 获得待签到事件列表
+     *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @return {@link String}
+     * @throws IOException ioexception
+     */
+    public String getSignInEventList(String oauthToken, String oauthTokenSecret) throws IOException {
+        String signInEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myCanSignInEventList&page=1";
+        return HttpHelper.sendPost(signInEventListUrl, MyHeaders.baseHeaders(), MyRequestBody.tokenBody(oauthToken, oauthTokenSecret));
+    }
 
     /**
      * 根据日期获取事件列表
@@ -56,9 +97,12 @@ public class Api {
     }
 
     /**
-     * 得到新事件列表
+     * 获取新事件列表
      *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
      * @return {@link String}
+     * @throws IOException ioexception
      */
     public String getNewEventList(String oauthToken, String oauthTokenSecret) throws IOException {
         String newEventListUrl = HOST + "/index.php?app=api&mod=Event&act=newEventList";
@@ -68,7 +112,10 @@ public class Api {
     /**
      * 获取活动类学分信息
      *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
      * @return {@link String}
+     * @throws IOException ioexception
      */
     public String getActiveCredit(String oauthToken, String oauthTokenSecret) throws IOException {
         String activeCreditUrl = HOST + "/index.php?app=api&mod=UserCredit&act=getEventActive&oauth_token=" + oauthToken + "&oauth_token_secret=" + oauthTokenSecret;
