@@ -9,10 +9,6 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import static cn.zzwtsy.pu.tools.CheckUser.checkUserLogin;
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;
@@ -34,12 +30,6 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private final String queryUserCreditInfoCommand = command.getCommandPrefix() + command.getQueryUserCreditInfo();
     String message;
     GroupMessageEvent groupMessageEvent;
-    ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
-            5,
-            10,
-            TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(2),
-            new ThreadPoolExecutor.DiscardPolicy());
 
     @EventHandler
     private void onEvent(GroupMessageEvent event) {
@@ -49,48 +39,51 @@ public class ListenerGroupMessage extends SimpleListenerHost {
 
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
-        executor.execute(() -> {
-            if (message.startsWith(eventListCommand)) {
-                String[] strings = splitMessage(message);
-                switch (strings[1]) {
-                    case "今日":
-                    case "今天":
-                        getEventList(dateCalculate(0), false);
+        if (message.startsWith(eventListCommand)) {
+            String[] strings = splitMessage(message);
+            switch (strings[1]) {
+                case "今日":
+                case "今天":
+                    getEventList(dateCalculate(0), false);
+                    break;
+                case "明日":
+                case "明天":
+                    getEventList(dateCalculate(+1), false);
+                    break;
+                case "昨日":
+                case "昨天":
+                    getEventList(dateCalculate(-1), false);
+                    break;
+                default:
+                    if (!checkDateFormat(strings[1])) {
+                        long qqId = groupMessageEvent.getSender().getId();
+                        groupMessageEvent.getSender().sendMessage(new At(qqId).plus("日期格式错误"));
                         break;
-                    case "明日":
-                    case "明天":
-                        getEventList(dateCalculate(+1), false);
-                        break;
-                    case "昨日":
-                    case "昨天":
-                        getEventList(dateCalculate(-1), false);
-                        break;
-                    default:
-                        getEventList(addYear(strings[1]), true);
-                        break;
-                }
+                    }
+                    getEventList(addYear(strings[1]), true);
+                    break;
+            }
+            return;
+        }
+        if (message.startsWith(helpCommand)) {
+            helpInfo();
+            return;
+        }
+        if (message.startsWith(loginCommand)) {
+            long userQqId = groupMessageEvent.getSender().getId();
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("请私聊机器人登录"));
+            return;
+        }
+        if (message.startsWith(queryUserCreditInfoCommand)) {
+            long userQqId = groupMessageEvent.getSender().getId();
+            if (!checkUserLogin(String.valueOf(userQqId))) {
+                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆，请私聊机器人登录PU校园"));
                 return;
             }
-            if (message.startsWith(helpCommand)) {
-                helpInfo();
-                return;
-            }
-            if (message.startsWith(loginCommand)) {
-                long userQqId = groupMessageEvent.getSender().getId();
-                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("请私聊机器人登录"));
-                return;
-            }
-            if (message.startsWith(queryUserCreditInfoCommand)) {
-                long userQqId = groupMessageEvent.getSender().getId();
-                if (!checkUserLogin(String.valueOf(userQqId))) {
-                    groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆，请私聊机器人登录PU校园"));
-                    return;
-                }
-                User user = new UserService().getUser(String.valueOf(userQqId));
-                String userCreditInfoMessage = new UserCreditService().userCredit(user.getOauthToken(), user.getOauthTokenSecret());
-                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(userCreditInfoMessage));
-            }
-        });
+            User user = new UserService().getUser(String.valueOf(userQqId));
+            String userCreditInfoMessage = new UserCreditService().userCredit(user.getOauthToken(), user.getOauthTokenSecret());
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(userCreditInfoMessage));
+        }
     }
 
     /**

@@ -8,11 +8,6 @@ import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-
 import static cn.zzwtsy.pu.tools.CheckUser.checkAdminQqId;
 import static cn.zzwtsy.pu.tools.CheckUser.checkUserLogin;
 import static cn.zzwtsy.pu.tools.CheckUser.checkUserQqId;
@@ -33,12 +28,6 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
-    ThreadPoolExecutor executor = new ThreadPoolExecutor(2,
-            5,
-            10,
-            TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(2),
-            new ThreadPoolExecutor.DiscardPolicy());
 
     @EventHandler
     private void onEvent(FriendMessageEvent event) {
@@ -55,20 +44,18 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     }
 
     private void run(MessageEvent messageEvent) {
-        executor.execute(() -> {
-            if (message.startsWith(loginCommand)) {
-                login(message, messageEvent);
-                return;
-            }
-            if (message.startsWith(deleteUserCommand)) {
-                deleteUser(messageEvent);
-                return;
-            }
-            if (message.startsWith(adminDeleteUserCommand) &&
-                    checkAdminQqId(messageEvent.getSender().getId())) {
-                adminDeleteUser(message, messageEvent);
-            }
-        });
+        if (message.startsWith(loginCommand)) {
+            login(message, messageEvent);
+            return;
+        }
+        if (message.startsWith(deleteUserCommand)) {
+            deleteUser(messageEvent);
+            return;
+        }
+        if (message.startsWith(adminDeleteUserCommand) &&
+                checkAdminQqId(messageEvent.getSender().getId())) {
+            adminDeleteUser(message, messageEvent);
+        }
     }
 
     /**
