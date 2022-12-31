@@ -35,7 +35,7 @@ public class UserService {
      * @return 受影响的行数: >=1 添加成功
      */
     public int addUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
-        return userDao.addUser(qqId, oauthToken, oauthTokenSecret);
+        return userDao.addUser(qqId, uid, oauthToken, oauthTokenSecret);
     }
 
     /**
@@ -57,6 +57,6 @@ public class UserService {
      * @return 受影响的行数: >=1 更新成功
      */
     public int updateUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
-        return userDao.updateUser(qqId, oauthToken, oauthTokenSecret);
+        return userDao.updateUser(qqId, uid, oauthToken, oauthTokenSecret);
     }
 }

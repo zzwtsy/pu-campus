@@ -47,11 +47,11 @@ public class UserDao {
      * @param oauthTokenSecret oauthTokenSecret
      * @return 受影响的行数: >=1 添加成功
      */
-    public int addUser(String qqId, String oauthToken, String oauthTokenSecret) {
+    public int addUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
         int status;
-        String sql = "INSERT INTO " + tableName + " (qqId,oauthToken,oauthTokenSecret) VALUES (?,?,?)";
+        String sql = "INSERT INTO " + tableName + " (qqId,uid,oauthToken,oauthTokenSecret) VALUES (?,?,?,?)";
         try {
-            status = DataBaseHelper.executeUpdate(sql, qqId, oauthToken, oauthTokenSecret);
+            status = DataBaseHelper.executeUpdate(sql, qqId, uid, oauthToken, oauthTokenSecret);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -83,11 +83,11 @@ public class UserDao {
      * @param oauthTokenSecret oauthTokenSecret
      * @return 受影响的行数: >=1 更新成功
      */
-    public int updateUser(String qqId, String oauthToken, String oauthTokenSecret) {
+    public int updateUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
         int status;
-        String sql = "UPDATE " + tableName + " SET oauthToken = ?,oauthTokenSecret = ? WHERE qqId = ?";
+        String sql = "UPDATE " + tableName + " SET uid = ?,oauthToken = ?,oauthTokenSecret = ? WHERE qqId = ?";
         try {
-            status = DataBaseHelper.executeUpdate(sql, oauthToken, oauthTokenSecret, qqId);
+            status = DataBaseHelper.executeUpdate(sql, uid, oauthToken, oauthTokenSecret, qqId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
