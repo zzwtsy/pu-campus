@@ -46,7 +46,7 @@ public class Api {
     }
 
     /**
-     * 获得待签退事件列表
+     * 获得待签退活动列表
      *
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret
@@ -60,7 +60,7 @@ public class Api {
     }
 
     /**
-     * 获得待签到事件列表
+     * 获得待签到活动列表
      *
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret
@@ -74,7 +74,7 @@ public class Api {
     }
 
     /**
-     * 根据日期获取事件列表
+     * 根据日期获取活动列表
      *
      * @param date             日期
      * @param oauthToken       oauthToken
@@ -103,7 +103,7 @@ public class Api {
     }
 
     /**
-     * 获取新事件列表
+     * 获取新活动列表
      *
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret

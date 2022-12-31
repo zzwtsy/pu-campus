@@ -27,7 +27,7 @@ public class MyRequestBody {
     }
 
     /**
-     * 根据日期获取事件列表
+     * 根据日期获取活动列表
      *
      * @param date             日期
      * @param oauthToken       oauthToken

@@ -140,7 +140,7 @@ public class Command {
     }
 
     /**
-     * 获取查询新事件列表命令
+     * 获取查询新活动列表命令
      *
      * @return {@link String}
      */
@@ -149,9 +149,9 @@ public class Command {
     }
 
     /**
-     * 设置查询新事件列表命令
+     * 设置查询新活动列表命令
      *
-     * @param queryNewEventList 查询新事件列表命令
+     * @param queryNewEventList 查询新活动列表命令
      * @return {@link Command}
      */
     public Command setQueryNewEventList(String queryNewEventList) {
@@ -160,7 +160,7 @@ public class Command {
     }
 
     /**
-     * 获取签到事件列表命令
+     * 获取签到活动列表命令
      *
      * @return {@link String}
      */
@@ -169,9 +169,9 @@ public class Command {
     }
 
     /**
-     * 设置查询签到事件列表命令
+     * 设置查询签到活动列表命令
      *
-     * @param querySignInEventList 查询签到事件列表命令
+     * @param querySignInEventList 查询签到活动列表命令
      * @return {@link Command}
      */
     public Command setQuerySignInEventList(String querySignInEventList) {
@@ -180,7 +180,7 @@ public class Command {
     }
 
     /**
-     * 获取签退事件列表命令
+     * 获取签退活动列表命令
      *
      * @return {@link String}
      */
@@ -189,9 +189,9 @@ public class Command {
     }
 
     /**
-     * 设置签退事件列表命令
+     * 设置签退活动列表命令
      *
-     * @param querySignOutEventList 查询签退事件列表命令
+     * @param querySignOutEventList 查询签退活动列表命令
      * @return {@link Command}
      */
     public Command setQuerySignOutEventList(String querySignOutEventList) {
@@ -220,7 +220,7 @@ public class Command {
     }
 
     /**
-     * 获取通过日期获取事件列表命令
+     * 获取通过日期获取活动列表命令
      *
      * @return {@link String}
      */
@@ -229,9 +229,9 @@ public class Command {
     }
 
     /**
-     * 设置通过日期获取事件列表命令
+     * 设置通过日期获取活动列表命令
      *
-     * @param getCalendarEventList 通过日期获取事件列表命令
+     * @param getCalendarEventList 通过日期获取活动列表命令
      * @return {@link Command}
      */
     public Command setGetCalendarEventList(String getCalendarEventList) {

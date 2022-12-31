@@ -25,7 +25,7 @@ public class UserCreditService {
      * @param qqId qq号
      * @return {@link String}
      */
-    public String userCredit(String qqId) {
+    public String userCredit(long qqId) {
         Api api = new Api();
         String getCreditInfoSuccess = "学分类型";
         StringBuilder stringBuilder = new StringBuilder();

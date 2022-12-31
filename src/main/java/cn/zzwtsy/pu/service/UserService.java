@@ -22,7 +22,7 @@ public class UserService {
      * @param qqId qq号
      * @return {@link User}
      */
-    public User getUser(String qqId) {
+    public User getUser(long qqId) {
         return userDao.getUserByQqId(qqId);
     }
 
@@ -34,7 +34,7 @@ public class UserService {
      * @param oauthTokenSecret oauthTokenSecret
      * @return 受影响的行数: >=1 添加成功
      */
-    public int addUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
+    public int addUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         return userDao.addUser(qqId, uid, oauthToken, oauthTokenSecret);
     }
 
@@ -44,7 +44,7 @@ public class UserService {
      * @param qqId qq号
      * @return 受影响的行数: >=1 删除成功
      */
-    public int deleteUser(String qqId) {
+    public int deleteUser(long qqId) {
         return userDao.deleteUser(qqId);
     }
 
@@ -56,7 +56,7 @@ public class UserService {
      * @param oauthTokenSecret oauthTokenSecret
      * @return 受影响的行数: >=1 更新成功
      */
-    public int updateUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
+    public int updateUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         return userDao.updateUser(qqId, uid, oauthToken, oauthTokenSecret);
     }
 }

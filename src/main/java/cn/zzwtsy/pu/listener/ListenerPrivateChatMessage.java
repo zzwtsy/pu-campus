@@ -70,7 +70,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         //补全用户账号: 用户账号加用户学校邮件后缀
         String userName = strings[1] + setting.getEmailSuffix();
         long userQqId = messageEvent.getSender().getId();
-        String getUserTokenStatus = new LoginService().getUserToken(String.valueOf(userQqId), userName, strings[2]);
+        String getUserTokenStatus = new LoginService().getUserToken(userQqId, userName, strings[2]);
         messageEvent.getSender().sendMessage(getUserTokenStatus);
     }
 
@@ -81,11 +81,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      */
     private void deleteUser(MessageEvent messageEvent) {
         long userQqId = messageEvent.getSender().getId();
-        if (!checkUserLogin(String.valueOf(userQqId))) {
+        if (!checkUserLogin(userQqId)) {
             messageEvent.getSender().sendMessage("无法删除，没有你的用户信息");
             return;
         }
-        int delUserStatus = new UserService().deleteUser(String.valueOf(userQqId));
+        int delUserStatus = new UserService().deleteUser(userQqId);
         if (delUserStatus <= 0) {
             messageEvent.getSender().sendMessage("删除用户信息失败");
         } else {
@@ -100,8 +100,8 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param messageEvent 消息事件
      */
     private void adminDeleteUser(String message, MessageEvent messageEvent) {
-        String qqId = splitMessage(message)[1];
-        if (!checkUserQqId(qqId)) {
+        long qqId = Long.parseLong(splitMessage(message)[1]);
+        if (!checkUserQqId(String.valueOf(qqId))) {
             messageEvent.getSender().sendMessage("用户『" + qqId + "』qq号错误");
             return;
         }

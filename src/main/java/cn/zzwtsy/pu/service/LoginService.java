@@ -21,7 +21,7 @@ public class LoginService {
      * @param password 用户密码
      * @return String
      */
-    public String getUserToken(String qqId, String userName, String password) {
+    public String getUserToken(long qqId, String userName, String password) {
         String getUserTokenSuccess = "success";
         ObjectMapper mapper = new ObjectMapper();
         String response;
@@ -52,7 +52,7 @@ public class LoginService {
         UserService userService = new UserService();
         if (userService.getUser(qqId) != null) {
             //用户已存在，更新用户Token
-            int updateUserStatus = userService.updateUser(String.valueOf(qqId), uid, oauthToken, oauthTokenSecret);
+            int updateUserStatus = userService.updateUser(qqId, uid, oauthToken, oauthTokenSecret);
             if (updateUserStatus <= 0) {
                 return "登录失败:更新用户Token失败";
             }

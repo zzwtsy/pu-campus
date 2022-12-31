@@ -21,7 +21,7 @@ public class UserDao {
      * @param qqId 用户qq号
      * @return {@link User}
      */
-    public User getUserByQqId(String qqId) {
+    public User getUserByQqId(long qqId) {
         User user = new User();
         String sql = "SELECT * FROM " + tableName + " WHERE qqId = ?";
         try {
@@ -47,7 +47,7 @@ public class UserDao {
      * @param oauthTokenSecret oauthTokenSecret
      * @return 受影响的行数: >=1 添加成功
      */
-    public int addUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
+    public int addUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         int status;
         String sql = "INSERT INTO " + tableName + " (qqId,uid,oauthToken,oauthTokenSecret) VALUES (?,?,?,?)";
         try {
@@ -64,7 +64,7 @@ public class UserDao {
      * @param qqId 用户qq号
      * @return 受影响的行数: >=1 删除成功
      */
-    public int deleteUser(String qqId) {
+    public int deleteUser(long qqId) {
         int deleteStatus;
         String sql = "DELETE FROM" + tableName + "WHERE qqId = ?";
         try {
@@ -83,7 +83,7 @@ public class UserDao {
      * @param oauthTokenSecret oauthTokenSecret
      * @return 受影响的行数: >=1 更新成功
      */
-    public int updateUser(String qqId, String uid, String oauthToken, String oauthTokenSecret) {
+    public int updateUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         int status;
         String sql = "UPDATE " + tableName + " SET uid = ?,oauthToken = ?,oauthTokenSecret = ? WHERE qqId = ?";
         try {

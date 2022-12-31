@@ -19,7 +19,7 @@ public class CheckUser {
      * @param qqId 用户qq号
      * @return boolean
      */
-    public static boolean checkUserLogin(String qqId) {
+    public static boolean checkUserLogin(long qqId) {
         return new UserService().getUser(qqId) != null;
     }
 

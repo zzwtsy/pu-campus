@@ -32,13 +32,13 @@ public class EventListService {
     }
 
     /**
-     * 根据日期获取事件列表
+     * 根据日期获取活动列表
      *
      * @param qqId qq号
      * @param date 日期（MM-dd）
      * @return {@link String}
      */
-    public String getCalendarEventList(String qqId, String date) {
+    public String getCalendarEventList(long qqId, String date) {
         String response;
         JsonNode jsonNode;
         user = new UserService().getUser(qqId);
@@ -73,7 +73,7 @@ public class EventListService {
      * @param qqId qq号
      * @return {@link String}
      */
-    public String getUserCanSignInEventList(String qqId) {
+    public String getUserCanSignInEventList(long qqId) {
         String response;
         JsonNode jsonNode;
         user = new UserService().getUser(qqId);
@@ -108,10 +108,10 @@ public class EventListService {
      * @param userQqId 用户qq号
      * @return {@link String}
      */
-    public String getNewEventList(String userQqId) {
+    public String getNewEventList(long userQqId) {
         String message;
-        Api api = new Api();
-        User user = new UserService().getUser(userQqId);
+        api = new Api();
+        user = new UserService().getUser(userQqId);
         String newEventList = null;
         try {
             newEventList = api.getNewEventList(user.getOauthToken(), user.getOauthTokenSecret());
@@ -129,7 +129,7 @@ public class EventListService {
      * @return {@link String}
      */
     private String newEventListContentParser(String content) {
-        ObjectMapper mapper = new ObjectMapper();
+        mapper = new ObjectMapper();
         JsonNode jsonNode;
         try {
             jsonNode = mapper.readTree(content);

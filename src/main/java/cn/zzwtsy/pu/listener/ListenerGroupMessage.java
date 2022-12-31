@@ -42,22 +42,22 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         long userQqId = groupMessageEvent.getSender().getId();
         //获取待签到列表
         if (message.startsWith(querySignInEventListCommand)) {
-            String message = new EventListService().getUserCanSignInEventList(String.valueOf(userQqId));
+            String message = new EventListService().getUserCanSignInEventList(userQqId);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
             return;
         }
         //获取待签退列表
         if (message.startsWith(querySignOutEventListCommand)) {
-            String message = new EventListService().getUserCanSignInEventList(String.valueOf(userQqId));
+            String message = new EventListService().getUserCanSignInEventList(userQqId);
             return;
         }
         //获取新活动列表
         if (message.startsWith(queryNewEventListCommand)) {
-            if (!checkUserLogin(String.valueOf(userQqId))) {
+            if (!checkUserLogin(userQqId)) {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
                 return;
             }
-            String newEventList = new EventListService().getNewEventList(String.valueOf(userQqId));
+            String newEventList = new EventListService().getNewEventList(userQqId);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(newEventList));
             return;
         }
@@ -67,22 +67,22 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             switch (strings[1]) {
                 case "今日":
                 case "今天":
-                    getEventList(dateCalculate(0), false);
+                    getEventList(dateCalculate(0), userQqId, false);
                     break;
                 case "明日":
                 case "明天":
-                    getEventList(dateCalculate(+1), false);
+                    getEventList(dateCalculate(+1), userQqId, false);
                     break;
                 case "昨日":
                 case "昨天":
-                    getEventList(dateCalculate(-1), false);
+                    getEventList(dateCalculate(-1), userQqId, false);
                     break;
                 default:
                     if (!checkDateFormat(strings[1])) {
                         groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
                         break;
                     }
-                    getEventList(addYear(strings[1]), true);
+                    getEventList(addYear(strings[1]), userQqId, true);
                     break;
             }
             return;
@@ -99,24 +99,24 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         }
         //查询学分信息
         if (message.startsWith(queryUserCreditInfoCommand)) {
-            if (!checkUserLogin(String.valueOf(userQqId))) {
+            if (!checkUserLogin(userQqId)) {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆，请私聊机器人登录PU校园"));
                 return;
             }
-            String userCreditInfoMessage = new UserCreditService().userCredit(String.valueOf(userQqId));
+            String userCreditInfoMessage = new UserCreditService().userCredit(userQqId);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(userCreditInfoMessage));
         }
     }
 
     /**
-     * 获取事件列表
+     * 获取活动列表
      *
      * @param date            日期
      * @param checkDateFormat 是否检查日期格式
+     * @param userQqId        用户qq号
      */
-    private void getEventList(String date, boolean checkDateFormat) {
-        long userQqId = groupMessageEvent.getSender().getId();
-        if (!checkUserLogin(String.valueOf(userQqId))) {
+    private void getEventList(String date, long userQqId, boolean checkDateFormat) {
+        if (!checkUserLogin(userQqId)) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
             return;
         }
@@ -124,7 +124,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
         } else {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("正在获取" + date + "活动列表"));
-            String eventList = new EventListService().getCalendarEventList(String.valueOf(userQqId), date);
+            String eventList = new EventListService().getCalendarEventList(userQqId, date);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n" + eventList));
         }
     }
