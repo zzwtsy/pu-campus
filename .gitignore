@@ -131,3 +131,4 @@ src/test/kotlin/RunTerminal.kt
 .vscode
 /debug-sandbox
 /bin
+.run
