@@ -61,18 +61,18 @@ public class UserDao {
     /**
      * 删除用户
      *
-     * @param qqId qq号
+     * @param qqId 用户qq号
      * @return 受影响的行数: >=1 删除成功
      */
-    public int delUser(String qqId) {
-        int delStatus;
+    public int deleteUser(String qqId) {
+        int deleteStatus;
         String sql = "DELETE FROM" + tableName + "WHERE qqId = ?";
         try {
-            delStatus = DataBaseHelper.executeUpdate(sql, qqId);
+            deleteStatus = DataBaseHelper.executeUpdate(sql, qqId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return delStatus;
+        return deleteStatus;
     }
 
     /**

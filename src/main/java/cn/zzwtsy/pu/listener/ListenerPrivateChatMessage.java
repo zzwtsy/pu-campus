@@ -75,7 +75,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     }
 
     /**
-     * 删除用户
+     * 用户删除自己的信息
      *
      * @param messageEvent 消息事件
      */
@@ -94,7 +94,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     }
 
     /**
-     * 管理员删除用户
+     * 管理员删除用户信息
      *
      * @param message      消息
      * @param messageEvent 消息事件

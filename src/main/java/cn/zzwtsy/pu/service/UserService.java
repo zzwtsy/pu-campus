@@ -45,7 +45,7 @@ public class UserService {
      * @return 受影响的行数: >=1 删除成功
      */
     public int deleteUser(String qqId) {
-        return userDao.delUser(qqId);
+        return userDao.deleteUser(qqId);
     }
 
     /**

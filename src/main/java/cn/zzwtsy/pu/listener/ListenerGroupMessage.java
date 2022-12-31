@@ -1,10 +1,7 @@
 package cn.zzwtsy.pu.listener;
 
-import cn.zzwtsy.pu.bean.User;
 import cn.zzwtsy.pu.service.EventListService;
-import cn.zzwtsy.pu.service.NewEventListService;
 import cn.zzwtsy.pu.service.UserCreditService;
-import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -43,25 +40,28 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
         long userQqId = groupMessageEvent.getSender().getId();
+        //获取待签到列表
         if (message.startsWith(querySignInEventListCommand)) {
-            User user;
-            user = new UserService().getUser(String.valueOf(userQqId));
-            String message = new EventListService().getUserCanSignInEventList(user.getOauthToken(), user.getOauthTokenSecret());
+            String message = new EventListService().getUserCanSignInEventList(String.valueOf(userQqId));
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
             return;
         }
+        //获取待签退列表
         if (message.startsWith(querySignOutEventListCommand)) {
+            String message = new EventListService().getUserCanSignInEventList(String.valueOf(userQqId));
             return;
         }
+        //获取新活动列表
         if (message.startsWith(queryNewEventListCommand)) {
             if (!checkUserLogin(String.valueOf(userQqId))) {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
                 return;
             }
-            String newEventList = new NewEventListService().getNewEventList(String.valueOf(userQqId));
+            String newEventList = new EventListService().getNewEventList(String.valueOf(userQqId));
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(newEventList));
             return;
         }
+        //根据日期获取活动列表
         if (message.startsWith(eventListCommand)) {
             String[] strings = splitMessage(message);
             switch (strings[1]) {
@@ -87,22 +87,23 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             }
             return;
         }
+        //获取帮助信息
         if (message.startsWith(helpCommand)) {
             helpInfo();
             return;
         }
+        //用户登录
         if (message.startsWith(loginCommand)) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("请私聊机器人登录"));
             return;
         }
+        //查询学分信息
         if (message.startsWith(queryUserCreditInfoCommand)) {
             if (!checkUserLogin(String.valueOf(userQqId))) {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆，请私聊机器人登录PU校园"));
                 return;
             }
-            User user = new UserService().getUser(String.valueOf(userQqId));
-            String userCreditInfoMessage = new UserCreditService().userCredit(user.getOauthToken(),
-                    user.getOauthTokenSecret());
+            String userCreditInfoMessage = new UserCreditService().userCredit(String.valueOf(userQqId));
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(userCreditInfoMessage));
         }
     }

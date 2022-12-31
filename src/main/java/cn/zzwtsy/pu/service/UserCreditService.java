@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
+import cn.zzwtsy.pu.bean.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,12 +19,21 @@ import java.util.HashMap;
 public class UserCreditService {
     private final HashMap<String, Double> creditTotalMap = new HashMap<>(2);
 
-    public String userCredit(String oauthToken, String oauthTokenSecret) {
+    /**
+     * 学分信息
+     *
+     * @param qqId qq号
+     * @return {@link String}
+     */
+    public String userCredit(String qqId) {
         Api api = new Api();
         String getCreditInfoSuccess = "学分类型";
         StringBuilder stringBuilder = new StringBuilder();
         String activeCreditResponse;
         String applyCreditResponse;
+        User user = new UserService().getUser(qqId);
+        String oauthToken = user.getOauthToken();
+        String oauthTokenSecret = user.getOauthTokenSecret();
         try {
             activeCreditResponse = api.getActiveCredit(oauthToken, oauthTokenSecret);
             applyCreditResponse = api.getApplyCredit(oauthToken, oauthTokenSecret);
