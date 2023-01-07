@@ -35,6 +35,7 @@ public final class PuCampus extends JavaPlugin {
     public void onEnable() {
         CheckConfigFile checkConfigFile = new CheckConfigFile();
         InitConfig initConfig = new InitConfig();
+        //检测设置配置文件是否存在
         if (!checkConfigFile.checkSettingFile()) {
             if (initConfig.initSettingConfig()) {
                 getLogger().info("Init Setting file successfully,Please modify the config file and try again");
@@ -42,6 +43,7 @@ public final class PuCampus extends JavaPlugin {
                 getLogger().error("Init Setting file failed");
             }
         }
+        //检测命令配置文件是否存在
         if (!checkConfigFile.checkCommandFile()) {
             if (initConfig.initCommandConfig()) {
                 getLogger().info("Init Command file successfully,Please modify the config file and try again");
@@ -49,7 +51,9 @@ public final class PuCampus extends JavaPlugin {
                 getLogger().error("Init Command file failed");
             }
         }
+        // 加载全部配置文件
         LoadConfig.loadAllConfig();
+        //检测数据库文件是否存在
         if (!checkConfigFile.checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");
             DataBaseHelper.registerDataBase();
@@ -58,6 +62,7 @@ public final class PuCampus extends JavaPlugin {
             getLogger().info("Registering database");
             DataBaseHelper.registerDataBase();
         }
+        //注册监听事件
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
@@ -66,6 +71,7 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //插件关闭时保存配置文件
         if (SaveConfig.saveAllConfig()) {
             PuCampus.INSTANCE.getLogger().info("Save All config success");
         } else {

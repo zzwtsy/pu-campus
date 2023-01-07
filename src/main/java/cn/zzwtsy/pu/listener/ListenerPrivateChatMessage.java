@@ -44,14 +44,18 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     }
 
     private void run(MessageEvent messageEvent) {
+        long userQqId = messageEvent.getSender().getId();
+        //登陆命令
         if (message.startsWith(loginCommand)) {
-            login(message, messageEvent);
+            login(message, messageEvent, userQqId);
             return;
         }
+        //用户删除自己信息
         if (message.startsWith(deleteUserCommand)) {
-            deleteUser(messageEvent);
+            deleteUser(messageEvent, userQqId);
             return;
         }
+        //管理员删除用户信息（可删除所有用户信息）
         if (message.startsWith(adminDeleteUserCommand) &&
                 checkAdminQqId(messageEvent.getSender().getId())) {
             adminDeleteUser(message, messageEvent);
@@ -64,12 +68,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param message      消息
      * @param messageEvent 消息事件
      */
-    private void login(String message, MessageEvent messageEvent) {
+    private void login(String message, MessageEvent messageEvent, long userQqId) {
         messageEvent.getSender().sendMessage("正在登录,请稍后...");
         String[] strings = splitMessage(message);
         //补全用户账号: 用户账号加用户学校邮件后缀
         String userName = strings[1] + setting.getEmailSuffix();
-        long userQqId = messageEvent.getSender().getId();
         String getUserTokenStatus = new LoginService().getUserToken(userQqId, userName, strings[2]);
         messageEvent.getSender().sendMessage(getUserTokenStatus);
     }
@@ -79,8 +82,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      *
      * @param messageEvent 消息事件
      */
-    private void deleteUser(MessageEvent messageEvent) {
-        long userQqId = messageEvent.getSender().getId();
+    private void deleteUser(MessageEvent messageEvent, long userQqId) {
         if (!checkUserLogin(userQqId)) {
             messageEvent.getSender().sendMessage("无法删除，没有你的用户信息");
             return;
