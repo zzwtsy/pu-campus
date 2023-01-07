@@ -1,11 +1,10 @@
 package cn.zzwtsy.pu;
 
 import cn.zzwtsy.pu.database.DataBaseHelper;
-import cn.zzwtsy.pu.init.InitDataBase;
-import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
-import cn.zzwtsy.pu.listener.ListenerGroupMessage;
-import cn.zzwtsy.pu.tools.CheckConfigFile;
 import cn.zzwtsy.pu.init.InitConfig;
+import cn.zzwtsy.pu.init.InitDataBase;
+import cn.zzwtsy.pu.listener.ListenerGroupMessage;
+import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
 import cn.zzwtsy.pu.tools.LoadConfig;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
@@ -13,6 +12,10 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
+
+import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
+import static cn.zzwtsy.pu.tools.Tools.checkDataBaseFile;
+import static cn.zzwtsy.pu.tools.Tools.checkSettingFile;
 
 
 /**
@@ -33,10 +36,9 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        CheckConfigFile checkConfigFile = new CheckConfigFile();
         InitConfig initConfig = new InitConfig();
         //检测设置配置文件是否存在
-        if (!checkConfigFile.checkSettingFile()) {
+        if (!checkSettingFile()) {
             if (initConfig.initSettingConfig()) {
                 getLogger().info("Init Setting file successfully,Please modify the config file and try again");
             } else {
@@ -44,7 +46,7 @@ public final class PuCampus extends JavaPlugin {
             }
         }
         //检测命令配置文件是否存在
-        if (!checkConfigFile.checkCommandFile()) {
+        if (!checkCommandFile()) {
             if (initConfig.initCommandConfig()) {
                 getLogger().info("Init Command file successfully,Please modify the config file and try again");
             } else {
@@ -54,7 +56,7 @@ public final class PuCampus extends JavaPlugin {
         // 加载全部配置文件
         LoadConfig.loadAllConfig();
         //检测数据库文件是否存在
-        if (!checkConfigFile.checkDataBaseFile()) {
+        if (!checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");
             DataBaseHelper.registerDataBase();
             new InitDataBase().initDataBase();

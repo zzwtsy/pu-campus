@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.bean;
 
 /**
  * 用户 Bean
+ * 数据库 user 表
  *
  * @author zzwtsy
  * @since 2022/12/23

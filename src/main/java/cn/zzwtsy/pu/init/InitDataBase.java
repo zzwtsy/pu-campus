@@ -12,7 +12,11 @@ import java.sql.SQLException;
  * @since 2022/12/24
  */
 public class InitDataBase {
+    /**
+     * 初始化数据库
+     */
     public void initDataBase() {
+        //创建 user 表
         String createUserTableSql = "CREATE TABLE \"user\" (\n" +
                 "  \"qqId\" INTEGER(12) NOT NULL,\n" +
                 "  \"uid\" TEXT NOT NULL,\n" +
@@ -25,6 +29,7 @@ public class InitDataBase {
         } catch (SQLException e) {
             PuCampus.INSTANCE.getLogger().error("创建user表失败", e);
         }
+        //创建 event 表
         String createEventTableSql = "CREATE TABLE \"event\" (\n" +
                 "  \"id\" INTEGER(7) NOT NULL,\n" +
                 "  \"title\" TEXT NOT NULL,\n" +

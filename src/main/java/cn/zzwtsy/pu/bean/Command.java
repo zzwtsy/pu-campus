@@ -8,16 +8,49 @@ package cn.zzwtsy.pu.bean;
  */
 public class Command {
     public static final Command INSTANCE = new Command();
+    /**
+     * 命令前缀
+     */
     private String commandPrefix;
+    /**
+     * 登录命令
+     */
     private String login;
+    /**
+     * 获取帮助信息
+     */
     private String help;
+    /**
+     * 删除用户信息
+     */
     private String deleteUser;
+    /**
+     * 管理员删除用户信息
+     */
     private String adminDeleteUser;
+    /**
+     * 查询新活动列表
+     */
     private String queryNewEventList;
+    /**
+     * 查询用户信用信息
+     */
     private String queryUserCreditInfo;
+    /**
+     * 查询签到活动列表
+     */
     private String querySignInEventList;
+    /**
+     * 查询签退活动列表
+     */
     private String querySignOutEventList;
+    /**
+     * 通过id查询活动详细信息
+     */
     private String queryActivityDetailById;
+    /**
+     * 根据日期获取活动列表
+     */
     private String getCalendarEventList;
 
     /**

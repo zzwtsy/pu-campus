@@ -8,12 +8,12 @@ import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
-import static cn.zzwtsy.pu.tools.CheckUser.checkAdminQqId;
-import static cn.zzwtsy.pu.tools.CheckUser.checkUserLogin;
-import static cn.zzwtsy.pu.tools.CheckUser.checkUserQqId;
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
-import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;
+import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
+import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
+import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
+import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
 /**
  * 监听私聊消息
@@ -29,6 +29,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
 
+    /**
+     * 机器人收到的好友消息的事件
+     *
+     * @param event 事件
+     */
     @EventHandler
     private void onEvent(FriendMessageEvent event) {
         this.friendMessageEvent = event;
@@ -36,6 +41,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         run(friendMessageEvent);
     }
 
+    /**
+     * 群临时会话消息
+     *
+     * @param event 事件
+     */
     @EventHandler
     private void onEvent(GroupTempMessageEvent event) {
         this.groupTempMessageEvent = event;

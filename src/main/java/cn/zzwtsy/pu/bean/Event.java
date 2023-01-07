@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.bean;
 
 /**
  * pu活动 Bean
+ * 数据库 event 表
  *
  * @author zzwtsy
  * @since 2022/12/23

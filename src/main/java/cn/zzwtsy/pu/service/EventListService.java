@@ -56,15 +56,21 @@ public class EventListService {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return e.getMessage();
         }
-        String eventMessage = jsonNode.get(getEventMessageNode).asText();
-        if (!getEventListSuccess.equals(eventMessage)) {
-            return eventMessage;
+        //获取 JSON 文件的 Message 字段内容
+        String messageContent = jsonNode.get(getEventMessageNode).asText();
+        // 判断 Message 内容是否等于 success，否则返回 Message 内容
+        if (!getEventListSuccess.equals(messageContent)) {
+            return "发生错误：" + messageContent;
         }
+        //获取 content 字段内容
         JsonNode contentNode = jsonNode.get(getEventContentNode);
+        //判断 content 内容 是否为空
         if (contentNode.isEmpty()) {
             return "暂无可报名活动";
         }
-        return eventListParse(contentNode);
+        String eventListParse = eventListParse(contentNode);
+        //判断获取的活动列表是否为空
+        return eventListParse.isEmpty() ? "暂无可报名活动" : eventListParse;
     }
 
     /**
@@ -123,7 +129,7 @@ public class EventListService {
     }
 
     /**
-     * 新活动列表内容解析
+     * 解析新活动列表内容
      *
      * @param content 活动内容
      * @return {@link String}
@@ -137,11 +143,15 @@ public class EventListService {
             PuCampus.INSTANCE.getLogger().error(e);
             return "解析活动列表时发生错误";
         }
+        //获取 JSON 文件的 Message 字段内容
         String messageContent = jsonNode.get(getEventMessageNode).asText();
+        // 判断 Message 内容是否等于 success，否则返回 Message 内容
         if (!getEventListSuccess.equals(messageContent)) {
-            return jsonNode.get(getEventMessageNode).asText();
+            return "发生错误：" + messageContent;
         }
+        //获取 content 字段内容
         JsonNode contentNode = jsonNode.get(getEventContentNode);
+        //判断 content 内容 是否为空
         if (contentNode.isEmpty()) {
             return "当前暂无新活动";
         }
@@ -149,7 +159,7 @@ public class EventListService {
     }
 
     /**
-     * 活动列表解析
+     * 解析活动列表
      *
      * @param contentNode 活动内容
      * @return {@link String}
@@ -167,7 +177,7 @@ public class EventListService {
             String eventStatus = tempNode.get("eventStatus").asText();
             //报名结束时间
             long eventRegistrationCloseTime = tempNode.get("deadline").asLong();
-            //判断活动是否仍在进行和当前时间大于报名结束时间
+            //判断活动是否仍在进行和当前时间是否大于报名结束时间，是则跳过本次循环
             if (!"4".equals(eventStatus) || nowTimestamp > eventRegistrationCloseTime) {
                 continue;
             }
@@ -195,11 +205,6 @@ public class EventListService {
                     + "============" + "\n";
             eventList.append(event);
         }
-        String eventListToString = eventList.toString();
-        //判断获取的活动列表是否为空
-        if (eventListToString.isEmpty()) {
-            return "暂无可报名活动";
-        }
-        return eventListToString;
+        return eventList.toString();
     }
 }

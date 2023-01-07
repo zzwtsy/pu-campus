@@ -7,9 +7,9 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
 
-import static cn.zzwtsy.pu.tools.CheckUser.checkUserLogin;
 import static cn.zzwtsy.pu.tools.MyStatic.command;
-import static cn.zzwtsy.pu.tools.SplitMessage.splitMessage;
+import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
+import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 import static cn.zzwtsy.pu.utils.DateUtil.addYear;
 import static cn.zzwtsy.pu.utils.DateUtil.checkDateFormat;
 import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
@@ -64,27 +64,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         //根据日期获取活动列表
         if (message.startsWith(eventListCommand)) {
             String[] strings = splitMessage(message);
-            switch (strings[1]) {
-                case "今日":
-                case "今天":
-                    getEventList(dateCalculate(0), userQqId, false);
-                    break;
-                case "明日":
-                case "明天":
-                    getEventList(dateCalculate(+1), userQqId, false);
-                    break;
-                case "昨日":
-                case "昨天":
-                    getEventList(dateCalculate(-1), userQqId, false);
-                    break;
-                default:
-                    if (!checkDateFormat(strings[1])) {
-                        groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
-                        break;
-                    }
-                    getEventList(addYear(strings[1]), userQqId, true);
-                    break;
-            }
+            getEventList(strings[1], userQqId);
             return;
         }
         //获取帮助信息
@@ -111,22 +91,39 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     /**
      * 获取活动列表
      *
-     * @param date            日期
-     * @param checkDateFormat 是否检查日期格式
-     * @param userQqId        用户qq号
+     * @param dateParameter 日期
+     * @param userQqId      用户qq号
      */
-    private void getEventList(String date, long userQqId, boolean checkDateFormat) {
+    private void getEventList(String dateParameter, long userQqId) {
+        String date;
+        switch (dateParameter) {
+            case "今日":
+            case "今天":
+                date = dateCalculate(0);
+                break;
+            case "明日":
+            case "明天":
+                date = dateCalculate(+1);
+                break;
+            case "昨日":
+            case "昨天":
+                date = dateCalculate(-1);
+                break;
+            default:
+                if (!checkDateFormat(dateParameter)) {
+                    groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
+                    return;
+                }
+                date = addYear(dateParameter);
+                break;
+        }
         if (!checkUserLogin(userQqId)) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
             return;
         }
-        if (checkDateFormat && !checkDateFormat(date)) {
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
-        } else {
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("正在获取" + date + "活动列表"));
-            String eventList = new EventListService().getCalendarEventList(userQqId, date);
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n" + eventList));
-        }
+        groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("正在获取").plus(date).plus("活动列表"));
+        String eventList = new EventListService().getCalendarEventList(userQqId, date);
+        groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n").plus(eventList));
     }
 
     /**
@@ -136,7 +133,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         String helpMessage = "用户命令：\n"
                 + command.getCommandPrefix() + command.getDeleteUser() + "：删除自己的用户信息\n"
                 + command.getCommandPrefix() + command.getGetCalendarEventList()
-                + " <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表\n"
+                + "\n <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表\n"
                 + command.getCommandPrefix() + command.getLogin() + " <用户名> <用户密码>：登录PU校园\n"
                 + command.getCommandPrefix() + command.getQuerySignInEventList() + "：查询待签到活动列表\n"
                 + command.getCommandPrefix() + command.getQuerySignOutEventList() + "：查询待签退活动列表\n"
