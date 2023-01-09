@@ -18,9 +18,9 @@ import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
  * @since 2022/12/05
  */
 public class EventListService {
-    private final String getEventListSuccess = "success";
-    private final String getEventMessageNode = "message";
-    private final String getEventContentNode = "content";
+    private final String eventListSuccessWord = "success";
+    private final String eventMessageNode = "message";
+    private final String eventContentNode = "content";
     Api api;
     User user;
     ObjectMapper mapper;
@@ -57,13 +57,13 @@ public class EventListService {
             return e.getMessage();
         }
         //获取 JSON 文件的 Message 字段内容
-        String messageContent = jsonNode.get(getEventMessageNode).asText();
+        String messageContent = jsonNode.get(eventMessageNode).asText();
         // 判断 Message 内容是否等于 success，否则返回 Message 内容
-        if (!getEventListSuccess.equals(messageContent)) {
+        if (!eventListSuccessWord.equals(messageContent)) {
             return "发生错误：" + messageContent;
         }
         //获取 content 字段内容
-        JsonNode contentNode = jsonNode.get(getEventContentNode);
+        JsonNode contentNode = jsonNode.get(eventContentNode);
         //判断 content 内容 是否为空
         if (contentNode.isEmpty()) {
             return "暂无可报名活动";
@@ -97,11 +97,11 @@ public class EventListService {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return e.getMessage();
         }
-        String eventMessage = jsonNode.get(getEventMessageNode).asText();
-        if (!getEventListSuccess.equals(eventMessage)) {
+        String eventMessage = jsonNode.get(eventMessageNode).asText();
+        if (!eventListSuccessWord.equals(eventMessage)) {
             return eventMessage;
         }
-        JsonNode contentNode = jsonNode.get(getEventContentNode);
+        JsonNode contentNode = jsonNode.get(eventContentNode);
         if (contentNode.isEmpty()) {
             return "暂无待签到活动";
         }
@@ -144,13 +144,13 @@ public class EventListService {
             return "解析活动列表时发生错误";
         }
         //获取 JSON 文件的 Message 字段内容
-        String messageContent = jsonNode.get(getEventMessageNode).asText();
+        String messageContent = jsonNode.get(eventMessageNode).asText();
         // 判断 Message 内容是否等于 success，否则返回 Message 内容
-        if (!getEventListSuccess.equals(messageContent)) {
+        if (!eventListSuccessWord.equals(messageContent)) {
             return "发生错误：" + messageContent;
         }
         //获取 content 字段内容
-        JsonNode contentNode = jsonNode.get(getEventContentNode);
+        JsonNode contentNode = jsonNode.get(eventContentNode);
         //判断 content 内容 是否为空
         if (contentNode.isEmpty()) {
             return "当前暂无新活动";

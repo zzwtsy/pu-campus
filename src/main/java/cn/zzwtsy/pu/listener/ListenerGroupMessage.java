@@ -40,18 +40,19 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
         long userQqId = groupMessageEvent.getSender().getId();
-        //获取待签到列表
+        // 获取待签到列表
         if (message.startsWith(querySignInEventListCommand)) {
             String message = new EventListService().getUserCanSignInEventList(userQqId);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
             return;
         }
-        //获取待签退列表
+        // 获取待签退列表
         if (message.startsWith(querySignOutEventListCommand)) {
             String message = new EventListService().getUserCanSignInEventList(userQqId);
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
             return;
         }
-        //获取新活动列表
+        // 获取新活动列表
         if (message.startsWith(queryNewEventListCommand)) {
             if (!checkUserLogin(userQqId)) {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
@@ -61,23 +62,23 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(newEventList));
             return;
         }
-        //根据日期获取活动列表
+        // 根据日期获取活动列表
         if (message.startsWith(eventListCommand)) {
             String[] strings = splitMessage(message);
             getEventList(strings[1], userQqId);
             return;
         }
-        //获取帮助信息
+        // 获取帮助信息
         if (message.startsWith(helpCommand)) {
             helpInfo();
             return;
         }
-        //用户登录
+        // 用户登录
         if (message.startsWith(loginCommand)) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("请私聊机器人登录"));
             return;
         }
-        //查询学分信息
+        // 查询学分信息
         if (message.startsWith(queryUserCreditInfoCommand)) {
             if (!checkUserLogin(userQqId)) {
                 groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆，请私聊机器人登录PU校园"));

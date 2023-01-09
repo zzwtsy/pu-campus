@@ -22,7 +22,7 @@ public class LoginService {
      * @return String
      */
     public String getUserToken(long qqId, String userName, String password) {
-        String getUserTokenSuccess = "success";
+        String userTokenSuccessWord = "success";
         ObjectMapper mapper = new ObjectMapper();
         String response;
         try {
@@ -40,7 +40,7 @@ public class LoginService {
         }
         JsonNode contentNode = jsonNode.get("content");
         String message = jsonNode.get("message").asText();
-        if (!getUserTokenSuccess.equals(message)) {
+        if (!userTokenSuccessWord.equals(message)) {
             return message;
         }
         String uid = contentNode.get("user_info").get("uid").asText();
