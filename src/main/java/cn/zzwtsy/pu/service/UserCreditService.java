@@ -27,7 +27,7 @@ public class UserCreditService {
      */
     public String userCredit(long qqId) {
         Api api = new Api();
-        String getCreditInfoSuccess = "学分类型";
+        String creditInfoSuccessWord = "学分类型";
         StringBuilder stringBuilder = new StringBuilder();
         String activeCreditResponse;
         String applyCreditResponse;
@@ -43,10 +43,10 @@ public class UserCreditService {
         }
         String activeCreditContentParse = contentParse(activeCreditResponse, "activeCredit");
         String applyCreditContentParse = contentParse(applyCreditResponse, "applyCredit");
-        if (!activeCreditContentParse.startsWith(getCreditInfoSuccess)) {
+        if (!activeCreditContentParse.startsWith(creditInfoSuccessWord)) {
             return activeCreditContentParse;
         }
-        if (!applyCreditContentParse.startsWith(getCreditInfoSuccess)) {
+        if (!applyCreditContentParse.startsWith(creditInfoSuccessWord)) {
             return activeCreditContentParse;
         }
         Double creditTotal = creditTotalMap.get("activeCredit") + creditTotalMap.get("applyCredit");
@@ -58,6 +58,13 @@ public class UserCreditService {
         return stringBuilder.toString();
     }
 
+    /**
+     * 内容解析
+     *
+     * @param creditResponse 解析内容
+     * @param creditType     学分类型
+     * @return {@link String}
+     */
     private String contentParse(String creditResponse, String creditType) {
         String totalNodeName = "total";
         String messageNodeName = "message";
