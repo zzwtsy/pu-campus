@@ -136,7 +136,11 @@ public class EventListService {
         String oauthToken = user.getOauthToken();
         String oauthTokenSecret = user.getOauthTokenSecret();
         try {
-            response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);
+            if (signInType) {
+                response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);
+            } else {
+                response = api.getUserCanSingOutEventList(oauthToken, oauthTokenSecret);
+            }
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error(e);
             return errorMessage;
