@@ -76,36 +76,21 @@ public class EventListService {
     /**
      * 获取待签到列表
      *
-     * @param qqId qq号
+     * @param userId qq号
      * @return {@link String}
      */
-    public String getUserCanSignInEventList(long qqId) {
-        String response;
-        JsonNode jsonNode;
-        user = new UserService().getUser(qqId);
-        String oauthToken = user.getOauthToken();
-        String oauthTokenSecret = user.getOauthTokenSecret();
-        try {
-            response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);
-        } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error(e);
-            return "获取待签到列表时发生错误";
-        }
-        try {
-            jsonNode = mapper.readTree(response);
-        } catch (JsonProcessingException e) {
-            PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
-            return e.getMessage();
-        }
-        String eventMessage = jsonNode.get(getEventMessageNode).asText();
-        if (!getEventListSuccess.equals(eventMessage)) {
-            return eventMessage;
-        }
-        JsonNode contentNode = jsonNode.get(getEventContentNode);
-        if (contentNode.isEmpty()) {
-            return "暂无待签到活动";
-        }
-        return eventListParse(contentNode);
+    public String getUserCanSignInEventList(long userId) {
+        return userCanSignInEventList(userId, true);
+    }
+
+    /**
+     * 获取待签退列表
+     *
+     * @param userId qq号
+     * @return {@link String}
+     */
+    public String getUserCanSignOutEventList(long userId) {
+        return userCanSignInEventList(userId, false);
     }
 
     /**
@@ -126,6 +111,51 @@ public class EventListService {
         }
         message = newEventListContentParser(newEventList);
         return message;
+    }
+
+    /**
+     * 用户签到活动列表
+     *
+     * @param userId     用户id
+     * @param signInType 签到类型 true：待签到，false：待签退
+     * @return {@link String}
+     */
+    private String userCanSignInEventList(long userId, boolean signInType) {
+        String response;
+        String errorMessage;
+        String emptyEventListMessage;
+        if (signInType) {
+            errorMessage = "获取待签到列表时发生错误";
+            emptyEventListMessage = "暂无待签到活动";
+        } else {
+            errorMessage = "获取待签退列表时发生错误";
+            emptyEventListMessage = "暂无待签退活动";
+        }
+        JsonNode jsonNode;
+        user = new UserService().getUser(userId);
+        String oauthToken = user.getOauthToken();
+        String oauthTokenSecret = user.getOauthTokenSecret();
+        try {
+            response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);
+        } catch (IOException e) {
+            PuCampus.INSTANCE.getLogger().error(e);
+            return errorMessage;
+        }
+        try {
+            jsonNode = mapper.readTree(response);
+        } catch (JsonProcessingException e) {
+            PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
+            return e.getMessage();
+        }
+        String eventMessage = jsonNode.get(getEventMessageNode).asText();
+        if (!getEventListSuccess.equals(eventMessage)) {
+            return eventMessage;
+        }
+        JsonNode contentNode = jsonNode.get(getEventContentNode);
+        if (contentNode.isEmpty()) {
+            return emptyEventListMessage;
+        }
+        return eventListParse(contentNode);
     }
 
     /**
