@@ -52,6 +52,27 @@ public class Command {
      * 根据日期获取活动列表
      */
     private String getCalendarEventList;
+    private String queryUserEventEndUnissuedCreditList;
+
+    /**
+     * 获取查询活动已结束未发放学分列表命令
+     *
+     * @return {@link String}
+     */
+    public String getQueryUserEventEndUnissuedCreditList() {
+        return queryUserEventEndUnissuedCreditList;
+    }
+
+    /**
+     * 设置查询活动已结束未发放学分列表命令
+     *
+     * @param queryUserEventEndUnissuedCreditList 查询活动已结束未发放学分列表命令
+     * @return {@link Command}
+     */
+    public Command setQueryUserEventEndUnissuedCreditList(String queryUserEventEndUnissuedCreditList) {
+        this.queryUserEventEndUnissuedCreditList = queryUserEventEndUnissuedCreditList;
+        return this;
+    }
 
     /**
      * 获取查询用户学分信息命令

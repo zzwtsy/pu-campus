@@ -55,7 +55,8 @@ public class InitConfig {
                 .setQuerySignInEventList("待签到活动")
                 .setQuerySignOutEventList("待签退活动")
                 .setQueryActivityDetailById("活动信息")
-                .setGetCalendarEventList("获取活动列表");
+                .setGetCalendarEventList("获取活动列表")
+                .setQueryUserEventEndUnissuedCreditList("未发放学分活动");
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, COMMAND_FILE_NAME)) {
                 PuCampus.INSTANCE.getLogger().info("Create command config successfully");

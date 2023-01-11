@@ -6,6 +6,7 @@ import cn.zzwtsy.pu.bean.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 
@@ -29,6 +30,44 @@ public class EventListService {
         api = new Api();
         user = new User();
         mapper = new ObjectMapper();
+    }
+
+    /**
+     * 获取活动已结束未发放学分列表
+     *
+     * @param userQqId 用户qq
+     * @return {@link String}
+     */
+    public String getUserEventEndUnissuedCreditList(long userQqId) {
+        String response;
+        JsonNode jsonNode;
+        ArrayNode jsonArray = mapper.createArrayNode();
+        user = new UserService().getUser(userQqId);
+        for (int i = 1; ; i++) {
+            try {
+                response = api.getUserEventEndUnissuedCreditList(user.getUid(), String.valueOf(i), user.getOauthToken(), user.getOauthTokenSecret());
+            } catch (IOException e) {
+                PuCampus.INSTANCE.getLogger().error("获取未发放学分列表失败", e);
+                return "获取未发放学分列表失败";
+            }
+            try {
+                jsonNode = mapper.readTree(response);
+                //判断 json 是否有 message 字段
+                if (jsonNode.hasNonNull(eventMessageNode)) {
+                    return jsonNode.get(eventMessageNode).asText();
+                }
+                jsonArray.addAll((ArrayNode) jsonNode);
+            } catch (JsonProcessingException e) {
+                return e.getMessage();
+            }
+            if (jsonNode.size() < 10) {
+                break;
+            }
+        }
+        if (jsonArray.size() == 0) {
+            return "暂无未发放学分活动";
+        }
+        return userEventEndUnissuedCreditListParser(jsonArray);
     }
 
     /**
@@ -160,6 +199,23 @@ public class EventListService {
             return emptyEventListMessage;
         }
         return eventListParse(contentNode);
+    }
+
+    /**
+     * 解析活动已结束未发放学分列表
+     *
+     * @param content 内容
+     * @return {@link String}
+     */
+    private String userEventEndUnissuedCreditListParser(JsonNode content) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < content.size(); i++) {
+            if (content.get(i).get("can_evaluate").asInt() != 1) {
+                continue;
+            }
+            stringBuilder.append("《").append(content.get(i).get("title").asText()).append("》").append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     /**
