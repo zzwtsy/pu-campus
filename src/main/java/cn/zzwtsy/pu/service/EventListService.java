@@ -6,6 +6,7 @@ import cn.zzwtsy.pu.bean.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 
@@ -29,6 +30,52 @@ public class EventListService {
         api = new Api();
         user = new User();
         mapper = new ObjectMapper();
+    }
+
+    /**
+     * 获取活动已结束未发放学分列表
+     *
+     * @param userQqId 用户qq
+     * @return {@link String}
+     */
+    public String getUserEventEndUnissuedCreditList(long userQqId) {
+        //一次请求10个活动信息
+        int count = 10;
+        String response;
+        JsonNode jsonNode;
+        ArrayNode jsonArray = mapper.createArrayNode();
+        //获取用户信息
+        user = new UserService().getUser(userQqId);
+        String userUid = user.getUid();
+        String oauthToken = user.getOauthToken();
+        String oauthTokenSecret = user.getOauthTokenSecret();
+        for (int i = 1; ; i++) {
+            try {
+                response = api.getUserEventEndUnissuedCreditList(userUid, String.valueOf(count), String.valueOf(i), oauthToken, oauthTokenSecret);
+            } catch (IOException e) {
+                PuCampus.INSTANCE.getLogger().error("获取未发放学分列表失败", e);
+                return "获取未发放学分列表失败";
+            }
+            try {
+                jsonNode = mapper.readTree(response);
+                //判断 json 是否有 message 字段
+                if (jsonNode.hasNonNull(eventMessageNode)) {
+                    return jsonNode.get(eventMessageNode).asText();
+                }
+                //合并活动列表
+                jsonArray.addAll((ArrayNode) jsonNode);
+            } catch (JsonProcessingException e) {
+                return e.getMessage();
+            }
+            //判断当前页面是否为最后一页
+            if (jsonNode.size() < count) {
+                break;
+            }
+        }
+        if (jsonArray.size() == 0) {
+            return "暂无未发放学分活动";
+        }
+        return userEventEndUnissuedCreditListParser(jsonArray);
     }
 
     /**
@@ -136,7 +183,11 @@ public class EventListService {
         String oauthToken = user.getOauthToken();
         String oauthTokenSecret = user.getOauthTokenSecret();
         try {
-            response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);
+            if (signInType) {
+                response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);
+            } else {
+                response = api.getUserCanSingOutEventList(oauthToken, oauthTokenSecret);
+            }
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error(e);
             return errorMessage;
@@ -156,6 +207,27 @@ public class EventListService {
             return emptyEventListMessage;
         }
         return eventListParse(contentNode);
+    }
+
+    /**
+     * 解析活动已结束未发放学分列表
+     *
+     * @param content 内容
+     * @return {@link String}
+     */
+    private String userEventEndUnissuedCreditListParser(JsonNode content) {
+        StringBuilder stringBuilder = new StringBuilder();
+        int size = content.size();
+        for (int i = 0; i < size; i++) {
+            //活动已结束未发放学分活动的 can_evaluate 值为 1
+            if (content.get(i).get("can_evaluate").asInt() != 1) {
+                continue;
+            }
+            stringBuilder.append("《").append(content.get(i).get("title").asText()).append("》").append("\n");
+        }
+        String message = stringBuilder.toString();
+        //判断是否存在未发放学分活动
+        return message.isEmpty() ? "暂无未发放学分活动" : message;
     }
 
     /**

@@ -77,14 +77,16 @@ public class MyRequestBody {
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret
      * @param userId           用户id
-     * @param status           3: 待签退列表 4: 待签到列表
+     * @param status           0: 所有已参加活动 3: 待签退列表 4: 待签到列表
      * @param count            活动个数
+     * @param page             页面
      * @return {@link RequestBody}
      */
-    public static RequestBody myEventListBody(String userId, String status, String count, String oauthToken, String oauthTokenSecret) {
+    public static RequestBody myEventListBody(String userId, String status, String count, String page, String oauthToken, String oauthTokenSecret) {
         return new FormBody.Builder()
                 .add("id", userId)
                 .add("count", count)
+                .add("page", page)
                 .add("status", status)
                 .add("action", "join")
                 .add("oauth_token", oauthToken)

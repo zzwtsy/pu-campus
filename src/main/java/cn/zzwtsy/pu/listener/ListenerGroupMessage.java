@@ -28,6 +28,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private final String queryNewEventListCommand = command.getCommandPrefix() + command.getQueryNewEventList();
     private final String querySignInEventListCommand = command.getCommandPrefix() + command.getQuerySignInEventList();
     private final String querySignOutEventListCommand = command.getCommandPrefix() + command.getQuerySignOutEventList();
+    private final String queryUserEventEndUnissuedCreditListCommand = command.getCommandPrefix() + command.getQueryUserEventEndUnissuedCreditList();
     String message;
     GroupMessageEvent groupMessageEvent;
 
@@ -40,16 +41,10 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
         long userQqId = groupMessageEvent.getSender().getId();
-        //获取待签到列表
-        if (message.startsWith(querySignInEventListCommand)) {
-            String message = new EventListService().getUserCanSignInEventList(userQqId);
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
-            return;
-        }
-        //获取待签退列表
-        if (message.startsWith(querySignOutEventListCommand)) {
-            String message = new EventListService().getUserCanSignOutEventList(userQqId);
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
+        //根据日期获取活动列表
+        if (message.startsWith(eventListCommand)) {
+            String[] strings = splitMessage(message);
+            getEventList(strings[1], userQqId);
             return;
         }
         //获取新活动列表
@@ -62,10 +57,10 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(newEventList));
             return;
         }
-        //根据日期获取活动列表
-        if (message.startsWith(eventListCommand)) {
-            String[] strings = splitMessage(message);
-            getEventList(strings[1], userQqId);
+        //获取活动已结束未发放学分列表
+        if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
+            String message = new EventListService().getUserEventEndUnissuedCreditList(userQqId);
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
             return;
         }
         //获取帮助信息
@@ -86,6 +81,18 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             }
             String userCreditInfoMessage = new UserCreditService().userCredit(userQqId);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus(userCreditInfoMessage));
+            return;
+        }
+        //获取待签到列表
+        if (message.startsWith(querySignInEventListCommand)) {
+            String message = new EventListService().getUserCanSignInEventList(userQqId);
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
+            return;
+        }
+        //获取待签退列表
+        if (message.startsWith(querySignOutEventListCommand)) {
+            String message = new EventListService().getUserCanSignOutEventList(userQqId);
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n").plus(message));
         }
     }
 

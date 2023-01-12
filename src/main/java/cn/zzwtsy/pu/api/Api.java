@@ -7,6 +7,8 @@ import cn.zzwtsy.pu.utils.HttpHelper;
 import java.io.IOException;
 
 /**
+ * pu 校园 Api
+ *
  * @author zzwtsy
  * @since 2022/11/28
  */
@@ -14,35 +16,21 @@ public class Api {
     private final String HOST = "https://pocketuni.net";
 
     /**
-     * 获取待签退列表
+     * 活动已结束未发放学分列表
      *
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret
      * @param userId           用户id
      * @param count            活动个数
+     * @param page             页面
      * @return {@link String}
+     * @throws IOException ioexception
      */
-    public String getMySingOutEventList(String userId, String count, String oauthToken, String oauthTokenSecret)
+    public String getUserEventEndUnissuedCreditList(String userId, String count, String page, String oauthToken, String oauthTokenSecret)
             throws IOException {
         String myEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myEventList";
         return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(),
-                MyRequestBody.myEventListBody(userId, "3", count, oauthToken, oauthTokenSecret));
-    }
-
-    /**
-     * 获取待签到列表
-     *
-     * @param oauthToken       oauthToken
-     * @param oauthTokenSecret oauthTokenSecret
-     * @param userId           用户id
-     * @param count            活动个数
-     * @return {@link String}
-     */
-    public String getUserSingInEventList(String userId, String count, String oauthToken, String oauthTokenSecret)
-            throws IOException {
-        String myEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myEventList";
-        return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(),
-                MyRequestBody.myEventListBody(userId, "4", count, oauthToken, oauthTokenSecret));
+                MyRequestBody.myEventListBody(userId, "0", count, page, oauthToken, oauthTokenSecret));
     }
 
     /**
