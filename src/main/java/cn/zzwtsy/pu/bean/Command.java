@@ -53,6 +53,48 @@ public class Command {
      */
     private String getCalendarEventList;
     private String queryUserEventEndUnissuedCreditList;
+    private String addPublicToken;
+    private String timedTask;
+
+    /**
+     * 获取定时任务命令
+     *
+     * @return {@link String}
+     */
+    public String getTimedTask() {
+        return timedTask;
+    }
+
+    /**
+     * 设置定时任务命令
+     *
+     * @param timedTask 定时任务命令
+     * @return {@link Command}
+     */
+    public Command setTimedTask(String timedTask) {
+        this.timedTask = timedTask;
+        return this;
+    }
+
+    /**
+     * 获取添加公共Token命令
+     *
+     * @return {@link String}
+     */
+    public String getAddPublicToken() {
+        return addPublicToken;
+    }
+
+    /**
+     * 设置添加公共Token命令
+     *
+     * @param addPublicToken 添加公共Token命令
+     * @return {@link Command}
+     */
+    public Command setAddPublicToken(String addPublicToken) {
+        this.addPublicToken = addPublicToken;
+        return this;
+    }
 
     /**
      * 获取查询活动已结束未发放学分列表命令

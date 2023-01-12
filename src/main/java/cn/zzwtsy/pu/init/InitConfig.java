@@ -29,6 +29,8 @@ public class InitConfig {
         PuCampus.INSTANCE.getLogger().info("Init Setting Config");
         Setting.INSTANCE.setAdminId(0)
                 .setGroupId(0)
+                .setBotId(0)
+                .setTimedTaskTime("0")
                 .setEmailSuffix("");
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, SETTING_FILE_NAME)) {
@@ -48,6 +50,8 @@ public class InitConfig {
         Command.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
                 .setHelp("帮助信息")
+                .setTimedTask("定时任务")
+                .setAddPublicToken("添加tk")
                 .setDeleteUser("删除我的信息")
                 .setAdminDeleteUser("删除用户")
                 .setQueryNewEventList("新活动列表")

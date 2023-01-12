@@ -3,6 +3,9 @@ package cn.zzwtsy.pu.tools;
 import cn.zzwtsy.pu.service.UserService;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.tools.DataBaseStatic.DB_FILE_FULL_PATH;
@@ -11,6 +14,7 @@ import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
+import static java.lang.Math.abs;
 
 /**
  * 拆分消息
@@ -19,6 +23,17 @@ import static cn.zzwtsy.pu.tools.MyStatic.setting;
  * @since 2022/12/24
  */
 public class Tools {
+
+    /**
+     * 检查时间
+     *
+     * @param time 时间
+     * @return boolean
+     */
+    public static boolean checkTime(String time){
+        String timeFormat = "^(?:[01]\\d|2[0-3]):[0-5]\\d$";
+        return Pattern.matches(timeFormat, time);
+    }
     /**
      * 以空格拆分消息
      *
@@ -101,6 +116,26 @@ public class Tools {
             return true;
         } else {
             return new File(DB_FILE_PATH).mkdirs();
+        }
+    }
+
+    /**
+     * 计算定时任务延迟时间
+     *
+     * @return long
+     * @throws ParseException 解析异常
+     */
+    public static long calculateScheduledDelayTime() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        long timedTaskTime = sdf.parse(setting.getTimedTaskTime()).getTime();
+        long nowTime = new Date().getTime();
+        long delayTime = (timedTaskTime - nowTime) / 1000L;
+        if (delayTime > 0) {
+            return delayTime;
+        } else if (delayTime == 0) {
+            return 0;
+        } else {
+            return 86400 - abs(delayTime);
         }
     }
 }

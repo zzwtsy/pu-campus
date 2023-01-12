@@ -1,7 +1,9 @@
 package cn.zzwtsy.pu.listener;
 
 import cn.zzwtsy.pu.service.LoginService;
+import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.service.UserService;
+import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
@@ -11,6 +13,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
 import static cn.zzwtsy.pu.tools.MyStatic.command;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
+import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
@@ -22,9 +25,11 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
+    private static final String addPublicToken = command.getCommandPrefix() + command.getAddPublicToken();
     private final String loginCommand = command.getCommandPrefix() + command.getLogin();
     private final String deleteUserCommand = command.getCommandPrefix() + command.getDeleteUser();
     private final String adminDeleteUserCommand = command.getCommandPrefix() + command.getAdminDeleteUser();
+    private final String timedTaskCommand = command.getCommandPrefix() + command.getTimedTask();
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
@@ -38,6 +43,44 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private void onEvent(FriendMessageEvent event) {
         this.friendMessageEvent = event;
         message = friendMessageEvent.getMessage().contentToString();
+        long userQqId = friendMessageEvent.getSender().getId();
+        if (checkAdminQqId(userQqId)) {
+            friendMessageEvent.getSender().sendMessage("你没有此命令权限");
+        } else {
+            //管理员删除用户信息（可删除所有用户信息）
+            if (message.startsWith(adminDeleteUserCommand)) {
+                adminDeleteUser(message, friendMessageEvent);
+                return;
+            }
+            //添加公共Token
+            if (message.startsWith(addPublicToken)) {
+                login(message, friendMessageEvent, 0);
+                return;
+            }
+            //定时任务
+            if (message.startsWith(timedTaskCommand)) {
+                String[] strings = splitMessage(message);
+                TimedTaskService timedTaskService = new TimedTaskService();
+                switch (strings[1]) {
+                    case "关闭":
+                    case "0":
+                        setting.setTimedTaskTime("0");
+                        SaveConfig.saveSettingConfig(setting);
+                        timedTaskService.stop();
+                        break;
+                    default:
+                        if (checkTime(strings[1])) {
+                            friendMessageEvent.getSender().sendMessage("时间格式错误");
+                            return;
+                        }
+                        setting.setTimedTaskTime(strings[1]);
+                        SaveConfig.saveSettingConfig(setting);
+                        timedTaskService.start();
+                        break;
+                }
+                return;
+            }
+        }
         run(friendMessageEvent);
     }
 
@@ -63,12 +106,6 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         //用户删除自己信息
         if (message.startsWith(deleteUserCommand)) {
             deleteUser(messageEvent, userQqId);
-            return;
-        }
-        //管理员删除用户信息（可删除所有用户信息）
-        if (message.startsWith(adminDeleteUserCommand) &&
-                checkAdminQqId(messageEvent.getSender().getId())) {
-            adminDeleteUser(message, messageEvent);
         }
     }
 

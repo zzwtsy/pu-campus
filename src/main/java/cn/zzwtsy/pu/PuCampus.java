@@ -5,6 +5,7 @@ import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.init.InitDataBase;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
+import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.tools.LoadConfig;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
@@ -13,6 +14,7 @@ import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 
+import static cn.zzwtsy.pu.tools.MyStatic.setting;
 import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
 import static cn.zzwtsy.pu.tools.Tools.checkDataBaseFile;
 import static cn.zzwtsy.pu.tools.Tools.checkSettingFile;
@@ -52,6 +54,7 @@ public final class PuCampus extends JavaPlugin {
             } else {
                 getLogger().error("Init Command file failed");
             }
+            return;
         }
         // 加载全部配置文件
         LoadConfig.loadAllConfig();
@@ -68,6 +71,10 @@ public final class PuCampus extends JavaPlugin {
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
+        //启动定时任务
+        if (!setting.getTimedTaskTime().equals("0")) {
+            new TimedTaskService().start();
+        }
         getLogger().info("pu-campus Plugin loaded!");
     }
 

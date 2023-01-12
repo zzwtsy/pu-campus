@@ -41,6 +41,10 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
         long userQqId = groupMessageEvent.getSender().getId();
+        if (!checkUserLogin(userQqId)) {
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
+            return;
+        }
         //根据日期获取活动列表
         if (message.startsWith(eventListCommand)) {
             String[] strings = splitMessage(message);
@@ -49,10 +53,6 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         }
         //获取新活动列表
         if (message.startsWith(queryNewEventListCommand)) {
-            if (!checkUserLogin(userQqId)) {
-                groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
-                return;
-            }
             String newEventList = new EventListService().getNewEventList(userQqId);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(newEventList));
             return;

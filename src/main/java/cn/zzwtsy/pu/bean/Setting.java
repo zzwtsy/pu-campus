@@ -10,7 +10,38 @@ public class Setting {
     public static final Setting INSTANCE = new Setting();
     private long groupId;
     private long adminId;
+    private long botId;
+    private String timedTaskTime;
     private String emailSuffix;
+
+    public String getTimedTaskTime() {
+        return timedTaskTime;
+    }
+
+    public Setting setTimedTaskTime(String timedTaskTime) {
+        this.timedTaskTime = timedTaskTime;
+        return this;
+    }
+
+    /**
+     * 获取机器人qq号
+     *
+     * @return long
+     */
+    public long getBotId() {
+        return botId;
+    }
+
+    /**
+     * 设置机器人qq号
+     *
+     * @param botId 机器人qq号
+     * @return {@link Setting}
+     */
+    public Setting setBotId(long botId) {
+        this.botId = botId;
+        return this;
+    }
 
     /**
      * 获得电子邮件后缀
