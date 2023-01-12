@@ -50,6 +50,17 @@ public class DateUtil {
     }
 
     /**
+     * 补全日期
+     *
+     * @param date 日期 (yyyy-MM-dd HH:mm:ss)
+     * @return {@link String}
+     */
+    public static String complementaryDate(String date) {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + " " + date + ":00";
+    }
+
+    /**
      * 检查日期格式
      *
      * @param date 日期

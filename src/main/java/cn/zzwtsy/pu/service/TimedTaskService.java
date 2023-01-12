@@ -29,8 +29,9 @@ public class TimedTaskService {
      */
     public void start() {
         try {
-            scheduler.scheduleAtFixedRate(new ScheduledTask(), calculateScheduledDelayTime(), 86400, TimeUnit.SECONDS);
-            PuCampus.INSTANCE.getLogger().info("已启动定时任务");
+            long delayTime = calculateScheduledDelayTime();
+            scheduler.scheduleAtFixedRate(new ScheduledTask(), delayTime, 86400, TimeUnit.SECONDS);
+            PuCampus.INSTANCE.getLogger().info("已启动定时任务，延时" + delayTime / 60 + "分钟后开始发送消息");
         } catch (ParseException e) {
             PuCampus.INSTANCE.getLogger().error("启动定时任务失败", e);
         }

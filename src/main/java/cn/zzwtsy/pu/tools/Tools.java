@@ -5,7 +5,6 @@ import cn.zzwtsy.pu.service.UserService;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.tools.DataBaseStatic.DB_FILE_FULL_PATH;
@@ -14,6 +13,7 @@ import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.setting;
+import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
 import static java.lang.Math.abs;
 
 /**
@@ -30,10 +30,11 @@ public class Tools {
      * @param time 时间
      * @return boolean
      */
-    public static boolean checkTime(String time){
+    public static boolean checkTime(String time) {
         String timeFormat = "^(?:[01]\\d|2[0-3]):[0-5]\\d$";
         return Pattern.matches(timeFormat, time);
     }
+
     /**
      * 以空格拆分消息
      *
@@ -126,9 +127,10 @@ public class Tools {
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        long timedTaskTime = sdf.parse(setting.getTimedTaskTime()).getTime();
-        long nowTime = new Date().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String addDate = complementaryDate(setting.getTimedTaskTime());
+        long timedTaskTime = sdf.parse(addDate).getTime();
+        long nowTime = System.currentTimeMillis();
         long delayTime = (timedTaskTime - nowTime) / 1000L;
         if (delayTime > 0) {
             return delayTime;
