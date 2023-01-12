@@ -38,26 +38,6 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        InitConfig initConfig = new InitConfig();
-        //检测设置配置文件是否存在
-        if (!checkSettingFile()) {
-            if (initConfig.initSettingConfig()) {
-                getLogger().info("Init Setting file successfully,Please modify the config file and try again");
-            } else {
-                getLogger().error("Init Setting file failed");
-            }
-        }
-        //检测命令配置文件是否存在
-        if (!checkCommandFile()) {
-            if (initConfig.initCommandConfig()) {
-                getLogger().info("Init Command file successfully,Please modify the config file and try again");
-            } else {
-                getLogger().error("Init Command file failed");
-            }
-            return;
-        }
-        // 加载全部配置文件
-        LoadConfig.loadAllConfig();
         //检测数据库文件是否存在
         if (!checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");
@@ -67,12 +47,32 @@ public final class PuCampus extends JavaPlugin {
             getLogger().info("Registering database");
             DataBaseHelper.registerDataBase();
         }
+        InitConfig initConfig = new InitConfig();
+        //检测命令配置文件是否存在
+        if (!checkCommandFile()) {
+            if (initConfig.initCommandConfig()) {
+                getLogger().info("Init Command file successfully,Please modify the config file and try again");
+            } else {
+                getLogger().error("Init Command file failed");
+            }
+        }
+        //检测设置配置文件是否存在
+        if (!checkSettingFile()) {
+            if (initConfig.initSettingConfig()) {
+                getLogger().error("初始化设置文件成功，请修改配置文件后重启插件");
+                getLogger().error("Init Setting file successfully,Please modify the config file and try again");
+            } else {
+                getLogger().error("Init Setting file failed");
+            }
+        }
+        // 加载全部配置文件
+        LoadConfig.loadAllConfig();
         //注册监听事件
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
         //启动定时任务
-        if (!setting.getTimedTaskTime().equals("0")) {
+        if (!"0".equals(setting.getTimedTaskTime())) {
             new TimedTaskService().start();
         }
         getLogger().info("pu-campus Plugin loaded!");
