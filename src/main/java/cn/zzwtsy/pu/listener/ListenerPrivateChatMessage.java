@@ -71,7 +71,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
                     default:
                         if (checkTime(strings[1])) {
                             friendMessageEvent.getSender().sendMessage("时间格式错误");
-                            return;
+                            break;
                         }
                         setting.setTimedTaskTime(strings[1]);
                         SaveConfig.saveSettingConfig(setting);
