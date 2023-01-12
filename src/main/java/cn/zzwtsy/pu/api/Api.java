@@ -21,13 +21,16 @@ public class Api {
      * @param oauthToken       oauthToken
      * @param oauthTokenSecret oauthTokenSecret
      * @param userId           用户id
+     * @param count            活动个数
+     * @param page             页面
      * @return {@link String}
+     * @throws IOException ioexception
      */
-    public String getUserEventEndUnissuedCreditList(String userId, String page, String oauthToken, String oauthTokenSecret)
+    public String getUserEventEndUnissuedCreditList(String userId, String count, String page, String oauthToken, String oauthTokenSecret)
             throws IOException {
         String myEventListUrl = HOST + "/index.php?app=api&mod=Event&act=myEventList";
         return HttpHelper.sendPost(myEventListUrl, MyHeaders.baseHeaders(),
-                MyRequestBody.myEventListBody(userId, "0", "10", page, oauthToken, oauthTokenSecret));
+                MyRequestBody.myEventListBody(userId, "0", count, page, oauthToken, oauthTokenSecret));
     }
 
     /**

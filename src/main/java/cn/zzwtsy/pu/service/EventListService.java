@@ -39,13 +39,19 @@ public class EventListService {
      * @return {@link String}
      */
     public String getUserEventEndUnissuedCreditList(long userQqId) {
+        //一次请求10个活动信息
+        int count = 10;
         String response;
         JsonNode jsonNode;
         ArrayNode jsonArray = mapper.createArrayNode();
+        //获取用户信息
         user = new UserService().getUser(userQqId);
+        String userUid = user.getUid();
+        String oauthToken = user.getOauthToken();
+        String oauthTokenSecret = user.getOauthTokenSecret();
         for (int i = 1; ; i++) {
             try {
-                response = api.getUserEventEndUnissuedCreditList(user.getUid(), String.valueOf(i), user.getOauthToken(), user.getOauthTokenSecret());
+                response = api.getUserEventEndUnissuedCreditList(userUid, String.valueOf(count), String.valueOf(i), oauthToken, oauthTokenSecret);
             } catch (IOException e) {
                 PuCampus.INSTANCE.getLogger().error("获取未发放学分列表失败", e);
                 return "获取未发放学分列表失败";
@@ -56,11 +62,13 @@ public class EventListService {
                 if (jsonNode.hasNonNull(eventMessageNode)) {
                     return jsonNode.get(eventMessageNode).asText();
                 }
+                //合并活动列表
                 jsonArray.addAll((ArrayNode) jsonNode);
             } catch (JsonProcessingException e) {
                 return e.getMessage();
             }
-            if (jsonNode.size() < 10) {
+            //判断当前页面是否为最后一页
+            if (jsonNode.size() < count) {
                 break;
             }
         }
@@ -209,13 +217,17 @@ public class EventListService {
      */
     private String userEventEndUnissuedCreditListParser(JsonNode content) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < content.size(); i++) {
+        int size = content.size();
+        for (int i = 0; i < size; i++) {
+            //活动已结束未发放学分活动的 can_evaluate 值为 1
             if (content.get(i).get("can_evaluate").asInt() != 1) {
                 continue;
             }
             stringBuilder.append("《").append(content.get(i).get("title").asText()).append("》").append("\n");
         }
-        return stringBuilder.toString();
+        String message = stringBuilder.toString();
+        //判断是否存在未发放学分活动
+        return message.isEmpty() ? "暂无未发放学分活动" : message;
     }
 
     /**

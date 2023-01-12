@@ -120,12 +120,7 @@ public class DataBaseHelper {
             pstmt.setObject(i + 1, object[i]);
         }
         try {
-            autoCommit(false);
             executeStatus = pstmt.executeUpdate();
-            commit();
-        } catch (SQLException e) {
-            rollback();
-            e.printStackTrace();
         } finally {
             close();
         }
@@ -213,27 +208,34 @@ public class DataBaseHelper {
      * 自动提交事物
      *
      * @param b true or false
-     * @throws SQLException sqlexception
      */
-    private static void autoCommit(boolean b) throws SQLException {
-        conn.setAutoCommit(b);
+    public static void autoCommit(boolean b) {
+        try {
+            conn.setAutoCommit(b);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * 提交事物
-     *
-     * @throws SQLException sqlexception
      */
-    private static void commit() throws SQLException {
-        conn.commit();
+    public static void commit() {
+        try {
+            conn.commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * 事务回滚
-     *
-     * @throws SQLException sqlexception异常
      */
-    private static void rollback() throws SQLException {
-        conn.rollback();
+    public static void rollback() {
+        try {
+            conn.rollback();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
