@@ -30,25 +30,29 @@ public class ScheduledTask implements Runnable {
 
     @Override
     public void run() {
+        Bot bot = Bot.getInstance(setting.getBotId());
+        Friend botFriend = bot.getFriend(setting.getAdminId());
+        if (botFriend == null) {
+            PuCampus.INSTANCE.getLogger().error("以管理员 QQ 号码获取机器人好友对象失败");
+            return;
+        }
         //判断公共token是否存在，不存在则使用管理员token
         if (!checkUserLogin(0)) {
             user = new UserService().getUser(setting.getAdminId());
+            if (user == null) {
+                botFriend.sendMessage("请添加公共 pu 账号或管理员登录 pu 校园，以启用定时推送");
+                return;
+            }
         } else {
             user = new UserService().getUser(0);
         }
-        Bot bot = Bot.getInstance(setting.getBotId());
         Group group = bot.getGroup(setting.getGroupId());
         if (group != null) {
             String newEventList = new EventListService().getNewEventList(setting.getAdminId());
-            group.sendMessage(AtAll.INSTANCE + "\n" + newEventList);
+            group.sendMessage(AtAll.INSTANCE.plus("\n").plus(newEventList));
         } else {
             PuCampus.INSTANCE.getLogger().error("获取qq群失败，请检查配置文件中的qq群号");
-            Friend botFriend = bot.getFriend(setting.getAdminId());
-            if (botFriend != null) {
-                botFriend.sendMessage("发送定时信息失败：获取qq群失败，请检查配置文件中的qq群号");
-            } else {
-                PuCampus.INSTANCE.getLogger().error("以管理员 QQ 号码获取机器人好友对象失败");
-            }
+            botFriend.sendMessage("发送定时信息失败：获取qq群失败，请检查配置文件中的qq群号");
         }
     }
 }
