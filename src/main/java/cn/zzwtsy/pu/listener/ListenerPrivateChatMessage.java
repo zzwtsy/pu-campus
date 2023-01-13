@@ -43,44 +43,6 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private void onEvent(FriendMessageEvent event) {
         this.friendMessageEvent = event;
         message = friendMessageEvent.getMessage().contentToString();
-        long userQqId = friendMessageEvent.getSender().getId();
-        if (checkAdminQqId(userQqId)) {
-            friendMessageEvent.getSender().sendMessage("你没有此命令权限");
-        } else {
-            //管理员删除用户信息（可删除所有用户信息）
-            if (message.startsWith(adminDeleteUserCommand)) {
-                adminDeleteUser(message, friendMessageEvent);
-                return;
-            }
-            //添加公共Token
-            if (message.startsWith(addPublicToken)) {
-                login(message, friendMessageEvent, 0);
-                return;
-            }
-            //定时任务
-            if (message.startsWith(timedTaskCommand)) {
-                String[] strings = splitMessage(message);
-                TimedTaskService timedTaskService = new TimedTaskService();
-                switch (strings[1]) {
-                    case "关闭":
-                    case "0":
-                        setting.setTimedTaskTime("0");
-                        SaveConfig.saveSettingConfig(setting);
-                        timedTaskService.stop();
-                        break;
-                    default:
-                        if (checkTime(strings[1])) {
-                            friendMessageEvent.getSender().sendMessage("时间格式错误");
-                            break;
-                        }
-                        setting.setTimedTaskTime(strings[1]);
-                        SaveConfig.saveSettingConfig(setting);
-                        timedTaskService.start();
-                        break;
-                }
-                return;
-            }
-        }
         run(friendMessageEvent);
     }
 
@@ -106,6 +68,43 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         //用户删除自己信息
         if (message.startsWith(deleteUserCommand)) {
             deleteUser(messageEvent, userQqId);
+            return;
+        }
+        if (checkAdminQqId(userQqId)) {
+            messageEvent.getSender().sendMessage("你没有此命令权限");
+        } else {
+            //管理员删除用户信息（可删除所有用户信息）
+            if (message.startsWith(adminDeleteUserCommand)) {
+                adminDeleteUser(message, messageEvent);
+                return;
+            }
+            //添加公共Token
+            if (message.startsWith(addPublicToken)) {
+                login(message, messageEvent, 0);
+                return;
+            }
+            //定时任务
+            if (message.startsWith(timedTaskCommand)) {
+                String[] strings = splitMessage(message);
+                TimedTaskService timedTaskService = new TimedTaskService();
+                switch (strings[1]) {
+                    case "关闭":
+                    case "0":
+                        setting.setTimedTaskTime("0");
+                        SaveConfig.saveSettingConfig(setting);
+                        timedTaskService.stop();
+                        break;
+                    default:
+                        if (checkTime(strings[1])) {
+                            messageEvent.getSender().sendMessage("时间格式错误");
+                            break;
+                        }
+                        setting.setTimedTaskTime(strings[1]);
+                        SaveConfig.saveSettingConfig(setting);
+                        timedTaskService.start();
+                        break;
+                }
+            }
         }
     }
 

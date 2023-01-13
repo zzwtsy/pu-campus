@@ -14,10 +14,21 @@ public class Setting {
     private String timedTaskTime;
     private String emailSuffix;
 
+    /**
+     * 获取定时任务时间
+     *
+     * @return {@link String}
+     */
     public String getTimedTaskTime() {
         return timedTaskTime;
     }
 
+    /**
+     * 设置定时任务时间
+     *
+     * @param timedTaskTime 定时任务时间
+     * @return {@link Setting}
+     */
     public Setting setTimedTaskTime(String timedTaskTime) {
         this.timedTaskTime = timedTaskTime;
         return this;
