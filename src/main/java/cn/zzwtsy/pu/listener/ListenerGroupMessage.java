@@ -65,7 +65,8 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         }
         //获取帮助信息
         if (message.startsWith(helpCommand)) {
-            helpInfo();
+            // TODO: 发送帮助信息图片
+            groupMessageEvent.getGroup().sendMessage("");
             return;
         }
         //用户登录
@@ -132,23 +133,5 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("正在获取").plus(date).plus("活动列表"));
         String eventList = new EventListService().getCalendarEventList(userQqId, date);
         groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n").plus(eventList));
-    }
-
-    /**
-     * 帮助信息
-     */
-    private void helpInfo() {
-        String helpMessage = "用户命令：\n"
-                + command.getCommandPrefix() + command.getDeleteUser() + "：删除自己的用户信息\n"
-                + command.getCommandPrefix() + command.getGetCalendarEventList()
-                + "\n <日期(12-12)|今日|今天|明日|明天|昨日|昨天>：获取活动列表\n"
-                + command.getCommandPrefix() + command.getLogin() + " <用户名> <用户密码>：登录PU校园\n"
-                + command.getCommandPrefix() + command.getQuerySignInEventList() + "：查询待签到活动列表\n"
-                + command.getCommandPrefix() + command.getQuerySignOutEventList() + "：查询待签退活动列表\n"
-                + command.getCommandPrefix() + command.getQueryActivityDetailById() + "：查询活动详细信息\n"
-                + command.getCommandPrefix() + command.getQueryNewEventList() + "获取新活动列表\n"
-                + command.getCommandPrefix() + command.getQueryUserCreditInfo() + "获取个人学分信息\n"
-                + command.getCommandPrefix() + command.getHelp() + "：获取帮助信息\n";
-        groupMessageEvent.getGroup().sendMessage(helpMessage);
     }
 }

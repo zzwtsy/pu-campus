@@ -31,7 +31,9 @@ public class ScheduledTask implements Runnable {
     @Override
     public void run() {
         Bot bot = Bot.getInstance(setting.getBotId());
+        //获取qq机器人的管理员好友
         Friend botFriend = bot.getFriend(setting.getAdminId());
+        //判断获取好友是否失败
         if (botFriend == null) {
             PuCampus.INSTANCE.getLogger().error("以管理员 QQ 号码获取机器人好友对象失败");
             return;
@@ -47,9 +49,10 @@ public class ScheduledTask implements Runnable {
             user = new UserService().getUser(0);
         }
         Group group = bot.getGroup(setting.getGroupId());
+        //判断获取qq群是否失败
         if (group != null) {
             String newEventList = new EventListService().getNewEventList(setting.getAdminId());
-            group.sendMessage(AtAll.INSTANCE.plus("\n").plus(newEventList));
+            group.sendMessage(AtAll.INSTANCE.plus("\n").plus("今日可参加活动列表").plus("\n\n").plus(newEventList));
         } else {
             PuCampus.INSTANCE.getLogger().error("获取qq群失败，请检查配置文件中的qq群号");
             botFriend.sendMessage("发送定时信息失败：获取qq群失败，请检查配置文件中的qq群号");

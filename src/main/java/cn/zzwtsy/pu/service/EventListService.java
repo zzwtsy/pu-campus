@@ -157,7 +157,7 @@ public class EventListService {
             PuCampus.INSTANCE.getLogger().error("获取新活动列表失败", e);
         }
         message = newEventListContentParser(newEventList);
-        return message;
+        return message.isEmpty() ? "暂无可报名活动" : message;
     }
 
     /**
