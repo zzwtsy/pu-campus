@@ -59,7 +59,7 @@ public final class PuCampus extends JavaPlugin {
         //检测设置配置文件是否存在
         if (!checkSettingFile()) {
             if (initConfig.initSettingConfig()) {
-                getLogger().error("初始化设置文件成功，请修改配置文件后重启插件");
+                getLogger().error("初始化设置文件成功，请修改 setting.json 配置文件后重启插件");
                 getLogger().error("Init Setting file successfully,Please modify the config file and try again");
             } else {
                 getLogger().error("Init Setting file failed");
@@ -82,9 +82,9 @@ public final class PuCampus extends JavaPlugin {
     public void onDisable() {
         //插件关闭时保存配置文件
         if (SaveConfig.saveAllConfig()) {
-            PuCampus.INSTANCE.getLogger().info("Save All config success");
+            PuCampus.INSTANCE.getLogger().info("Save All config files success");
         } else {
-            PuCampus.INSTANCE.getLogger().info("Save All config failed");
+            PuCampus.INSTANCE.getLogger().info("Save All config files failed");
         }
     }
 }

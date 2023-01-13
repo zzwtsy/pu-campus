@@ -1,5 +1,6 @@
 package cn.zzwtsy.pu.tools;
 
+import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.UserService;
 
 import java.io.File;
@@ -116,7 +117,12 @@ public class Tools {
         if (new File(DB_FILE_FULL_PATH).exists()) {
             return true;
         } else {
-            return new File(DB_FILE_PATH).mkdirs();
+            if (new File(DB_FILE_PATH).mkdirs()) {
+                PuCampus.INSTANCE.getLogger().info("创建数据库文件夹成功");
+                return false;
+            }
+            PuCampus.INSTANCE.getLogger().error("创建数据库文件夹失败");
+            return false;
         }
     }
 

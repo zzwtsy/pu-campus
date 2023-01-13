@@ -26,7 +26,6 @@ public class InitConfig {
      * @return boolean
      */
     public boolean initSettingConfig() {
-        PuCampus.INSTANCE.getLogger().info("Init Setting Config");
         Setting.INSTANCE.setAdminId(0)
                 .setGroupId(0)
                 .setBotId(0)
@@ -34,19 +33,18 @@ public class InitConfig {
                 .setEmailSuffix("");
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, SETTING_FILE_NAME)) {
-                PuCampus.INSTANCE.getLogger().info("Create setting config successfully");
+                PuCampus.INSTANCE.getLogger().info("Create setting config file successfully");
             } else {
-                PuCampus.INSTANCE.getLogger().error("Create setting config failed");
+                PuCampus.INSTANCE.getLogger().error("Create setting config file failed");
             }
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Create setting config failed", e);
+            PuCampus.INSTANCE.getLogger().error("Create setting config file failed", e);
             return false;
         }
         return SaveConfig.saveSettingConfig(Setting.INSTANCE);
     }
 
     public boolean initCommandConfig() {
-        PuCampus.INSTANCE.getLogger().info("Init Command Config");
         Command.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
                 .setHelp("帮助信息")
@@ -63,12 +61,12 @@ public class InitConfig {
                 .setQueryUserEventEndUnissuedCreditList("未发放学分活动");
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, COMMAND_FILE_NAME)) {
-                PuCampus.INSTANCE.getLogger().info("Create command config successfully");
+                PuCampus.INSTANCE.getLogger().info("Create command config file successfully");
             } else {
-                PuCampus.INSTANCE.getLogger().error("Create command config failed" + getClass().getSimpleName());
+                PuCampus.INSTANCE.getLogger().error("Create command config file failed" + getClass().getSimpleName());
             }
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Create command config failed", e);
+            PuCampus.INSTANCE.getLogger().error("Create command config file failed", e);
             return false;
         }
         return SaveConfig.saveCommandConfig(Command.INSTANCE);

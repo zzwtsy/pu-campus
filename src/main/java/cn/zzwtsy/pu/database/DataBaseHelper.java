@@ -1,6 +1,8 @@
 package cn.zzwtsy.pu.database;
 
 
+import cn.zzwtsy.pu.PuCampus;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -32,8 +34,9 @@ public class DataBaseHelper {
     public static void registerDataBase() {
         try {
             Class.forName(DRIVER_CLASS_NAME);
+            PuCampus.INSTANCE.getLogger().info("数据库连接成功");
         } catch (ClassNotFoundException e) {
-            System.err.println("数据库连接失败");
+            PuCampus.INSTANCE.getLogger().error("数据库连接失败");
             e.printStackTrace();
         }
     }
