@@ -25,7 +25,6 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private final String helpCommand = command.getCommandPrefix() + command.getHelp();
     private final String loginCommand = command.getCommandPrefix() + command.getLogin();
     private final String queryUserCreditInfoCommand = command.getCommandPrefix() + command.getQueryUserCreditInfo();
-    private final String queryNewEventListCommand = command.getCommandPrefix() + command.getQueryNewEventList();
     private final String querySignInEventListCommand = command.getCommandPrefix() + command.getQuerySignInEventList();
     private final String querySignOutEventListCommand = command.getCommandPrefix() + command.getQuerySignOutEventList();
     private final String queryUserEventEndUnissuedCreditListCommand = command.getCommandPrefix() + command.getQueryUserEventEndUnissuedCreditList();
@@ -49,12 +48,6 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         if (message.startsWith(eventListCommand)) {
             String[] strings = splitMessage(message);
             getEventList(strings[1], userQqId);
-            return;
-        }
-        //获取新活动列表
-        if (message.startsWith(queryNewEventListCommand)) {
-            String newEventList = new EventListService().getNewEventList(userQqId);
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(newEventList));
             return;
         }
         //获取活动已结束未发放学分列表

@@ -3,13 +3,18 @@ package cn.zzwtsy.pu.tools;
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.UserService;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.tools.DataBaseStatic.DB_FILE_FULL_PATH;
-import static cn.zzwtsy.pu.tools.DataBaseStatic.DB_FILE_PATH;
+import static cn.zzwtsy.pu.tools.DataBaseStatic.PLUGIN_DATA_FILE_PATH;
 import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
@@ -24,6 +29,22 @@ import static java.lang.Math.abs;
  * @since 2022/12/24
  */
 public class Tools {
+    /**
+     * 获取外部字体
+     *
+     * @param fontSize 字体大小
+     * @param fontPath 字体路径
+     * @return {@link Font}
+     * @throws IOException         ioexception
+     * @throws URISyntaxException  URISyntaxException
+     * @throws FontFormatException 字体格式异常
+     */
+    public static Font getFont(String fontPath, int fontSize) throws IOException, URISyntaxException, FontFormatException {
+        InputStream resourceAsStream = Tools.class.getResourceAsStream(fontPath);
+        assert resourceAsStream != null;
+        Font font = Font.createFont(Font.TRUETYPE_FONT, resourceAsStream);
+        return font.deriveFont(Font.PLAIN, fontSize);
+    }
 
     /**
      * 检查时间
@@ -117,7 +138,7 @@ public class Tools {
         if (new File(DB_FILE_FULL_PATH).exists()) {
             return true;
         } else {
-            if (new File(DB_FILE_PATH).mkdirs()) {
+            if (new File(PLUGIN_DATA_FILE_PATH).mkdirs()) {
                 PuCampus.INSTANCE.getLogger().info("创建数据库文件夹成功");
                 return false;
             }

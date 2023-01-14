@@ -29,10 +29,6 @@ public class Command {
      */
     private String adminDeleteUser;
     /**
-     * 查询新活动列表
-     */
-    private String queryNewEventList;
-    /**
      * 查询用户信用信息
      */
     private String queryUserCreditInfo;
@@ -232,26 +228,6 @@ public class Command {
      */
     public Command setLogin(String login) {
         this.login = login;
-        return this;
-    }
-
-    /**
-     * 获取查询新活动列表命令
-     *
-     * @return {@link String}
-     */
-    public String getQueryNewEventList() {
-        return queryNewEventList;
-    }
-
-    /**
-     * 设置查询新活动列表命令
-     *
-     * @param queryNewEventList 查询新活动列表命令
-     * @return {@link Command}
-     */
-    public Command setQueryNewEventList(String queryNewEventList) {
-        this.queryNewEventList = queryNewEventList;
         return this;
     }
 

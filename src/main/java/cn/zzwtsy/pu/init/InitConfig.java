@@ -47,15 +47,14 @@ public class InitConfig {
     public boolean initCommandConfig() {
         Command.INSTANCE.setCommandPrefix("#")
                 .setLogin("登录")
-                .setHelp("帮助信息")
+                .setHelp("help")
                 .setTimedTask("定时任务")
                 .setAddPublicToken("添加tk")
                 .setDeleteUser("删除我的信息")
                 .setAdminDeleteUser("删除用户")
-                .setQueryNewEventList("新活动列表")
                 .setQueryUserCreditInfo("学分信息")
-                .setQuerySignInEventList("待签到活动")
-                .setQuerySignOutEventList("待签退活动")
+                .setQuerySignInEventList("签到")
+                .setQuerySignOutEventList("签退")
                 .setQueryActivityDetailById("活动信息")
                 .setGetCalendarEventList("获取活动列表")
                 .setQueryUserEventEndUnissuedCreditList("未发放学分活动");
