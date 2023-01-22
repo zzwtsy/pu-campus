@@ -40,6 +40,12 @@ public class ListenerGroupMessage extends SimpleListenerHost {
     private void run(GroupMessageEvent groupMessageEvent) {
         message = groupMessageEvent.getMessage().contentToString();
         long userQqId = groupMessageEvent.getSender().getId();
+        //获取帮助信息
+        if (message.startsWith(helpCommand)) {
+            HelpInfo helpInfo = new HelpInfo();
+            groupMessageEvent.getGroup().sendMessage("===群聊可使用命令===\n" + helpInfo.groupHelpInfo() + "\n===私聊可使用命令===\n" + helpInfo.privateHelpInfo());
+            return;
+        }
         if (!checkUserLogin(userQqId)) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
             return;
@@ -54,12 +60,6 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
             String message = new EventListService().getUserEventEndUnissuedCreditList(userQqId);
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
-            return;
-        }
-        //获取帮助信息
-        if (message.startsWith(helpCommand)) {
-            HelpInfo helpInfo = new HelpInfo();
-            groupMessageEvent.getGroup().sendMessage("群聊可使用命令\n\n" + helpInfo.groupHelpInfo() + "私聊可使用命令\n\n" + helpInfo.privateHelpInfo());
             return;
         }
         //用户登录

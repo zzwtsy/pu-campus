@@ -73,9 +73,9 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         }
         if (message.startsWith(helpCommand)) {
             if (checkAdminQqId(userQqId)) {
-                messageEvent.getSender().sendMessage(new HelpInfo().adminHelpInfo());
+                messageEvent.getSender().sendMessage("===管管理员命令===\n" + new HelpInfo().adminHelpInfo());
             } else {
-                messageEvent.getSender().sendMessage("私聊命令\n\n" + new HelpInfo().privateHelpInfo());
+                messageEvent.getSender().sendMessage("===私聊命令===\n" + new HelpInfo().privateHelpInfo());
             }
             return;
         }
