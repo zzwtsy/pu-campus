@@ -1,7 +1,6 @@
 package cn.zzwtsy.pu;
 
 import cn.zzwtsy.pu.database.DataBaseHelper;
-import cn.zzwtsy.pu.init.CreateHelpInfoImage;
 import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.init.InitDataBase;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
@@ -76,8 +75,6 @@ public final class PuCampus extends JavaPlugin {
         if (!"0".equals(setting.getTimedTaskTime())) {
             new TimedTaskService().start();
         }
-        //合成帮助信息图片
-        new CreateHelpInfoImage().createAllHelpInfoImage();
         getLogger().info("pu-campus Plugin loaded!");
     }
 
