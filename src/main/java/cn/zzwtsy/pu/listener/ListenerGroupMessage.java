@@ -58,8 +58,8 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         }
         //获取帮助信息
         if (message.startsWith(helpCommand)) {
-            // TODO: 发送帮助信息图片
-            groupMessageEvent.getGroup().sendMessage("");
+            HelpInfo helpInfo = new HelpInfo();
+            groupMessageEvent.getGroup().sendMessage("群聊可使用命令\n\n" + helpInfo.groupHelpInfo() + "私聊可使用命令\n\n" + helpInfo.privateHelpInfo());
             return;
         }
         //用户登录

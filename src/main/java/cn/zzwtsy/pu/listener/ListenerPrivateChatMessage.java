@@ -30,6 +30,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private final String deleteUserCommand = command.getCommandPrefix() + command.getDeleteUser();
     private final String adminDeleteUserCommand = command.getCommandPrefix() + command.getAdminDeleteUser();
     private final String timedTaskCommand = command.getCommandPrefix() + command.getTimedTask();
+    private final String helpCommand = command.getCommandPrefix() + command.getHelp();
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
@@ -70,6 +71,15 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             deleteUser(messageEvent, userQqId);
             return;
         }
+        if (message.startsWith(helpCommand)) {
+            if (checkAdminQqId(userQqId)) {
+                messageEvent.getSender().sendMessage(new HelpInfo().adminHelpInfo());
+            } else {
+                messageEvent.getSender().sendMessage("私聊命令\n\n" + new HelpInfo().privateHelpInfo());
+            }
+            return;
+        }
+        //判断用户是否有实用管理员命令权限
         if (checkAdminQqId(userQqId)) {
             messageEvent.getSender().sendMessage("你没有此命令权限");
         } else {
