@@ -8,7 +8,7 @@ package cn.zzwtsy.pu.bean;
  * @since 2022/12/23
  */
 public class User {
-    private long qqId;
+    private String qqId;
     private String uid;
     private String oauthToken;
     private String oauthTokenSecret;
@@ -22,11 +22,11 @@ public class User {
         return this;
     }
 
-    public long getQqId() {
+    public String getQqId() {
         return qqId;
     }
 
-    public void setQqId(long qqId) {
+    public void setQqId(String qqId) {
         this.qqId = qqId;
     }
 
