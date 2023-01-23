@@ -132,4 +132,4 @@ src/test/kotlin/RunTerminal.kt
 /debug-sandbox
 /bin
 .run!/.run/
-!/.idea/
+JSON/
