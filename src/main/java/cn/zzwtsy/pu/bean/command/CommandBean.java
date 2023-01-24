@@ -12,28 +12,30 @@ public class CommandBean {
     public static CommandBean INSTANCE = new CommandBean();
 
     @JsonProperty("public")
-    private PublicBean publicX;
-    private GroupBean group;
+    private PublicBean publicBean;
+    @JsonProperty("group")
+    private GroupBean groupBean;
     @JsonProperty("private")
-    private PrivateBean privateX;
-    private AdminBean admin;
+    private PrivateBean privateBean;
+    @JsonProperty("admin")
+    private AdminBean adminBean;
 
     /**
      * 获得 PublicBean
      *
      * @return {@link PublicBean}
      */
-    public PublicBean getPublicX() {
-        return publicX;
+    public PublicBean getPublicBean() {
+        return publicBean;
     }
 
     /**
      * 设置 PublicBean
      *
-     * @param publicX PublicBean
+     * @param publicBean PublicBean
      */
-    public void setPublicX(PublicBean publicX) {
-        this.publicX = publicX;
+    public void setPublicBean(PublicBean publicBean) {
+        this.publicBean = publicBean;
     }
 
     /**
@@ -41,17 +43,17 @@ public class CommandBean {
      *
      * @return {@link GroupBean}
      */
-    public GroupBean getGroup() {
-        return group;
+    public GroupBean getGroupBean() {
+        return groupBean;
     }
 
     /**
      * 设置 GroupBean
      *
-     * @param group GroupBean
+     * @param groupBean GroupBean
      */
-    public void setGroup(GroupBean group) {
-        this.group = group;
+    public void setGroupBean(GroupBean groupBean) {
+        this.groupBean = groupBean;
     }
 
     /**
@@ -59,17 +61,17 @@ public class CommandBean {
      *
      * @return {@link PrivateBean}
      */
-    public PrivateBean getPrivateX() {
-        return privateX;
+    public PrivateBean getPrivateBean() {
+        return privateBean;
     }
 
     /**
      * 设置PrivateBean
      *
-     * @param privateX PrivateBean
+     * @param privateBean PrivateBean
      */
-    public void setPrivateX(PrivateBean privateX) {
-        this.privateX = privateX;
+    public void setPrivateBean(PrivateBean privateBean) {
+        this.privateBean = privateBean;
     }
 
     /**
@@ -77,17 +79,17 @@ public class CommandBean {
      *
      * @return {@link AdminBean}
      */
-    public AdminBean getAdmin() {
-        return admin;
+    public AdminBean getAdminBean() {
+        return adminBean;
     }
 
     /**
      * 设置 AdminBean
      *
-     * @param admin AdminBean
+     * @param adminBean AdminBean
      */
-    public void setAdmin(AdminBean admin) {
-        this.admin = admin;
+    public void setAdminBean(AdminBean adminBean) {
+        this.adminBean = adminBean;
     }
 
 

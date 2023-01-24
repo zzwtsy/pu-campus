@@ -21,14 +21,14 @@ import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
  * @since 2022/12/01
  */
 public class ListenerGroupMessage extends SimpleListenerHost {
-    private final String commandPrefix = commandBean.getPublicX().getCommandPrefix();
-    private final String eventListCommand = commandPrefix + commandBean.getGroup().getGetCalendarEventList();
-    private final String helpCommand = commandPrefix + commandBean.getPublicX().getHelp();
-    private final String loginCommand = commandPrefix + commandBean.getPrivateX().getLogin();
-    private final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroup().getQueryUserCreditInfo();
-    private final String querySignInEventListCommand = commandPrefix + commandBean.getGroup().getQuerySignInEventList();
-    private final String querySignOutEventListCommand = commandPrefix + commandBean.getGroup().getQuerySignOutEventList();
-    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroup().getQueryUserEventEndUnissuedCreditList();
+    private final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
+    private final String eventListCommand = commandPrefix + commandBean.getGroupBean().getGetCalendarEventList();
+    private final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
+    private final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
+    private final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroupBean().getQueryUserCreditInfo();
+    private final String querySignInEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignInEventList();
+    private final String querySignOutEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignOutEventList();
+    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroupBean().getQueryUserEventEndUnissuedCreditList();
     String message;
     GroupMessageEvent groupMessageEvent;
 

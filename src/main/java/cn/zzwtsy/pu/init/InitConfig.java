@@ -49,10 +49,10 @@ public class InitConfig {
     }
 
     public boolean initCommandConfig() {
-        CommandBean.INSTANCE.setPublicX(new PublicBean()
+        CommandBean.INSTANCE.setPublicBean(new PublicBean()
                 .setHelp("help")
                 .setCommandPrefix("#"));
-        CommandBean.INSTANCE.setGroup(new GroupBean()
+        CommandBean.INSTANCE.setGroupBean(new GroupBean()
                 .setGetCalendarEventList("活动")
                 .setQueryActivityDetailById("活动信息")
                 .setQueryUserCreditInfo("学分信息")
@@ -60,10 +60,10 @@ public class InitConfig {
                 .setQuerySignOutEventList("签退")
                 .setQueryUserEventEndUnissuedCreditList("未发放学分活动")
         );
-        CommandBean.INSTANCE.setPrivateX(new PrivateBean()
+        CommandBean.INSTANCE.setPrivateBean(new PrivateBean()
                 .setLogin("登录")
                 .setDeleteUser("删除信息"));
-        CommandBean.INSTANCE.setAdmin(new AdminBean()
+        CommandBean.INSTANCE.setAdminBean(new AdminBean()
                 .setAdminDeleteUser("删除用户")
                 .setTimedTask("定时任务")
                 .setAddPublicToken("添加tk")
