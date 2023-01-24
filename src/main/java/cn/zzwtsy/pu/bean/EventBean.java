@@ -7,7 +7,7 @@ package cn.zzwtsy.pu.bean;
  * @author zzwtsy
  * @since 2022/12/23
  */
-public class Event {
+public class EventBean {
     private String id;
     private String title;
     private String sTime;

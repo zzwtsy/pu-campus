@@ -7,7 +7,7 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.message.data.At;
 
-import static cn.zzwtsy.pu.tools.MyStatic.command;
+import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 import static cn.zzwtsy.pu.utils.DateUtil.addYear;
@@ -21,14 +21,14 @@ import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
  * @since 2022/12/01
  */
 public class ListenerGroupMessage extends SimpleListenerHost {
-    private final String commandPrefix = command.getPublicX().getCommandPrefix();
-    private final String eventListCommand = commandPrefix + command.getGroup().getGetCalendarEventList();
-    private final String helpCommand = commandPrefix + command.getPublicX().getHelp();
-    private final String loginCommand = commandPrefix + command.getPrivateX().getLogin();
-    private final String queryUserCreditInfoCommand = commandPrefix + command.getGroup().getQueryUserCreditInfo();
-    private final String querySignInEventListCommand = commandPrefix + command.getGroup().getQuerySignInEventList();
-    private final String querySignOutEventListCommand = commandPrefix + command.getGroup().getQuerySignOutEventList();
-    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + command.getGroup().getQueryUserEventEndUnissuedCreditList();
+    private final String commandPrefix = commandBean.getPublicX().getCommandPrefix();
+    private final String eventListCommand = commandPrefix + commandBean.getGroup().getGetCalendarEventList();
+    private final String helpCommand = commandPrefix + commandBean.getPublicX().getHelp();
+    private final String loginCommand = commandPrefix + commandBean.getPrivateX().getLogin();
+    private final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroup().getQueryUserCreditInfo();
+    private final String querySignInEventListCommand = commandPrefix + commandBean.getGroup().getQuerySignInEventList();
+    private final String querySignOutEventListCommand = commandPrefix + commandBean.getGroup().getQuerySignOutEventList();
+    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroup().getQueryUserEventEndUnissuedCreditList();
     String message;
     GroupMessageEvent groupMessageEvent;
 
@@ -44,7 +44,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         //获取帮助信息
         if (message.startsWith(helpCommand)) {
             HelpInfo helpInfo = new HelpInfo();
-            groupMessageEvent.getGroup().sendMessage("===群聊可使用命令===\n" + helpInfo.groupHelpInfo() + "\n===私聊可使用命令===\n" + helpInfo.privateHelpInfo());
+            groupMessageEvent.getGroup().sendMessage("===群聊可使用命令===\n\n" + helpInfo.groupHelpInfo() + "\n\n\n===私聊可使用命令===\n\n" + helpInfo.privateHelpInfo());
             return;
         }
         if (!checkUserLogin(userQqId)) {

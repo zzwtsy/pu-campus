@@ -18,7 +18,7 @@ import static cn.zzwtsy.pu.tools.DataBaseStatic.PLUGIN_DATA_FILE_PATH;
 import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
+import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
 import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
 import static java.lang.Math.abs;
 
@@ -106,7 +106,7 @@ public class Tools {
      * @return boolean
      */
     public static boolean checkAdminQqId(long qqId) {
-        return qqId == setting.getAdminId();
+        return qqId == settingBean.getAdminId();
     }
 
     /**
@@ -155,7 +155,7 @@ public class Tools {
      */
     public static long calculateScheduledDelayTime() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String addDate = complementaryDate(setting.getTimedTaskTime());
+        String addDate = complementaryDate(settingBean.getTimedTaskTime());
         long timedTaskTime = sdf.parse(addDate).getTime();
         long nowTime = System.currentTimeMillis();
         long delayTime = (timedTaskTime - nowTime) / 1000L;

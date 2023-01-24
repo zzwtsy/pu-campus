@@ -2,7 +2,7 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
-import cn.zzwtsy.pu.bean.User;
+import cn.zzwtsy.pu.bean.UserBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,9 +31,9 @@ public class UserCreditService {
         StringBuilder stringBuilder = new StringBuilder();
         String activeCreditResponse;
         String applyCreditResponse;
-        User user = new UserService().getUser(qqId);
-        String oauthToken = user.getOauthToken();
-        String oauthTokenSecret = user.getOauthTokenSecret();
+        UserBean userBean = new UserService().getUser(qqId);
+        String oauthToken = userBean.getOauthToken();
+        String oauthTokenSecret = userBean.getOauthTokenSecret();
         try {
             activeCreditResponse = api.getActiveCredit(oauthToken, oauthTokenSecret);
             applyCreditResponse = api.getApplyCredit(oauthToken, oauthTokenSecret);

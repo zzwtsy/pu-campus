@@ -1,8 +1,8 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.Command;
-import cn.zzwtsy.pu.bean.Setting;
+import cn.zzwtsy.pu.bean.command.CommandBean;
+import cn.zzwtsy.pu.bean.SettingBean;
 import cn.zzwtsy.pu.utils.ConfigHelper;
 
 import java.io.IOException;
@@ -10,8 +10,8 @@ import java.io.IOException;
 import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
 import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
-import static cn.zzwtsy.pu.tools.MyStatic.command;
+import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
+import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
 
 /**
  * 加载配置
@@ -26,13 +26,13 @@ public class LoadConfig {
     public static void loadAllConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading setting config file");
         try {
-            setting = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, Setting.class);
+            settingBean = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, SettingBean.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading setting config file error", e);
         }
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
-            command = ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, Command.class);
+            commandBean = ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, CommandBean.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading command config file error", e);
         }
@@ -44,7 +44,7 @@ public class LoadConfig {
     public static void loadUserConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
-            setting = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, Setting.class);
+            settingBean = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, SettingBean.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading user config file error", e);
         }
@@ -56,7 +56,7 @@ public class LoadConfig {
     public static void loadCommandConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading command config file");
         try {
-            command = ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, Command.class);
+            commandBean = ConfigHelper.getConfigFromFile(PATH_NAME, COMMAND_FILE_NAME, CommandBean.class);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("Loading command config file error", e);
         }

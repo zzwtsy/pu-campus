@@ -2,7 +2,7 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
-import cn.zzwtsy.pu.bean.User;
+import cn.zzwtsy.pu.bean.UserBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,12 +23,12 @@ public class EventListService {
     private final String eventMessageNode = "message";
     private final String eventContentNode = "content";
     Api api;
-    User user;
+    UserBean userBean;
     ObjectMapper mapper;
 
     public EventListService() {
         api = new Api();
-        user = new User();
+        userBean = new UserBean();
         mapper = new ObjectMapper();
     }
 
@@ -45,10 +45,10 @@ public class EventListService {
         JsonNode jsonNode;
         ArrayNode jsonArray = mapper.createArrayNode();
         //获取用户信息
-        user = new UserService().getUser(userQqId);
-        String userUid = user.getUid();
-        String oauthToken = user.getOauthToken();
-        String oauthTokenSecret = user.getOauthTokenSecret();
+        userBean = new UserService().getUser(userQqId);
+        String userUid = userBean.getUid();
+        String oauthToken = userBean.getOauthToken();
+        String oauthTokenSecret = userBean.getOauthTokenSecret();
         for (int i = 1; ; i++) {
             try {
                 response = api.getUserEventEndUnissuedCreditList(userUid, String.valueOf(count), String.valueOf(i), oauthToken, oauthTokenSecret);
@@ -88,9 +88,9 @@ public class EventListService {
     public String getCalendarEventList(long qqId, String date) {
         String response;
         JsonNode jsonNode;
-        user = new UserService().getUser(qqId);
-        String oauthToken = user.getOauthToken();
-        String oauthTokenSecret = user.getOauthTokenSecret();
+        userBean = new UserService().getUser(qqId);
+        String oauthToken = userBean.getOauthToken();
+        String oauthTokenSecret = userBean.getOauthTokenSecret();
         try {
             response = api.getCalendarEventList(date, oauthToken, oauthTokenSecret);
         } catch (IOException e) {
@@ -149,10 +149,10 @@ public class EventListService {
     public String getNewEventList(long userQqId) {
         String message;
         api = new Api();
-        user = new UserService().getUser(userQqId);
+        userBean = new UserService().getUser(userQqId);
         String newEventList = null;
         try {
-            newEventList = api.getNewEventList(user.getOauthToken(), user.getOauthTokenSecret());
+            newEventList = api.getNewEventList(userBean.getOauthToken(), userBean.getOauthTokenSecret());
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("获取新活动列表失败", e);
         }
@@ -179,9 +179,9 @@ public class EventListService {
             emptyEventListMessage = "暂无待签退活动";
         }
         JsonNode jsonNode;
-        user = new UserService().getUser(userId);
-        String oauthToken = user.getOauthToken();
-        String oauthTokenSecret = user.getOauthTokenSecret();
+        userBean = new UserService().getUser(userId);
+        String oauthToken = userBean.getOauthToken();
+        String oauthTokenSecret = userBean.getOauthTokenSecret();
         try {
             if (signInType) {
                 response = api.getUserCanSignInEventList(oauthToken, oauthTokenSecret);

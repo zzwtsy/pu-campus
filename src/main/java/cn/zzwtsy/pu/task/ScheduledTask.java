@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.task;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.User;
+import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.service.EventListService;
 import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.Bot;
@@ -9,7 +9,7 @@ import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.data.AtAll;
 
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
+import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 
 /**
@@ -19,20 +19,20 @@ import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
  * @since 2023/01/10
  */
 public class ScheduledTask implements Runnable {
-    User user;
+    UserBean userBean;
 
     /**
      * 计划任务
      */
     public ScheduledTask() {
-        user = new User();
+        userBean = new UserBean();
     }
 
     @Override
     public void run() {
-        Bot bot = Bot.getInstance(setting.getBotId());
+        Bot bot = Bot.getInstance(settingBean.getBotId());
         //获取qq机器人的管理员好友
-        Friend botFriend = bot.getFriend(setting.getAdminId());
+        Friend botFriend = bot.getFriend(settingBean.getAdminId());
         //判断获取好友是否失败
         if (botFriend == null) {
             PuCampus.INSTANCE.getLogger().error("以管理员 QQ 号码获取机器人好友对象失败");
@@ -40,18 +40,18 @@ public class ScheduledTask implements Runnable {
         }
         //判断公共token是否存在，不存在则使用管理员token
         if (!checkUserLogin(0)) {
-            user = new UserService().getUser(setting.getAdminId());
-            if (user == null) {
+            userBean = new UserService().getUser(settingBean.getAdminId());
+            if (userBean == null) {
                 botFriend.sendMessage("请添加公共 pu 账号或管理员登录 pu 校园，以启用定时推送");
                 return;
             }
         } else {
-            user = new UserService().getUser(0);
+            userBean = new UserService().getUser(0);
         }
-        Group group = bot.getGroup(setting.getGroupId());
+        Group group = bot.getGroup(settingBean.getGroupId());
         //判断获取qq群是否失败
         if (group != null) {
-            String newEventList = new EventListService().getNewEventList(setting.getAdminId());
+            String newEventList = new EventListService().getNewEventList(settingBean.getAdminId());
             group.sendMessage(AtAll.INSTANCE.plus("\n").plus("今日可参加活动列表").plus("\n\n").plus(newEventList));
         } else {
             PuCampus.INSTANCE.getLogger().error("获取qq群失败，请检查配置文件中的qq群号");

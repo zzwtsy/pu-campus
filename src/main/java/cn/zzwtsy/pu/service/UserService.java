@@ -1,6 +1,6 @@
 package cn.zzwtsy.pu.service;
 
-import cn.zzwtsy.pu.bean.User;
+import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.dao.UserDao;
 
 /**
@@ -20,9 +20,9 @@ public class UserService {
      * 获取用户信息
      *
      * @param qqId qq号
-     * @return {@link User}
+     * @return {@link UserBean}
      */
-    public User getUser(long qqId) {
+    public UserBean getUser(long qqId) {
         return userDao.getUserByQqId(qqId);
     }
 

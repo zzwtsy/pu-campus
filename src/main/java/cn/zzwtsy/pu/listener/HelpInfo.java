@@ -1,6 +1,6 @@
 package cn.zzwtsy.pu.listener;
 
-import static cn.zzwtsy.pu.tools.MyStatic.command;
+import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
 
 /**
  * 帮助信息
@@ -9,21 +9,21 @@ import static cn.zzwtsy.pu.tools.MyStatic.command;
  * @since 2023/01/22
  */
 public class HelpInfo {
-    private final String commandPrefix = command.getPublicX().getCommandPrefix();
+    private final String commandPrefix = commandBean.getPublicX().getCommandPrefix();
     //群聊命令
-    private final String eventListCommand = commandPrefix + command.getGroup().getGetCalendarEventList();
-    private final String helpCommand = commandPrefix + command.getPublicX().getHelp();
-    private final String queryUserCreditInfoCommand = commandPrefix + command.getGroup().getQueryUserCreditInfo();
-    private final String querySignInEventListCommand = commandPrefix + command.getGroup().getQuerySignInEventList();
-    private final String querySignOutEventListCommand = commandPrefix + command.getGroup().getQuerySignOutEventList();
-    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + command.getGroup().getQueryUserEventEndUnissuedCreditList();
-    private final String deleteUserCommand = commandPrefix + command.getPrivateX().getDeleteUser();
+    private final String eventListCommand = commandPrefix + commandBean.getGroup().getGetCalendarEventList();
+    private final String helpCommand = commandPrefix + commandBean.getPublicX().getHelp();
+    private final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroup().getQueryUserCreditInfo();
+    private final String querySignInEventListCommand = commandPrefix + commandBean.getGroup().getQuerySignInEventList();
+    private final String querySignOutEventListCommand = commandPrefix + commandBean.getGroup().getQuerySignOutEventList();
+    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroup().getQueryUserEventEndUnissuedCreditList();
+    private final String deleteUserCommand = commandPrefix + commandBean.getPrivateX().getDeleteUser();
     //用户私聊命令
-    private final String loginCommand = commandPrefix + command.getPrivateX().getLogin();
+    private final String loginCommand = commandPrefix + commandBean.getPrivateX().getLogin();
     //管理员命令
-    private final String addPublicToken = commandPrefix + command.getAdmin().getAddPublicToken();
-    private final String adminDeleteUserCommand = commandPrefix + command.getAdmin().getAdminDeleteUser();
-    private final String timedTaskCommand = commandPrefix + command.getAdmin().getTimedTask();
+    private final String addPublicToken = commandPrefix + commandBean.getAdmin().getAddPublicToken();
+    private final String adminDeleteUserCommand = commandPrefix + commandBean.getAdmin().getAdminDeleteUser();
+    private final String timedTaskCommand = commandPrefix + commandBean.getAdmin().getTimedTask();
 
 
     public String groupHelpInfo() {

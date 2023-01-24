@@ -14,7 +14,7 @@ import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
+import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
 import static cn.zzwtsy.pu.tools.Tools.checkDataBaseFile;
 import static cn.zzwtsy.pu.tools.Tools.checkSettingFile;
@@ -72,7 +72,7 @@ public final class PuCampus extends JavaPlugin {
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
         //启动定时任务
-        if (!"0".equals(setting.getTimedTaskTime())) {
+        if (!"0".equals(settingBean.getTimedTaskTime())) {
             new TimedTaskService().start();
         }
         getLogger().info("pu-campus Plugin loaded!");

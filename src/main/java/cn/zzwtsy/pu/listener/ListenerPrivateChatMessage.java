@@ -10,8 +10,8 @@ import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 
-import static cn.zzwtsy.pu.tools.MyStatic.command;
-import static cn.zzwtsy.pu.tools.MyStatic.setting;
+import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
+import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
@@ -25,13 +25,13 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
-    private final String commandPrefix = command.getPublicX().getCommandPrefix();
-    private final String addPublicToken = commandPrefix + command.getAdmin().getAddPublicToken();
-    private final String loginCommand = commandPrefix + command.getPrivateX().getLogin();
-    private final String deleteUserCommand = commandPrefix + command.getPrivateX().getDeleteUser();
-    private final String adminDeleteUserCommand = commandPrefix + command.getAdmin().getAdminDeleteUser();
-    private final String timedTaskCommand = commandPrefix + command.getAdmin().getTimedTask();
-    private final String helpCommand = commandPrefix + command.getPublicX().getHelp();
+    private final String commandPrefix = commandBean.getPublicX().getCommandPrefix();
+    private final String addPublicToken = commandPrefix + commandBean.getAdmin().getAddPublicToken();
+    private final String loginCommand = commandPrefix + commandBean.getPrivateX().getLogin();
+    private final String deleteUserCommand = commandPrefix + commandBean.getPrivateX().getDeleteUser();
+    private final String adminDeleteUserCommand = commandPrefix + commandBean.getAdmin().getAdminDeleteUser();
+    private final String timedTaskCommand = commandPrefix + commandBean.getAdmin().getTimedTask();
+    private final String helpCommand = commandPrefix + commandBean.getPublicX().getHelp();
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
@@ -101,8 +101,8 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
                 switch (strings[1]) {
                     case "关闭":
                     case "0":
-                        setting.setTimedTaskTime("0");
-                        SaveConfig.saveSettingConfig(setting);
+                        settingBean.setTimedTaskTime("0");
+                        SaveConfig.saveSettingConfig(settingBean);
                         timedTaskService.stop();
                         break;
                     default:
@@ -110,8 +110,8 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
                             messageEvent.getSender().sendMessage("时间格式错误");
                             break;
                         }
-                        setting.setTimedTaskTime(strings[1]);
-                        SaveConfig.saveSettingConfig(setting);
+                        settingBean.setTimedTaskTime(strings[1]);
+                        SaveConfig.saveSettingConfig(settingBean);
                         timedTaskService.start();
                         break;
                 }
@@ -129,7 +129,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         messageEvent.getSender().sendMessage("正在登录,请稍后...");
         String[] strings = splitMessage(message);
         //补全用户账号: 用户账号加用户学校邮件后缀
-        String userName = strings[1] + setting.getEmailSuffix();
+        String userName = strings[1] + settingBean.getEmailSuffix();
         String getUserTokenStatus = new LoginService().getUserToken(userQqId, userName, strings[2]);
         messageEvent.getSender().sendMessage(getUserTokenStatus);
     }

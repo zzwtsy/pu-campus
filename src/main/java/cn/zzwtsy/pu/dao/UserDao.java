@@ -1,6 +1,6 @@
 package cn.zzwtsy.pu.dao;
 
-import cn.zzwtsy.pu.bean.User;
+import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.database.DataBaseHelper;
 import cn.zzwtsy.pu.utils.Encryption;
 
@@ -14,37 +14,32 @@ import java.util.Map;
  * @since 2022/12/23
  */
 public class UserDao {
-    //盐值
-    private static final String salt = "PuCamps";
     private final String tableName = "user";
 
     /**
      * 获取用户信息
      *
      * @param qqId 用户qq号
-     * @return {@link User}
+     * @return {@link UserBean}
      */
-    public User getUserByQqId(long qqId) {
-        String encryption = Encryption.encryptionToMd5(String.valueOf(qqId), salt);
-        if (encryption == null || encryption.isEmpty()) {
-            return null;
-        }
-        User user = new User();
+    public UserBean getUserByQqId(long qqId) {
+        String encryption = encryptionQqId(qqId);
+        UserBean userBean = new UserBean();
         String sql = "SELECT * FROM " + tableName + " WHERE qqId = ?";
         try {
             Map<Object, Object> queryMap = DataBaseHelper.executeQueryMap(sql, encryption);
             if (queryMap != null) {
-                user.setOauthToken((String) queryMap.get("oauthToken"));
-                user.setOauthTokenSecret((String) queryMap.get("oauthTokenSecret"));
-                user.setQqId((String) queryMap.get("qqId"));
-                user.setUid((String) queryMap.get("uid"));
+                userBean.setOauthToken((String) queryMap.get("oauthToken"));
+                userBean.setOauthTokenSecret((String) queryMap.get("oauthTokenSecret"));
+                userBean.setQqId((String) queryMap.get("qqId"));
+                userBean.setUid((String) queryMap.get("uid"));
             } else {
                 return null;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return user;
+        return userBean;
     }
 
     /**
@@ -55,10 +50,7 @@ public class UserDao {
      * @return 受影响的行数: >=1 添加成功
      */
     public int addUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
-        String encryption = Encryption.encryptionToMd5(String.valueOf(qqId), salt);
-        if (encryption == null || encryption.isEmpty()) {
-            return 0;
-        }
+        String encryption = encryptionQqId(qqId);
         int status;
         String sql = "INSERT INTO " + tableName + " (qqId,uid,oauthToken,oauthTokenSecret) VALUES (?,?,?,?)";
         try {
@@ -76,10 +68,7 @@ public class UserDao {
      * @return 受影响的行数: >=1 删除成功
      */
     public int deleteUser(long qqId) {
-        String encryption = Encryption.encryptionToMd5(String.valueOf(qqId), salt);
-        if (encryption == null || encryption.isEmpty()) {
-            return 0;
-        }
+        String encryption = encryptionQqId(qqId);
         int deleteStatus;
         String sql = "DELETE FROM" + tableName + "WHERE qqId = ?";
         try {
@@ -99,10 +88,7 @@ public class UserDao {
      * @return 受影响的行数: >=1 更新成功
      */
     public int updateUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
-        String encryption = Encryption.encryptionToMd5(String.valueOf(qqId), salt);
-        if (encryption == null || encryption.isEmpty()) {
-            return 0;
-        }
+        String encryption = encryptionQqId(qqId);
         int status;
         String sql = "UPDATE " + tableName + " SET uid = ?,oauthToken = ?,oauthTokenSecret = ? WHERE qqId = ?";
         try {
@@ -111,5 +97,16 @@ public class UserDao {
             throw new RuntimeException(e);
         }
         return status;
+    }
+
+    /**
+     * 加密 qq 号
+     *
+     * @param qqId qq 号
+     * @return {@link String}
+     */
+    private String encryptionQqId(long qqId) {
+        String id = new StringBuilder(String.valueOf(qqId)).reverse().toString();
+        return Encryption.encryptionToMd5(id, "PuCampus");
     }
 }

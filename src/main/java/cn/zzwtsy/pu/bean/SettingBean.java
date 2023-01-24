@@ -6,8 +6,8 @@ package cn.zzwtsy.pu.bean;
  * @author zzwtsy
  * @since 2022/11/29
  */
-public class Setting {
-    public static final Setting INSTANCE = new Setting();
+public class SettingBean {
+    public static final SettingBean INSTANCE = new SettingBean();
     private long groupId;
     private long adminId;
     private long botId;
@@ -27,9 +27,9 @@ public class Setting {
      * 设置定时任务时间
      *
      * @param timedTaskTime 定时任务时间
-     * @return {@link Setting}
+     * @return {@link SettingBean}
      */
-    public Setting setTimedTaskTime(String timedTaskTime) {
+    public SettingBean setTimedTaskTime(String timedTaskTime) {
         this.timedTaskTime = timedTaskTime;
         return this;
     }
@@ -47,9 +47,9 @@ public class Setting {
      * 设置机器人qq号
      *
      * @param botId 机器人qq号
-     * @return {@link Setting}
+     * @return {@link SettingBean}
      */
-    public Setting setBotId(long botId) {
+    public SettingBean setBotId(long botId) {
         this.botId = botId;
         return this;
     }
@@ -67,9 +67,9 @@ public class Setting {
      * 设置电子邮件后缀
      *
      * @param emailSuffix 电子邮件后缀
-     * @return {@link Setting}
+     * @return {@link SettingBean}
      */
-    public Setting setEmailSuffix(String emailSuffix) {
+    public SettingBean setEmailSuffix(String emailSuffix) {
         this.emailSuffix = emailSuffix;
         return this;
     }
@@ -87,9 +87,9 @@ public class Setting {
      * 设置QQ群号
      *
      * @param groupId QQ群号
-     * @return {@link Setting}
+     * @return {@link SettingBean}
      */
-    public Setting setGroupId(long groupId) {
+    public SettingBean setGroupId(long groupId) {
         this.groupId = groupId;
         return this;
     }
@@ -107,9 +107,9 @@ public class Setting {
      * 设置管理员qq号
      *
      * @param adminId 管理员qq号
-     * @return {@link Setting}
+     * @return {@link SettingBean}
      */
-    public Setting setAdminId(long adminId) {
+    public SettingBean setAdminId(long adminId) {
         this.adminId = adminId;
         return this;
     }

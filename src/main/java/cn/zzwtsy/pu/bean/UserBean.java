@@ -7,7 +7,7 @@ package cn.zzwtsy.pu.bean;
  * @author zzwtsy
  * @since 2022/12/23
  */
-public class User {
+public class UserBean {
     private String qqId;
     private String uid;
     private String oauthToken;
@@ -17,7 +17,7 @@ public class User {
         return uid;
     }
 
-    public User setUid(String uid) {
+    public UserBean setUid(String uid) {
         this.uid = uid;
         return this;
     }
