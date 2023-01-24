@@ -21,13 +21,14 @@ import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
  * @since 2022/12/01
  */
 public class ListenerGroupMessage extends SimpleListenerHost {
-    private final String eventListCommand = command.getCommandPrefix() + command.getGetCalendarEventList();
-    private final String helpCommand = command.getCommandPrefix() + command.getHelp();
-    private final String loginCommand = command.getCommandPrefix() + command.getLogin();
-    private final String queryUserCreditInfoCommand = command.getCommandPrefix() + command.getQueryUserCreditInfo();
-    private final String querySignInEventListCommand = command.getCommandPrefix() + command.getQuerySignInEventList();
-    private final String querySignOutEventListCommand = command.getCommandPrefix() + command.getQuerySignOutEventList();
-    private final String queryUserEventEndUnissuedCreditListCommand = command.getCommandPrefix() + command.getQueryUserEventEndUnissuedCreditList();
+    private final String commandPrefix = command.getPublicX().getCommandPrefix();
+    private final String eventListCommand = commandPrefix + command.getGroup().getGetCalendarEventList();
+    private final String helpCommand = commandPrefix + command.getPublicX().getHelp();
+    private final String loginCommand = commandPrefix + command.getPrivateX().getLogin();
+    private final String queryUserCreditInfoCommand = commandPrefix + command.getGroup().getQueryUserCreditInfo();
+    private final String querySignInEventListCommand = commandPrefix + command.getGroup().getQuerySignInEventList();
+    private final String querySignOutEventListCommand = commandPrefix + command.getGroup().getQuerySignOutEventList();
+    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + command.getGroup().getQueryUserEventEndUnissuedCreditList();
     String message;
     GroupMessageEvent groupMessageEvent;
 

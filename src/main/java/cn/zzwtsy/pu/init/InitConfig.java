@@ -45,19 +45,23 @@ public class InitConfig {
     }
 
     public boolean initCommandConfig() {
-        Command.INSTANCE.setCommandPrefix("#")
-                .setLogin("登录")
+        Command.INSTANCE.setPublicX(new Command.PublicBean()
                 .setHelp("help")
-                .setTimedTask("定时任务")
-                .setAddPublicToken("添加tk")
-                .setDeleteUser("删除我的信息")
-                .setAdminDeleteUser("删除用户")
+                .setCommandPrefix("#"));
+        Command.INSTANCE.setGroup(new Command.GroupBean()
+                .setGetCalendarEventList("活动")
+                .setQueryActivityDetailById("活动信息")
                 .setQueryUserCreditInfo("学分信息")
                 .setQuerySignInEventList("签到")
                 .setQuerySignOutEventList("签退")
-                .setQueryActivityDetailById("活动信息")
-                .setGetCalendarEventList("获取活动列表")
-                .setQueryUserEventEndUnissuedCreditList("未发放学分活动");
+                .setQueryUserEventEndUnissuedCreditList("未发放学分活动")
+        );
+        Command.INSTANCE.setPrivateX(new Command.PrivateBean().setLogin("登陆").setDeleteUser("删除信息"));
+        Command.INSTANCE.setAdmin(new Command.AdminBean()
+                .setAdminDeleteUser("删除用户")
+                .setTimedTask("定时任务")
+                .setAddPublicToken("添加tk")
+        );
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, COMMAND_FILE_NAME)) {
                 PuCampus.INSTANCE.getLogger().info("Create command config file successfully");

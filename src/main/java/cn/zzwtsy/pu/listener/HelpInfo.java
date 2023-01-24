@@ -9,20 +9,21 @@ import static cn.zzwtsy.pu.tools.MyStatic.command;
  * @since 2023/01/22
  */
 public class HelpInfo {
+    private final String commandPrefix = command.getPublicX().getCommandPrefix();
     //群聊命令
-    private final String eventListCommand = command.getCommandPrefix() + command.getGetCalendarEventList();
-    private final String helpCommand = command.getCommandPrefix() + command.getHelp();
-    private final String loginCommand = command.getCommandPrefix() + command.getLogin();
-    private final String queryUserCreditInfoCommand = command.getCommandPrefix() + command.getQueryUserCreditInfo();
-    private final String querySignInEventListCommand = command.getCommandPrefix() + command.getQuerySignInEventList();
-    private final String querySignOutEventListCommand = command.getCommandPrefix() + command.getQuerySignOutEventList();
-    private final String queryUserEventEndUnissuedCreditListCommand = command.getCommandPrefix() + command.getQueryUserEventEndUnissuedCreditList();
+    private final String eventListCommand = commandPrefix + command.getGroup().getGetCalendarEventList();
+    private final String helpCommand = commandPrefix + command.getPublicX().getHelp();
+    private final String queryUserCreditInfoCommand = commandPrefix + command.getGroup().getQueryUserCreditInfo();
+    private final String querySignInEventListCommand = commandPrefix + command.getGroup().getQuerySignInEventList();
+    private final String querySignOutEventListCommand = commandPrefix + command.getGroup().getQuerySignOutEventList();
+    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + command.getGroup().getQueryUserEventEndUnissuedCreditList();
+    private final String deleteUserCommand = commandPrefix + command.getPrivateX().getDeleteUser();
     //用户私聊命令
-    private final String deleteUserCommand = command.getCommandPrefix() + command.getDeleteUser();
+    private final String loginCommand = commandPrefix + command.getPrivateX().getLogin();
     //管理员命令
-    private final String addPublicToken = command.getCommandPrefix() + command.getAddPublicToken();
-    private final String adminDeleteUserCommand = command.getCommandPrefix() + command.getAdminDeleteUser();
-    private final String timedTaskCommand = command.getCommandPrefix() + command.getTimedTask();
+    private final String addPublicToken = commandPrefix + command.getAdmin().getAddPublicToken();
+    private final String adminDeleteUserCommand = commandPrefix + command.getAdmin().getAdminDeleteUser();
+    private final String timedTaskCommand = commandPrefix + command.getAdmin().getTimedTask();
 
 
     public String groupHelpInfo() {

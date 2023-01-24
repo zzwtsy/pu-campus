@@ -25,12 +25,13 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
-    private final String addPublicToken = command.getCommandPrefix() + command.getAddPublicToken();
-    private final String loginCommand = command.getCommandPrefix() + command.getLogin();
-    private final String deleteUserCommand = command.getCommandPrefix() + command.getDeleteUser();
-    private final String adminDeleteUserCommand = command.getCommandPrefix() + command.getAdminDeleteUser();
-    private final String timedTaskCommand = command.getCommandPrefix() + command.getTimedTask();
-    private final String helpCommand = command.getCommandPrefix() + command.getHelp();
+    private final String commandPrefix = command.getPublicX().getCommandPrefix();
+    private final String addPublicToken = commandPrefix + command.getAdmin().getAddPublicToken();
+    private final String loginCommand = commandPrefix + command.getPrivateX().getLogin();
+    private final String deleteUserCommand = commandPrefix + command.getPrivateX().getDeleteUser();
+    private final String adminDeleteUserCommand = commandPrefix + command.getAdmin().getAdminDeleteUser();
+    private final String timedTaskCommand = commandPrefix + command.getAdmin().getTimedTask();
+    private final String helpCommand = commandPrefix + command.getPublicX().getHelp();
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
