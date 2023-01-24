@@ -71,8 +71,9 @@ public final class PuCampus extends JavaPlugin {
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
-        //启动定时任务
-        if (!"0".equals(settingBean.getTimedTaskTime())) {
+        String doNotStartTimedTask = "0";
+        if (!doNotStartTimedTask.equals(settingBean.getTimedTaskTime())) {
+            //启动定时任务
             new TimedTaskService().start();
         }
         getLogger().info("pu-campus Plugin loaded!");
