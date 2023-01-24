@@ -29,7 +29,7 @@ public class LoginService {
             response = new Api().getLoginInfo(userName, password);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("发送登录请求失败", e);
-            return "发送登录请求失败";
+            return "发送登录请求失败:" + e.getMessage();
         }
         JsonNode jsonNode;
         try {

@@ -36,8 +36,7 @@ public class DataBaseHelper {
             Class.forName(DRIVER_CLASS_NAME);
             PuCampus.INSTANCE.getLogger().info("数据库连接成功");
         } catch (ClassNotFoundException e) {
-            PuCampus.INSTANCE.getLogger().error("数据库连接失败");
-            e.printStackTrace();
+            PuCampus.INSTANCE.getLogger().error("数据库连接失败",e);
         }
     }
 

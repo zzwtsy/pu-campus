@@ -91,6 +91,4 @@ public class CommandBean {
     public void setAdminBean(AdminBean adminBean) {
         this.adminBean = adminBean;
     }
-
-
 }

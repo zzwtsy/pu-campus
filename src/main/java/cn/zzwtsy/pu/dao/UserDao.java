@@ -1,5 +1,6 @@
 package cn.zzwtsy.pu.dao;
 
+import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.database.DataBaseHelper;
 import cn.zzwtsy.pu.utils.Encryption;
@@ -37,7 +38,7 @@ public class UserDao {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            PuCampus.INSTANCE.getLogger().error("获取用户信息失败", e);
         }
         return userBean;
     }
@@ -51,12 +52,12 @@ public class UserDao {
      */
     public int addUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         String encryption = encryptionQqId(qqId);
-        int status;
+        int status = 0;
         String sql = "INSERT INTO " + tableName + " (qqId,uid,oauthToken,oauthTokenSecret) VALUES (?,?,?,?)";
         try {
             status = DataBaseHelper.executeUpdate(sql, encryption, uid, oauthToken, oauthTokenSecret);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            PuCampus.INSTANCE.getLogger().error("添加用户信息失败", e);
         }
         return status;
     }
@@ -69,12 +70,12 @@ public class UserDao {
      */
     public int deleteUser(long qqId) {
         String encryption = encryptionQqId(qqId);
-        int deleteStatus;
+        int deleteStatus = 0;
         String sql = "DELETE FROM" + tableName + "WHERE qqId = ?";
         try {
             deleteStatus = DataBaseHelper.executeUpdate(sql, encryption);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            PuCampus.INSTANCE.getLogger().error("删除用户信息失败", e);
         }
         return deleteStatus;
     }
@@ -89,12 +90,12 @@ public class UserDao {
      */
     public int updateUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         String encryption = encryptionQqId(qqId);
-        int status;
+        int status = 0;
         String sql = "UPDATE " + tableName + " SET uid = ?,oauthToken = ?,oauthTokenSecret = ? WHERE qqId = ?";
         try {
             status = DataBaseHelper.executeUpdate(sql, uid, oauthToken, oauthTokenSecret, encryption);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            PuCampus.INSTANCE.getLogger().error("更新用户信息失败", e);
         }
         return status;
     }

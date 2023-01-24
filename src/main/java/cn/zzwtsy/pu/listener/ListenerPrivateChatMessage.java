@@ -74,10 +74,9 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
         }
         if (message.startsWith(helpCommand)) {
             if (checkAdminQqId(userQqId)) {
-                messageEvent.getSender().sendMessage("===管管理员命令===\n" + new HelpInfo().adminHelpInfo());
-            } else {
-                messageEvent.getSender().sendMessage("===私聊命令===\n" + new HelpInfo().privateHelpInfo());
+                messageEvent.getSender().sendMessage("===管管理员命令===\n\n" + new HelpInfo().adminHelpInfo());
             }
+            messageEvent.getSender().sendMessage("===私聊命令===\n\n" + new HelpInfo().privateHelpInfo());
             return;
         }
         //判断用户是否有实用管理员命令权限
@@ -98,22 +97,19 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             if (message.startsWith(timedTaskCommand)) {
                 String[] strings = splitMessage(message);
                 TimedTaskService timedTaskService = new TimedTaskService();
-                switch (strings[1]) {
-                    case "关闭":
-                    case "0":
-                        settingBean.setTimedTaskTime("0");
-                        SaveConfig.saveSettingConfig(settingBean);
-                        timedTaskService.stop();
-                        break;
-                    default:
-                        if (checkTime(strings[1])) {
-                            messageEvent.getSender().sendMessage("时间格式错误");
-                            break;
-                        }
-                        settingBean.setTimedTaskTime(strings[1]);
-                        SaveConfig.saveSettingConfig(settingBean);
-                        timedTaskService.start();
-                        break;
+                String closeTimedTask = "关闭";
+                if (closeTimedTask.equals(strings[1])) {
+                    settingBean.setTimedTaskTime("0");
+                    SaveConfig.saveSettingConfig(settingBean);
+                    timedTaskService.stop();
+                } else {
+                    if (checkTime(strings[1])) {
+                        messageEvent.getSender().sendMessage("时间格式错误");
+                        return;
+                    }
+                    settingBean.setTimedTaskTime(strings[1]);
+                    SaveConfig.saveSettingConfig(settingBean);
+                    timedTaskService.start();
                 }
             }
         }

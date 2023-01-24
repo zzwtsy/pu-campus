@@ -55,10 +55,10 @@ public class InitConfig {
         CommandBean.INSTANCE.setGroupBean(new GroupBean()
                 .setGetCalendarEventList("活动")
                 .setQueryActivityDetailById("活动信息")
-                .setQueryUserCreditInfo("学分信息")
+                .setQueryUserCreditInfo("学分")
                 .setQuerySignInEventList("签到")
                 .setQuerySignOutEventList("签退")
-                .setQueryUserEventEndUnissuedCreditList("未发放学分活动")
+                .setQueryUserEventEndUnissuedCreditList("未发放")
         );
         CommandBean.INSTANCE.setPrivateBean(new PrivateBean()
                 .setLogin("登录")

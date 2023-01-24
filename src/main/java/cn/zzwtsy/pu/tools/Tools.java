@@ -141,8 +141,9 @@ public class Tools {
             if (new File(PLUGIN_DATA_FILE_PATH).mkdirs()) {
                 PuCampus.INSTANCE.getLogger().info("创建数据库文件夹成功");
                 return false;
+            } else {
+                PuCampus.INSTANCE.getLogger().error("创建数据库文件夹失败");
             }
-            PuCampus.INSTANCE.getLogger().error("创建数据库文件夹失败");
             return false;
         }
     }

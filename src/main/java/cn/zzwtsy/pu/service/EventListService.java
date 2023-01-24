@@ -54,7 +54,7 @@ public class EventListService {
                 response = api.getUserEventEndUnissuedCreditList(userUid, String.valueOf(count), String.valueOf(i), oauthToken, oauthTokenSecret);
             } catch (IOException e) {
                 PuCampus.INSTANCE.getLogger().error("获取未发放学分列表失败", e);
-                return "获取未发放学分列表失败";
+                return "获取未发放学分列表失败" + e.getMessage();
             }
             try {
                 jsonNode = mapper.readTree(response);
@@ -95,7 +95,7 @@ public class EventListService {
             response = api.getCalendarEventList(date, oauthToken, oauthTokenSecret);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("获取活动列表失败", e);
-            return "获取活动列表失败";
+            return "获取活动列表失败" + e.getMessage();
         }
         try {
             jsonNode = mapper.readTree(response);
@@ -150,11 +150,12 @@ public class EventListService {
         String message;
         api = new Api();
         userBean = new UserService().getUser(userQqId);
-        String newEventList = null;
+        String newEventList;
         try {
             newEventList = api.getNewEventList(userBean.getOauthToken(), userBean.getOauthTokenSecret());
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("获取新活动列表失败", e);
+            return "获取新活动列表失败" + e.getMessage();
         }
         message = newEventListContentParser(newEventList);
         return message.isEmpty() ? "暂无可报名活动" : message;
@@ -243,7 +244,7 @@ public class EventListService {
             jsonNode = mapper.readTree(content);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error(e);
-            return "解析活动列表时发生错误";
+            return "解析活动列表时发生错误:" + e.getMessage();
         }
         //获取 JSON 文件的 Message 字段内容
         String messageContent = jsonNode.get(eventMessageNode).asText();

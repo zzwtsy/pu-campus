@@ -81,7 +81,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         //获取待签到列表
         if (message.startsWith(querySignInEventListCommand)) {
             String message = new EventListService().getUserCanSignInEventList(userQqId);
-            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n").plus(message));
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n").plus(message));
             return;
         }
         //获取待签退列表
