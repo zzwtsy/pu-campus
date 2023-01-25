@@ -2,8 +2,9 @@ name: Publish Dev
 
 on:
   push:
+    branches: [ "dev" ]
     tags:
-      - '*.*.*-dev'
+      - '*.*.*'
   workflow_dispatch:
 
 jobs:
