@@ -36,9 +36,10 @@ jobs:
           prerelease: false
           files: |
             ./build/mirai/*.jar
+      - name: Checkout branch
+        run: git checkout -b dev
       - name: Release Dev
         if: steps.tag.outputs.release_tag == '*.*.*-dev'
-        run: git checkout -b dev
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
