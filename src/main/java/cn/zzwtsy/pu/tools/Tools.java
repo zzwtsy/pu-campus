@@ -3,12 +3,10 @@ package cn.zzwtsy.pu.tools;
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.UserService;
 
-import java.awt.Font;
-import java.awt.FontFormatException;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
@@ -36,10 +34,9 @@ public class Tools {
      * @param fontPath 字体路径
      * @return {@link Font}
      * @throws IOException         ioexception
-     * @throws URISyntaxException  URISyntaxException
      * @throws FontFormatException 字体格式异常
      */
-    public static Font getFont(String fontPath, int fontSize) throws IOException, URISyntaxException, FontFormatException {
+    public static Font getFont(String fontPath, int fontSize) throws IOException, FontFormatException {
         InputStream resourceAsStream = Tools.class.getResourceAsStream(fontPath);
         assert resourceAsStream != null;
         Font font = Font.createFont(Font.TRUETYPE_FONT, resourceAsStream);
@@ -138,6 +135,10 @@ public class Tools {
         if (new File(DB_FILE_FULL_PATH).exists()) {
             return true;
         } else {
+            if (new File(PLUGIN_DATA_FILE_PATH).exists()) {
+                PuCampus.INSTANCE.getLogger().info("数据库文件夹已存在");
+                return false;
+            }
             if (new File(PLUGIN_DATA_FILE_PATH).mkdirs()) {
                 PuCampus.INSTANCE.getLogger().info("创建数据库文件夹成功");
                 return false;

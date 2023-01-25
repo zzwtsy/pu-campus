@@ -141,7 +141,7 @@ public class EventListService {
     }
 
     /**
-     * 获取新活动列表
+     * 获取当日可参加的新活动列表
      *
      * @param userQqId 用户qq号
      * @return {@link String}
