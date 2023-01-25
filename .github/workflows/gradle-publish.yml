@@ -19,13 +19,22 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+      - name: Checkout branch master
+        if: ${{ !contains(steps.tag.outputs.release_tag, 'dev') }}
+        run: git checkout -b master
+
+      - name: Checkout branch dev
+        if: contains(steps.tag.outputs.release_tag, 'dev')
+        run: git checkout -b dev
+
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: current
           arguments: buildPlugin
-      - name: Release
-        if: steps.tag.outputs.release_tag == '*.*.*'
+
+      - name: Release Master
+        if: ${{ !contains(steps.tag.outputs.release_tag, 'dev') }}
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,10 +45,9 @@ jobs:
           prerelease: false
           files: |
             ./build/mirai/*.jar
-      - name: Checkout branch
-        run: git checkout -b dev
+
       - name: Release Dev
-        if: steps.tag.outputs.release_tag == '*.*.*-dev'
+        if: contains(steps.tag.outputs.release_tag, 'dev')
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
