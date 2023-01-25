@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Checkout branch master
-        else: ${{ !contains(steps.tag.outputs.release_tag, 'dev') }}
+        if: ${{ !contains(steps.tag.outputs.release_tag, 'dev') }}
         run: git checkout -b master
 
       - name: Checkout branch dev
