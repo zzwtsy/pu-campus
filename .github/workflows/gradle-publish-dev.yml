@@ -1,9 +1,8 @@
-name: Publish
+name: Publish Dev
 
 on:
   push:
     tags:
-      - '*.*.*'
       - '*.*.*-dev'
   workflow_dispatch:
 
@@ -19,13 +18,11 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Checkout branch master
-        if: "!contains(steps.tag.outputs.release_tag, 'dev')"
-        run: git checkout -b master
 
       - name: Checkout branch dev
-        if: "contains(steps.tag.outputs.release_tag, 'dev')"
-        run: git checkout -b dev
+        run: |
+          git checkout -b dev
+          git branch -a
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
@@ -33,21 +30,7 @@ jobs:
           gradle-version: current
           arguments: buildPlugin
 
-      - name: Release Master
-        if: "!contains(steps.tag.outputs.release_tag, 'dev')"
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          name: ${{ steps.tag.outputs.release_tag }}
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          body_path: Release.md
-          prerelease: false
-          files: |
-            ./build/mirai/*.jar
-
-      - name: Release Dev
-        if: "contains(steps.tag.outputs.release_tag, 'dev')"
+      - name: Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
