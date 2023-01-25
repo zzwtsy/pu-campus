@@ -15,15 +15,22 @@ import java.io.IOException;
  * @since 2022/11/30
  */
 public class LoginService {
+    private ObjectMapper mapper;
+
+    public LoginService() {
+        mapper = new ObjectMapper();
+    }
 
     /**
+     * 获取用户令牌
+     *
      * @param userName 用户名
      * @param password 用户密码
+     * @param qqId     qq
      * @return String
      */
     public String getUserToken(long qqId, String userName, String password) {
-        String userTokenSuccessWord = "success";
-        ObjectMapper mapper = new ObjectMapper();
+        mapper = new ObjectMapper();
         String response;
         try {
             response = new Api().getLoginInfo(userName, password);
@@ -40,6 +47,7 @@ public class LoginService {
         }
         JsonNode contentNode = jsonNode.get("content");
         String message = jsonNode.get("message").asText();
+        String userTokenSuccessWord = "success";
         if (!userTokenSuccessWord.equals(message)) {
             return message;
         }
@@ -49,6 +57,50 @@ public class LoginService {
         if (oauthToken == null || oauthTokenSecret == null || oauthToken.isEmpty() || oauthTokenSecret.isEmpty()) {
             return "获取用户Token失败";
         }
+        return setUserInfo(qqId, uid, oauthToken, oauthTokenSecret);
+    }
+
+    /**
+     * 获取用户uid
+     *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @return {@link String}
+     */
+    public String getUserUid(long qqId,String oauthToken, String oauthTokenSecret) {
+        String userInfo;
+        JsonNode jsonNode;
+        try {
+            userInfo = new Api().getUserInfo(oauthToken, oauthTokenSecret);
+        } catch (IOException e) {
+            PuCampus.INSTANCE.getLogger().error("获取用户信息失败：", e);
+            return "添加用户 Token 失败";
+        }
+        try {
+            jsonNode = mapper.readTree(userInfo);
+        } catch (JsonProcessingException e) {
+            PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
+            return e.getMessage();
+        }
+        String message = jsonNode.get("message").asText();
+        String getUserInfoFailed = "授权失败";
+        if (getUserInfoFailed.equals(message)) {
+            return message;
+        }
+        String uid = jsonNode.get("content").get("user_info").get("uid").asText();
+        return setUserInfo(qqId, uid, oauthToken, oauthTokenSecret);
+    }
+
+    /**
+     * 设置用户信息
+     *
+     * @param qqId             qq
+     * @param uid              uid
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @return {@link String}
+     */
+    public String setUserInfo(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         UserService userService = new UserService();
         if (userService.getUser(qqId) != null) {
             //用户已存在，更新用户信息
@@ -64,5 +116,6 @@ public class LoginService {
             return "登录失败:添加用户Token失败";
         }
         return "登陆成功";
+
     }
 }

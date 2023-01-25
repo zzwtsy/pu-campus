@@ -79,8 +79,8 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             messageEvent.getSender().sendMessage("===私聊命令===\n\n" + new HelpInfo().privateHelpInfo());
             return;
         }
-        //判断用户是否有实用管理员命令权限
-        if (checkAdminQqId(userQqId)) {
+        //判断用户是否有管理员命令权限
+        if (!checkAdminQqId(userQqId)) {
             messageEvent.getSender().sendMessage("你没有此命令权限");
         } else {
             //管理员删除用户信息（可删除所有用户信息）
@@ -122,12 +122,19 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param messageEvent 消息事件
      */
     private void login(String message, MessageEvent messageEvent, long userQqId) {
+        String setUserTokenStatus;
         messageEvent.getSender().sendMessage("正在登录,请稍后...");
         String[] strings = splitMessage(message);
-        //补全用户账号: 用户账号加用户学校邮件后缀
-        String userName = strings[1] + settingBean.getEmailSuffix();
-        String getUserTokenStatus = new LoginService().getUserToken(userQqId, userName, strings[2]);
-        messageEvent.getSender().sendMessage(getUserTokenStatus);
+        int messageLength = strings[1].length();
+        int oauthTokenLength = 32;
+        if (messageLength == oauthTokenLength) {
+            setUserTokenStatus = new LoginService().getUserUid(userQqId, strings[1], strings[2]);
+        } else {
+            //补全用户账号: 用户账号加用户学校邮件后缀
+            String userName = strings[1] + settingBean.getEmailSuffix();
+            setUserTokenStatus = new LoginService().getUserToken(userQqId, userName, strings[2]);
+        }
+        messageEvent.getSender().sendMessage(setUserTokenStatus);
     }
 
     /**

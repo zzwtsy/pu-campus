@@ -131,4 +131,17 @@ public class Api {
                 + "&oauth_token_secret=" + oauthTokenSecret;
         return HttpHelper.sendGet(applyCreditUrl, MyHeaders.creditHeaders());
     }
+
+    /**
+     * 获取用户信息
+     *
+     * @param oauthToken       oauthToken
+     * @param oauthTokenSecret oauthTokenSecret
+     * @return {@link String}
+     * @throws IOException ioexception
+     */
+    public String getUserInfo(String oauthToken, String oauthTokenSecret) throws IOException {
+        String userInfoUrl = HOST + "/api/User/personalCenter?oauth_token=" + oauthToken + "&oauth_token_secret=" + oauthTokenSecret;
+        return HttpHelper.sendGet(userInfoUrl, MyHeaders.baseHeaders());
+    }
 }
