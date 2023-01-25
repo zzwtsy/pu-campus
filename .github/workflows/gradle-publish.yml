@@ -1,8 +1,10 @@
 name: Publish
 
 on:
-  release:
-    types: [ released ]
+  push:
+    tags:
+      - '*.*.*'
+      - '*.*.*-dev'
   workflow_dispatch:
 
 jobs:
@@ -23,6 +25,7 @@ jobs:
           gradle-version: current
           arguments: buildPlugin
       - name: Release
+        if: steps.tag.outputs.release_tag == '*.*.*'
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -30,6 +33,19 @@ jobs:
           name: ${{ steps.tag.outputs.release_tag }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: Release.md
-          prerelease: true
+          prerelease: false
+          files: |
+            ./build/mirai/*.jar
+      - name: Release Dev
+        if: steps.tag.outputs.release_tag == '*.*.*-dev'
+        run: git checkout -b dev
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: ${{ steps.tag.outputs.release_tag }}
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          body_path: Release.md
+          prerelease: false
           files: |
             ./build/mirai/*.jar
