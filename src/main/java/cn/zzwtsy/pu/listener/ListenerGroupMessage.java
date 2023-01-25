@@ -53,6 +53,11 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         }
         //根据日期获取活动列表
         if (message.startsWith(eventListCommand)) {
+            int commandLength = 2;
+            if (message.length() != commandLength) {
+                groupMessageEvent.getGroup().sendMessage("命令格式错误");
+                return;
+            }
             String[] strings = splitMessage(message);
             getEventList(strings[1], userQqId);
             return;

@@ -95,6 +95,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             }
             //定时任务
             if (message.startsWith(timedTaskCommand)) {
+                int commandLength = 2;
+                if (message.length() != commandLength) {
+                    messageEvent.getSender().sendMessage("命令格式错误");
+                    return;
+                }
                 String[] strings = splitMessage(message);
                 TimedTaskService timedTaskService = new TimedTaskService();
                 String closeTimedTask = "关闭";
@@ -123,6 +128,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param messageEvent 消息事件
      */
     private void login(String message, MessageEvent messageEvent, long userQqId) {
+        int commandLength = 3;
+        if (message.length() != commandLength) {
+            messageEvent.getSender().sendMessage("命令格式错误");
+            return;
+        }
         String setUserTokenStatus;
         messageEvent.getSender().sendMessage("正在登录,请稍后...");
         String[] strings = splitMessage(message);
@@ -163,6 +173,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param messageEvent 消息事件
      */
     private void adminDeleteUser(String message, MessageEvent messageEvent) {
+        int commandLength = 2;
+        if (message.length() != commandLength) {
+            messageEvent.getSender().sendMessage("命令格式错误");
+            return;
+        }
         long qqId = Long.parseLong(splitMessage(message)[1]);
         if (!checkUserQqId(String.valueOf(qqId))) {
             messageEvent.getSender().sendMessage("用户『" + qqId + "』qq号错误");
