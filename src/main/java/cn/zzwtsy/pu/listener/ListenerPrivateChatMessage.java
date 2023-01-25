@@ -103,13 +103,14 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
                     SaveConfig.saveSettingConfig(settingBean);
                     timedTaskService.stop();
                 } else {
-                    if (checkTime(strings[1])) {
+                    if (!checkTime(strings[1])) {
                         messageEvent.getSender().sendMessage("时间格式错误");
                         return;
                     }
                     settingBean.setTimedTaskTime(strings[1]);
                     SaveConfig.saveSettingConfig(settingBean);
-                    timedTaskService.start();
+                    String delayTime = timedTaskService.start();
+                    messageEvent.getSender().sendMessage(delayTime);
                 }
             }
         }

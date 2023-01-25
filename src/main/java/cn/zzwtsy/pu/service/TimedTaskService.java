@@ -26,15 +26,23 @@ public class TimedTaskService {
 
     /**
      * 启动定时任务
+     *
+     * @return {@link String}
      */
-    public void start() {
+    public String start() {
+        long delayTime = 0;
         try {
-            long delayTime = calculateScheduledDelayTime();
+            delayTime = calculateScheduledDelayTime();
             scheduler.scheduleAtFixedRate(new ScheduledTask(), delayTime, 86400, TimeUnit.SECONDS);
             PuCampus.INSTANCE.getLogger().info("已启动定时任务，延时" + delayTime + "秒后开始发送消息");
         } catch (ParseException e) {
             PuCampus.INSTANCE.getLogger().error("启动定时任务失败", e);
         }
+        int anHour = 60;
+        if (delayTime > anHour) {
+            return "已启动定时任务，延时" + (delayTime / 3600) + "小时后开始发送消息";
+        }
+        return "已启动定时任务，延时" + delayTime + "秒后开始发送消息";
     }
 
     /**
