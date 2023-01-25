@@ -96,11 +96,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             //定时任务
             if (message.startsWith(timedTaskCommand)) {
                 int commandLength = 2;
-                if (message.length() != commandLength) {
+                String[] strings = splitMessage(message);
+                if (strings.length != commandLength) {
                     messageEvent.getSender().sendMessage("命令格式错误");
                     return;
                 }
-                String[] strings = splitMessage(message);
                 TimedTaskService timedTaskService = new TimedTaskService();
                 String closeTimedTask = "关闭";
                 if (closeTimedTask.equals(strings[1])) {
@@ -129,13 +129,13 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      */
     private void login(String message, MessageEvent messageEvent, long userQqId) {
         int commandLength = 3;
-        if (message.length() != commandLength) {
+        String[] strings = splitMessage(message);
+        String setUserTokenStatus;
+        if (strings.length != commandLength) {
             messageEvent.getSender().sendMessage("命令格式错误");
             return;
         }
-        String setUserTokenStatus;
         messageEvent.getSender().sendMessage("正在登录,请稍后...");
-        String[] strings = splitMessage(message);
         int messageLength = strings[1].length();
         int oauthTokenLength = 32;
         if (messageLength == oauthTokenLength) {
@@ -173,12 +173,12 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      * @param messageEvent 消息事件
      */
     private void adminDeleteUser(String message, MessageEvent messageEvent) {
+        String[] strings = splitMessage(message);
         int commandLength = 2;
-        if (message.length() != commandLength) {
+        if (strings.length != commandLength) {
             messageEvent.getSender().sendMessage("命令格式错误");
-            return;
         }
-        long qqId = Long.parseLong(splitMessage(message)[1]);
+        long qqId = Long.parseLong(strings[1]);
         if (!checkUserQqId(String.valueOf(qqId))) {
             messageEvent.getSender().sendMessage("用户『" + qqId + "』qq号错误");
             return;
