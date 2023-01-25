@@ -20,7 +20,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Checkout branch master
-        if: ${{ contains(steps.tag.outputs.release_tag, 'dev') }} == false
+        else: ${{ !contains(steps.tag.outputs.release_tag, 'dev') }}
         run: git checkout -b master
 
       - name: Checkout branch dev
@@ -34,7 +34,7 @@ jobs:
           arguments: buildPlugin
 
       - name: Release Master
-        if: ${{ contains(steps.tag.outputs.release_tag, 'dev') }} == false
+        if: ${{ !contains(steps.tag.outputs.release_tag, 'dev') }}
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
