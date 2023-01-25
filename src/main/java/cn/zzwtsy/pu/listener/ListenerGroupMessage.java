@@ -54,11 +54,11 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         //根据日期获取活动列表
         if (message.startsWith(eventListCommand)) {
             int commandLength = 2;
-            if (message.length() != commandLength) {
+            String[] strings = splitMessage(message);
+            if (strings.length != commandLength) {
                 groupMessageEvent.getGroup().sendMessage("命令格式错误");
                 return;
             }
-            String[] strings = splitMessage(message);
             getEventList(strings[1], userQqId);
             return;
         }
@@ -118,12 +118,12 @@ public class ListenerGroupMessage extends SimpleListenerHost {
                 date = dateCalculate(-1);
                 break;
             default:
-                if (!checkDateFormat(dateParameter)) {
-                    groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
-                    return;
-                }
                 date = addYear(dateParameter);
                 break;
+        }
+        if (!checkDateFormat(date)) {
+            groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("日期格式错误"));
+            return;
         }
         if (!checkUserLogin(userQqId)) {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
