@@ -129,8 +129,15 @@ public class ListenerGroupMessage extends SimpleListenerHost {
             groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("你还没有登陆请先私聊机器人登陆PU校园账户"));
             return;
         }
-        groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("正在获取").plus(date).plus("活动列表"));
+        groupMessageEvent.getGroup()
+                .sendMessage(new At(userQqId)
+                        .plus("正在获取")
+                        .plus(date)
+                        .plus("活动列表"));
         String eventList = new EventListService().getCalendarEventList(userQqId, date);
-        groupMessageEvent.getGroup().sendMessage(new At(userQqId).plus("\n\n").plus(eventList));
+        groupMessageEvent.getGroup()
+                .sendMessage(new At(userQqId)
+                .plus("\n\n")
+                .plus(eventList));
     }
 }

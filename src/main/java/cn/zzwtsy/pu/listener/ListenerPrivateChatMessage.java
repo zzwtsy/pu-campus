@@ -4,6 +4,7 @@ import cn.zzwtsy.pu.service.LoginService;
 import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.tools.SaveConfig;
+import cn.zzwtsy.pu.tools.Tools;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
@@ -32,6 +33,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
     private final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
     private final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
+    String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken};
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
@@ -79,45 +81,49 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             messageEvent.getSender().sendMessage("===私聊命令===\n\n" + new HelpInfo().privateHelpInfo());
             return;
         }
+        //判断命令是否是管理员命令
+        if (!Tools.messageContainsCommand(message, adminCommandArrays)) {
+            return;
+        }
         //判断用户是否有管理员命令权限
         if (!checkAdminQqId(userQqId)) {
             messageEvent.getSender().sendMessage("你没有此命令权限");
-        } else {
-            //管理员删除用户信息（可删除所有用户信息）
-            if (message.startsWith(adminDeleteUserCommand)) {
-                adminDeleteUser(message, messageEvent);
+            return;
+        }
+        //管理员删除用户信息（可删除所有用户信息）
+        if (message.startsWith(adminDeleteUserCommand)) {
+            adminDeleteUser(message, messageEvent);
+            return;
+        }
+        //添加公共Token
+        if (message.startsWith(addPublicToken)) {
+            login(message, messageEvent, 0);
+            return;
+        }
+        //定时任务
+        if (message.startsWith(timedTaskCommand)) {
+            int commandLength = 2;
+            String[] strings = splitMessage(message);
+            if (strings.length != commandLength) {
+                messageEvent.getSender().sendMessage("命令格式错误");
                 return;
             }
-            //添加公共Token
-            if (message.startsWith(addPublicToken)) {
-                login(message, messageEvent, 0);
+            TimedTaskService timedTaskService = new TimedTaskService();
+            String closeTimedTask = "关闭";
+            if (closeTimedTask.equals(strings[1])) {
+                settingBean.setTimedTaskTime("0");
+                SaveConfig.saveSettingConfig(settingBean);
+                timedTaskService.stop();
                 return;
             }
-            //定时任务
-            if (message.startsWith(timedTaskCommand)) {
-                int commandLength = 2;
-                String[] strings = splitMessage(message);
-                if (strings.length != commandLength) {
-                    messageEvent.getSender().sendMessage("命令格式错误");
-                    return;
-                }
-                TimedTaskService timedTaskService = new TimedTaskService();
-                String closeTimedTask = "关闭";
-                if (closeTimedTask.equals(strings[1])) {
-                    settingBean.setTimedTaskTime("0");
-                    SaveConfig.saveSettingConfig(settingBean);
-                    timedTaskService.stop();
-                } else {
-                    if (!checkTime(strings[1])) {
-                        messageEvent.getSender().sendMessage("时间格式错误");
-                        return;
-                    }
-                    settingBean.setTimedTaskTime(strings[1]);
-                    SaveConfig.saveSettingConfig(settingBean);
-                    String delayTime = timedTaskService.start();
-                    messageEvent.getSender().sendMessage(delayTime);
-                }
+            if (!checkTime(strings[1])) {
+                messageEvent.getSender().sendMessage("时间格式错误");
+                return;
             }
+            settingBean.setTimedTaskTime(strings[1]);
+            SaveConfig.saveSettingConfig(settingBean);
+            String delayTime = timedTaskService.start();
+            messageEvent.getSender().sendMessage(delayTime);
         }
     }
 

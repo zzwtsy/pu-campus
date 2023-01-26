@@ -2,11 +2,7 @@ package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.UserService;
-
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
@@ -28,19 +24,19 @@ import static java.lang.Math.abs;
  */
 public class Tools {
     /**
-     * 获取外部字体
+     * 判断消息是否包含命令
      *
-     * @param fontSize 字体大小
-     * @param fontPath 字体路径
-     * @return {@link Font}
-     * @throws IOException         ioexception
-     * @throws FontFormatException 字体格式异常
+     * @param message 消息
+     * @param command 命令数组
+     * @return boolean
      */
-    public static Font getFont(String fontPath, int fontSize) throws IOException, FontFormatException {
-        InputStream resourceAsStream = Tools.class.getResourceAsStream(fontPath);
-        assert resourceAsStream != null;
-        Font font = Font.createFont(Font.TRUETYPE_FONT, resourceAsStream);
-        return font.deriveFont(Font.PLAIN, fontSize);
+    public static boolean messageContainsCommand(String message, String[] command) {
+        for (String s : command) {
+            if (message.startsWith(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
