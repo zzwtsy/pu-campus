@@ -55,13 +55,6 @@ public class NewEvent extends AbstractEvent {
                     .build();
         }
         //获取 content 字段内容
-        JsonNode contentNode = jsonNode.get(eventContentNode);
-        //判断 content 内容 是否为空
-        if (contentNode.isEmpty()) {
-            return new MessageChainBuilder()
-                    .append("当前暂无新活动")
-                    .build();
-        }
-        return jsonNode;
+        return jsonNode.get(eventContentNode);
     }
 }

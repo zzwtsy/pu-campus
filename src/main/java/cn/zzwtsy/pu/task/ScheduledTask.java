@@ -55,10 +55,17 @@ public class ScheduledTask implements Runnable {
         //判断获取qq群是否失败
         if (group != null) {
             MessageChain messages = new EventService(userId).getNewEventList();
-            group.sendMessage(AtAll.INSTANCE.plus("\n")
-                    .plus("今日可参加活动列表")
-                    .plus("\n\n")
-                    .plus(messages));
+            MessageChain messageChain;
+            if (messages.isEmpty()){
+                messageChain = AtAll.INSTANCE.plus("\n")
+                        .plus("今日暂无可参加活动");
+            } else {
+                messageChain = AtAll.INSTANCE.plus("\n")
+                        .plus("今日可参加活动")
+                        .plus("\n\n")
+                        .plus(messages);
+            }
+            group.sendMessage(messageChain);
         } else {
             PuCampus.INSTANCE.getLogger().error("获取qq群失败，请检查配置文件中的qq群号");
             botFriend.sendMessage("发送定时信息失败：获取qq群失败，请检查配置文件中的qq群号");
