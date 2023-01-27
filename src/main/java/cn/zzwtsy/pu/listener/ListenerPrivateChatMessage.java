@@ -73,9 +73,9 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             return;
         }
         long publicTokenQqId = 0;
-        MessageChain groupMessage = commandService.adminCommand(message, publicTokenQqId);
-        if (groupMessage != null) {
-            groupTempMessageEvent.getSender().sendMessage(groupMessage);
+        MessageChain adminMessage = commandService.adminCommand(message, publicTokenQqId);
+        if (adminMessage != null) {
+            groupTempMessageEvent.getSender().sendMessage(adminMessage);
         }
     }
 }

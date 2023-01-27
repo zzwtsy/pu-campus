@@ -2,12 +2,11 @@ package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.EventListService;
 import cn.zzwtsy.pu.service.UserCreditService;
-import cn.zzwtsy.pu.service.command.Command;
+import cn.zzwtsy.pu.service.event.implement.EventEndUnissuedCreditEvent;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 import static cn.zzwtsy.pu.utils.DateUtil.addYear;
@@ -20,26 +19,17 @@ import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
  * @author zzwtsy
  * @since 2023/01/26
  */
-public class GroupCommand implements Command {
-    private final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
-    private final String eventListCommand = commandPrefix + commandBean.getGroupBean().getGetCalendarEventList();
-    private final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
-    private final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
-    private final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroupBean().getQueryUserCreditInfo();
-    private final String querySignInEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignInEventList();
-    private final String querySignOutEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignOutEventList();
-    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroupBean().getQueryUserEventEndUnissuedCreditList();
+public class GroupCommand extends AbstractCommand {
 
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
         //获取帮助信息
         if (message.startsWith(helpCommand)) {
-            CommandPublicMethod commandPublicMethod = new CommandPublicMethod();
             return new MessageChainBuilder()
                     .append("===群聊可使用命令===\n\n")
-                    .append(commandPublicMethod.groupHelpInfo())
+                    .append(groupHelpInfo())
                     .append("\n\n\n===私聊可使用命令===\n\n")
-                    .append(commandPublicMethod.privateHelpInfo())
+                    .append(privateHelpInfo())
                     .build();
         }
         if (!checkUserLogin(userQqId)) {
@@ -64,7 +54,7 @@ public class GroupCommand implements Command {
         }
         //获取活动已结束未发放学分列表
         if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
-            String eventList = new EventListService().getUserEventEndUnissuedCreditList(userQqId);
+            MessageChain eventList = new EventEndUnissuedCreditEvent(userQqId).getMessage();
             return new MessageChainBuilder()
                     .append(new At(userQqId)
                             .plus("\n")

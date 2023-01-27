@@ -1,35 +1,37 @@
 package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.LoginService;
+import cn.zzwtsy.pu.service.command.Command;
 
 import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
 import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
 /**
- * 命令公共方法
+ * command 抽象类
  *
  * @author zzwtsy
- * @since 2023/01/26
+ * @since 2023/01/27
  */
-public class CommandPublicMethod {
-    private final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
+@SuppressWarnings("PMD")
+public abstract class AbstractCommand implements Command {
+    protected final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
     /*群聊命令*/
-    private final String eventListCommand = commandPrefix + commandBean.getGroupBean().getGetCalendarEventList();
-    private final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
-    private final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroupBean().getQueryUserCreditInfo();
-    private final String querySignInEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignInEventList();
-    private final String querySignOutEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignOutEventList();
-    private final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroupBean().getQueryUserEventEndUnissuedCreditList();
-    private final String deleteUserCommand = commandPrefix + commandBean.getPrivateBean().getDeleteUser();
+    protected final String eventListCommand = commandPrefix + commandBean.getGroupBean().getGetCalendarEventList();
+    protected final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
+    protected final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroupBean().getQueryUserCreditInfo();
+    protected final String querySignInEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignInEventList();
+    protected final String querySignOutEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignOutEventList();
+    protected final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroupBean().getQueryUserEventEndUnissuedCreditList();
+    protected final String deleteUserCommand = commandPrefix + commandBean.getPrivateBean().getDeleteUser();
     /*用户私聊命令*/
-    private final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
+    protected final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
     /*管理员命令*/
-    private final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
-    private final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
-    private final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
+    protected final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
+    protected final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
+    protected final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
 
-    public String groupHelpInfo() {
+    protected String groupHelpInfo() {
         return eventListCommand + " <日期格式(04-08)|今日|今天|昨日|昨天|明日|明天>" + "根据日期获取活动列表"
                 + "\n" + querySignInEventListCommand + "：获取需要签到的活动列表"
                 + "\n" + querySignOutEventListCommand + "：获取需要签退的活动列表"
@@ -38,13 +40,13 @@ public class CommandPublicMethod {
                 + "\n" + helpCommand + "：获取帮助信息";
     }
 
-    public String privateHelpInfo() {
+    protected String privateHelpInfo() {
         return loginCommand + " <用户名|oauthToken> <密码|oauthTokenSecret>" + "：登陆 pu 校园"
                 + "\n" + deleteUserCommand + "：删除个人信息"
                 + "\n" + helpCommand + "：获取帮助信息";
     }
 
-    public String adminHelpInfo() {
+    protected String adminHelpInfo() {
         return addPublicToken + " <用户名|oauthToken> <密码|oauthTokenSecret>" + "：添加公共 token"
                 + "\n" + adminDeleteUserCommand + " <用户 qq 号>" + "：删除用户信息"
                 + "\n" + timedTaskCommand + " <时间为24小时制|关闭>" + "：设置定时任务时间或关闭定时任务"
@@ -56,7 +58,7 @@ public class CommandPublicMethod {
      *
      * @param message 消息
      */
-    public String login(String message, long userQqId) {
+    protected String login(String message, long userQqId) {
         int commandLength = 3;
         String[] strings = splitMessage(message);
         String setUserTokenStatus;

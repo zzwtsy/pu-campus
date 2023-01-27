@@ -1,11 +1,9 @@
 package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.UserService;
-import cn.zzwtsy.pu.service.command.Command;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 
@@ -15,19 +13,14 @@ import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
  * @author zzwtsy
  * @since 2023/01/26
  */
-public class PrivateChatCommand implements Command {
-    private final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
-    private final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
-    private final String deleteUserCommand = commandPrefix + commandBean.getPrivateBean().getDeleteUser();
-    private final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
+public class PrivateChatCommand extends AbstractCommand {
 
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
         //登陆命令
         if (message.startsWith(loginCommand)) {
             return new MessageChainBuilder()
-                    .append(new CommandPublicMethod()
-                            .login(message, userQqId))
+                    .append(login(message, userQqId))
                     .build();
         }
         //用户删除自己信息
@@ -37,16 +30,15 @@ public class PrivateChatCommand implements Command {
                     .build();
         }
         if (message.startsWith(helpCommand)) {
-            CommandPublicMethod commandPublicMethod = new CommandPublicMethod();
             if (checkAdminQqId(userQqId)) {
                 return new MessageChainBuilder()
                         .append("===管管理员命令===\n\n")
-                        .append(commandPublicMethod.adminHelpInfo())
+                        .append(adminHelpInfo())
                         .build();
             }
             return new MessageChainBuilder()
                     .append("===私聊命令===\n\n")
-                    .append(commandPublicMethod.privateHelpInfo())
+                    .append(privateHelpInfo())
                     .build();
         }
         return null;

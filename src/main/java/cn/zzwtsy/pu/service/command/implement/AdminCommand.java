@@ -2,12 +2,10 @@ package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.service.UserService;
-import cn.zzwtsy.pu.service.command.Command;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
 import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
@@ -20,11 +18,7 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  * @author zzwtsy
  * @since 2023/01/26
  */
-public class AdminCommand implements Command {
-    private final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
-    private final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
-    private final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
-    private final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
+public class AdminCommand extends AbstractCommand {
 
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
@@ -37,7 +31,7 @@ public class AdminCommand implements Command {
         //添加公共Token
         if (message.startsWith(addPublicToken)) {
             return new MessageChainBuilder()
-                    .append(new CommandPublicMethod().login(message, userQqId))
+                    .append(login(message, userQqId))
                     .build();
         }
         //定时任务
