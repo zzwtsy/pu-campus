@@ -2,12 +2,13 @@ package cn.zzwtsy.pu.task;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.bean.UserBean;
-import cn.zzwtsy.pu.service.EventListService;
 import cn.zzwtsy.pu.service.UserService;
+import cn.zzwtsy.pu.service.event.EventService;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.data.AtAll;
+import net.mamoe.mirai.message.data.MessageChain;
 
 import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
@@ -30,6 +31,7 @@ public class ScheduledTask implements Runnable {
 
     @Override
     public void run() {
+        long userId;
         Bot bot = Bot.getInstance(settingBean.getBotId());
         //获取qq机器人的管理员好友
         Friend botFriend = bot.getFriend(settingBean.getAdminId());
@@ -45,17 +47,18 @@ public class ScheduledTask implements Runnable {
                 botFriend.sendMessage("请添加公共 pu 账号或管理员登录 pu 校园，以启用定时推送");
                 return;
             }
+            userId = settingBean.getAdminId();
         } else {
-            userBean = new UserService().getUser(0);
+            userId = 0;
         }
         Group group = bot.getGroup(settingBean.getGroupId());
         //判断获取qq群是否失败
         if (group != null) {
-            String newEventList = new EventListService().getNewEventList(settingBean.getAdminId());
+            MessageChain messages = new EventService(userId).getNewEventList();
             group.sendMessage(AtAll.INSTANCE.plus("\n")
                     .plus("今日可参加活动列表")
                     .plus("\n\n")
-                    .plus(newEventList));
+                    .plus(messages));
         } else {
             PuCampus.INSTANCE.getLogger().error("获取qq群失败，请检查配置文件中的qq群号");
             botFriend.sendMessage("发送定时信息失败：获取qq群失败，请检查配置文件中的qq群号");

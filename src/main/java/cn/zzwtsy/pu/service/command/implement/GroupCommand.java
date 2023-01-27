@@ -1,17 +1,13 @@
 package cn.zzwtsy.pu.service.command.implement;
 
-import cn.zzwtsy.pu.service.EventListService;
 import cn.zzwtsy.pu.service.UserCreditService;
-import cn.zzwtsy.pu.service.event.implement.EventEndUnissuedCreditEvent;
+import cn.zzwtsy.pu.service.event.EventService;
 import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
-import static cn.zzwtsy.pu.utils.DateUtil.addYear;
-import static cn.zzwtsy.pu.utils.DateUtil.checkDateFormat;
-import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
 
 /**
  * 群组
@@ -23,6 +19,7 @@ public class GroupCommand extends AbstractCommand {
 
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
+        EventService eventService = new EventService(userQqId);
         //获取帮助信息
         if (message.startsWith(helpCommand)) {
             return new MessageChainBuilder()
@@ -47,19 +44,11 @@ public class GroupCommand extends AbstractCommand {
                         .append("命令格式错误")
                         .build();
             }
-            String eventList = getEventList(strings[1], userQqId);
-            return new MessageChainBuilder()
-                    .append(eventList)
-                    .build();
+            return eventService.getCalendarEventList(strings[1]);
         }
         //获取活动已结束未发放学分列表
         if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
-            MessageChain eventList = new EventEndUnissuedCreditEvent(userQqId).getMessage();
-            return new MessageChainBuilder()
-                    .append(new At(userQqId)
-                            .plus("\n")
-                            .plus(eventList))
-                    .build();
+            return eventService.getEventEndUnissuedCreditEvent();
         }
         //用户登录
         if (message.startsWith(loginCommand)) {
@@ -84,56 +73,13 @@ public class GroupCommand extends AbstractCommand {
         }
         //获取待签到列表
         if (message.startsWith(querySignInEventListCommand)) {
-            String eventList = new EventListService().getUserCanSignInEventList(userQqId);
-            return new MessageChainBuilder()
-                    .append(new At(userQqId)
-                            .plus("\n\n")
-                            .plus(eventList))
-                    .build();
+            return eventService.getUserCanSignInEventList();
         }
         //获取待签退列表
         if (message.startsWith(querySignOutEventListCommand)) {
-            String eventList = new EventListService().getUserCanSignOutEventList(userQqId);
-            return new MessageChainBuilder()
-                    .append(new At(userQqId)
-                            .plus("\n\n")
-                            .plus(eventList))
-                    .build();
+            return eventService.getUserCanSignOutEventList();
         }
         return null;
     }
 
-    /**
-     * 获取活动列表
-     *
-     * @param dateParameter 日期
-     * @param userQqId      用户qq号
-     */
-    private String getEventList(String dateParameter, long userQqId) {
-        String date;
-        switch (dateParameter) {
-            case "今日":
-            case "今天":
-                date = dateCalculate(0);
-                break;
-            case "明日":
-            case "明天":
-                date = dateCalculate(+1);
-                break;
-            case "昨日":
-            case "昨天":
-                date = dateCalculate(-1);
-                break;
-            default:
-                date = addYear(dateParameter);
-                break;
-        }
-        if (!checkDateFormat(date)) {
-            return "日期格式错误";
-        }
-        if (!checkUserLogin(userQqId)) {
-            return "你还没有登陆请先私聊机器人登陆PU校园账户";
-        }
-        return new EventListService().getCalendarEventList(userQqId, date);
-    }
 }
