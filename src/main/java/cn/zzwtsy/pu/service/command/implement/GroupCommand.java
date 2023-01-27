@@ -44,7 +44,15 @@ public class GroupCommand extends AbstractCommand {
                         .append("命令格式错误")
                         .build();
             }
-            return eventService.getCalendarEventList(strings[1]);
+            MessageChain messageChain = eventService.getCalendarEventList(strings[1]);
+            if (messageChain.isEmpty()) {
+                return new MessageChainBuilder()
+                        .append(new At(userQqId))
+                        .append("\n\n")
+                        .append("暂无可参加活动")
+                        .build();
+            }
+            return messageChain;
         }
         //获取活动已结束未发放学分列表
         if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
