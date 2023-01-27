@@ -16,7 +16,7 @@ import static cn.zzwtsy.pu.tools.Tools.calculateScheduledDelayTime;
  * @since 2023/01/12
  */
 public class TimedTaskService {
-    private ScheduledExecutorService scheduler;
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     /**
      * 启动定时任务
@@ -24,7 +24,6 @@ public class TimedTaskService {
      * @return {@link String}
      */
     public String start() {
-        scheduler = Executors.newSingleThreadScheduledExecutor();
         long delayTime;
         try {
             delayTime = calculateScheduledDelayTime();
@@ -51,6 +50,15 @@ public class TimedTaskService {
     public void stop() {
         scheduler.shutdownNow();
         PuCampus.INSTANCE.getLogger().info("已停止定时任务");
+    }
+
+    /**
+     * 线程是否关闭
+     *
+     * @return boolean
+     */
+    public boolean isShutdown(){
+        return scheduler.isShutdown();
     }
 
 }

@@ -82,17 +82,21 @@ public class AdminCommand extends AbstractCommand {
             return "命令格式错误";
         }
         String closeTimedTask = "关闭";
+        TimedTaskService timedTaskService = new TimedTaskService();
         if (closeTimedTask.equals(strings[1])) {
             settingBean.setTimedTaskTime("0");
             SaveConfig.saveSettingConfig(settingBean);
-            new TimedTaskService().stop();
-            return "定时任务已停止";
+            timedTaskService.stop();
+            if (timedTaskService.isShutdown()){
+                return "定时任务已停止";
+            }
+            return "定时任务停止失败";
         }
         if (!checkTime(strings[1])) {
             return "时间格式错误";
         }
         settingBean.setTimedTaskTime(strings[1]);
         SaveConfig.saveSettingConfig(settingBean);
-        return new TimedTaskService().start();
+        return timedTaskService.start();
     }
 }
