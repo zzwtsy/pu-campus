@@ -39,8 +39,6 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        //加载命令
-        new LoadCommands();
         //检测数据库文件是否存在
         if (!checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");
@@ -70,6 +68,8 @@ public final class PuCampus extends JavaPlugin {
         }
         // 加载全部配置文件
         LoadConfig.loadAllConfig();
+        //加载命令
+        new LoadCommands();
         //注册监听事件
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
