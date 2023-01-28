@@ -3,6 +3,7 @@ package cn.zzwtsy.pu;
 import cn.zzwtsy.pu.database.DataBaseHelper;
 import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.init.InitDataBase;
+import cn.zzwtsy.pu.init.LoadCommands;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
 import cn.zzwtsy.pu.service.TimedTaskService;
@@ -14,7 +15,7 @@ import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 
-import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
+import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
 import static cn.zzwtsy.pu.tools.Tools.checkDataBaseFile;
 import static cn.zzwtsy.pu.tools.Tools.checkSettingFile;
@@ -38,6 +39,8 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        //加载命令
+        new LoadCommands();
         //检测数据库文件是否存在
         if (!checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");

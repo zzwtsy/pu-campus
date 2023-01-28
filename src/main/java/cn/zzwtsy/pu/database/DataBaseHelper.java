@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static cn.zzwtsy.pu.tools.DataBaseStatic.DRIVER_CLASS_NAME;
-import static cn.zzwtsy.pu.tools.DataBaseStatic.SQL_CONNECT_URL;
+import static cn.zzwtsy.pu.tools.Consts.DRIVER_CLASS_NAME;
+import static cn.zzwtsy.pu.tools.Consts.SQL_CONNECT_URL;
 
 /**
  * DBUtils

@@ -21,7 +21,7 @@ public class GroupCommand extends AbstractCommand {
     public MessageChain processingCommand(String message, long userQqId) {
         EventService eventService = new EventService(userQqId);
         //获取帮助信息
-        if (message.startsWith(helpCommand)) {
+        if (message.startsWith(commands.helpCommand)) {
             return new MessageChainBuilder()
                     .append("===群聊可使用命令===\n\n")
                     .append(groupHelpInfo())
@@ -36,7 +36,7 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //根据日期获取活动列表
-        if (message.startsWith(eventListCommand)) {
+        if (message.startsWith(commands.eventListCommand)) {
             int commandLength = 2;
             String[] strings = splitMessage(message);
             if (strings.length != commandLength) {
@@ -55,18 +55,18 @@ public class GroupCommand extends AbstractCommand {
             return messageChain;
         }
         //获取活动已结束未发放学分列表
-        if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
+        if (message.startsWith(commands.queryUserEventEndUnissuedCreditListCommand)) {
             return eventService.getEventEndUnissuedCreditEvent();
         }
         //用户登录
-        if (message.startsWith(loginCommand)) {
+        if (message.startsWith(commands.loginCommand)) {
             return new MessageChainBuilder()
                     .append(new At(userQqId)
                             .plus("请私聊机器人登录"))
                     .build();
         }
         //查询学分信息
-        if (message.startsWith(queryUserCreditInfoCommand)) {
+        if (message.startsWith(commands.queryUserCreditInfoCommand)) {
             if (!checkUserLogin(userQqId)) {
                 return new MessageChainBuilder()
                         .append(new At(userQqId)
@@ -80,11 +80,11 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //获取待签到列表
-        if (message.startsWith(querySignInEventListCommand)) {
+        if (message.startsWith(commands.querySignInEventListCommand)) {
             return eventService.getUserCanSignInEventList();
         }
         //获取待签退列表
-        if (message.startsWith(querySignOutEventListCommand)) {
+        if (message.startsWith(commands.querySignOutEventListCommand)) {
             return eventService.getUserCanSignOutEventList();
         }
         return null;

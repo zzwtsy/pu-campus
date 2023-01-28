@@ -9,7 +9,7 @@ import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
 
-import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
+import static cn.zzwtsy.pu.tools.Consts.commandBean;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 
 /**

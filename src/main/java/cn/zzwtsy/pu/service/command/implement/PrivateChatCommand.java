@@ -18,18 +18,18 @@ public class PrivateChatCommand extends AbstractCommand {
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
         //登陆命令
-        if (message.startsWith(loginCommand)) {
+        if (message.startsWith(commands.loginCommand)) {
             return new MessageChainBuilder()
                     .append(login(message, userQqId))
                     .build();
         }
         //用户删除自己信息
-        if (message.startsWith(deleteUserCommand)) {
+        if (message.startsWith(commands.deleteUserCommand)) {
             return new MessageChainBuilder()
                     .append(deleteUser(userQqId))
                     .build();
         }
-        if (message.startsWith(helpCommand)) {
+        if (message.startsWith(commands.helpCommand)) {
             if (checkAdminQqId(userQqId)) {
                 return new MessageChainBuilder()
                         .append("===管管理员命令===\n\n")

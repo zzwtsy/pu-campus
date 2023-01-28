@@ -12,9 +12,9 @@ import cn.zzwtsy.pu.utils.ConfigHelper;
 
 import java.io.IOException;
 
-import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
+import static cn.zzwtsy.pu.tools.Consts.COMMAND_FILE_NAME;
+import static cn.zzwtsy.pu.tools.Consts.PATH_NAME;
+import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
 
 
 /**
