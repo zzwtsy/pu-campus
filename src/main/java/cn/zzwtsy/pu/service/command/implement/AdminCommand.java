@@ -6,7 +6,7 @@ import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
+import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
@@ -23,19 +23,19 @@ public class AdminCommand extends AbstractCommand {
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
         //管理员删除用户信息（可删除所有用户信息）
-        if (message.startsWith(adminDeleteUserCommand)) {
+        if (message.startsWith(commands.adminDeleteUserCommand)) {
             return new MessageChainBuilder()
                     .append(adminDeleteUser(message))
                     .build();
         }
         //添加公共Token
-        if (message.startsWith(addPublicToken)) {
+        if (message.startsWith(commands.addPublicToken)) {
             return new MessageChainBuilder()
                     .append(login(message, userQqId))
                     .build();
         }
         //定时任务
-        if (message.startsWith(timedTaskCommand)) {
+        if (message.startsWith(commands.timedTaskCommand)) {
             return new MessageChainBuilder()
                     .append(timedTask(message))
                     .build();
@@ -55,7 +55,8 @@ public class AdminCommand extends AbstractCommand {
             return "命令格式错误";
         }
         long qqId = Long.parseLong(strings[1]);
-        if (!checkUserQqId(String.valueOf(qqId))) {
+        String qqIdStr = strings[1];
+        if (!checkUserQqId(qqIdStr)) {
             return "用户『" + qqId + "』qq号错误";
         }
         if (!checkUserLogin(qqId)) {
@@ -87,7 +88,7 @@ public class AdminCommand extends AbstractCommand {
             settingBean.setTimedTaskTime("0");
             SaveConfig.saveSettingConfig(settingBean);
             timedTaskService.stop();
-            if (timedTaskService.isShutdown()){
+            if (timedTaskService.isShutdown()) {
                 return "定时任务已停止";
             }
             return "定时任务停止失败";
@@ -95,8 +96,12 @@ public class AdminCommand extends AbstractCommand {
         if (!checkTime(strings[1])) {
             return "时间格式错误";
         }
-        settingBean.setTimedTaskTime(strings[1]);
-        SaveConfig.saveSettingConfig(settingBean);
-        return timedTaskService.start();
+        timedTaskService.stop();
+        if (timedTaskService.isShutdown()) {
+            settingBean.setTimedTaskTime(strings[1]);
+            SaveConfig.saveSettingConfig(settingBean);
+            return timedTaskService.start();
+        }
+        return "设置定时任务失败";
     }
 }
