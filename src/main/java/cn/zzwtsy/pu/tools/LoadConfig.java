@@ -39,9 +39,9 @@ public class LoadConfig {
     }
 
     /**
-     * 加载用户配置
+     * 加载设置
      */
-    public static void loadUserConfig() {
+    public static void loadSettingConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
             settingBean = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, SettingBean.class);

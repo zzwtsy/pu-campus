@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.service.UserService;
+import cn.zzwtsy.pu.tools.LoadConfig;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
@@ -89,6 +90,7 @@ public class AdminCommand extends AbstractCommand {
             SaveConfig.saveSettingConfig(settingBean);
             timedTaskService.stop();
             if (timedTaskService.isShutdown()) {
+                LoadConfig.loadSettingConfig();
                 return "定时任务已停止";
             }
             return "定时任务停止失败";
@@ -100,6 +102,7 @@ public class AdminCommand extends AbstractCommand {
         if (timedTaskService.isShutdown()) {
             settingBean.setTimedTaskTime(strings[1]);
             SaveConfig.saveSettingConfig(settingBean);
+            LoadConfig.loadSettingConfig();
             return timedTaskService.start();
         }
         return "设置定时任务失败";
