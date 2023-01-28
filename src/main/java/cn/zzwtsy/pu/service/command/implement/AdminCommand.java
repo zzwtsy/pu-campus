@@ -21,22 +21,29 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  */
 public class AdminCommand extends AbstractCommand {
 
+    /**
+     * 处理命令
+     *
+     * @param message  消息
+     * @param userQqId 用户qq
+     * @return {@link MessageChain}
+     */
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
         //管理员删除用户信息（可删除所有用户信息）
-        if (message.startsWith(commands.adminDeleteUserCommand)) {
+        if (message.startsWith(adminDeleteUserCommand)) {
             return new MessageChainBuilder()
                     .append(adminDeleteUser(message))
                     .build();
         }
         //添加公共Token
-        if (message.startsWith(commands.addPublicToken)) {
+        if (message.startsWith(addPublicToken)) {
             return new MessageChainBuilder()
                     .append(login(message, userQqId))
                     .build();
         }
         //定时任务
-        if (message.startsWith(commands.timedTaskCommand)) {
+        if (message.startsWith(timedTaskCommand)) {
             return new MessageChainBuilder()
                     .append(timedTask(message))
                     .build();

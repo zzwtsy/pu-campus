@@ -3,7 +3,6 @@ package cn.zzwtsy.pu;
 import cn.zzwtsy.pu.database.DataBaseHelper;
 import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.init.InitDataBase;
-import cn.zzwtsy.pu.init.LoadCommands;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
 import cn.zzwtsy.pu.service.TimedTaskService;
@@ -68,8 +67,6 @@ public final class PuCampus extends JavaPlugin {
         }
         // 加载全部配置文件
         LoadConfig.loadAllConfig();
-        //加载命令
-        new LoadCommands();
         //注册监听事件
         EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());

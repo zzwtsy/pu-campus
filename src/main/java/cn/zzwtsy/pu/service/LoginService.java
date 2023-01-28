@@ -100,7 +100,7 @@ public class LoginService {
      * @param oauthTokenSecret oauthTokenSecret
      * @return {@link String}
      */
-    public String setUserInfo(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
+    private String setUserInfo(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         UserService userService = new UserService();
         if (userService.getUser(qqId) != null) {
             //用户已存在，更新用户信息
@@ -116,6 +116,5 @@ public class LoginService {
             return "登录失败:添加用户Token失败";
         }
         return "登陆成功";
-
     }
 }
