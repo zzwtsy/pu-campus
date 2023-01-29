@@ -48,8 +48,8 @@ public abstract class AbstractEvent implements Event {
         if (response instanceof JsonNode content){
             return contentParser(content);
         }
-        if (response instanceof MessageChain){
-            return (MessageChain) response;
+        if (response instanceof MessageChain messageChain){
+            return messageChain;
         }
         return new MessageChainBuilder()
                 .append("为什么代码会走到这里")
