@@ -6,6 +6,7 @@ import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
+import static cn.zzwtsy.pu.tools.CommandConsts.*;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
@@ -21,7 +22,7 @@ public class GroupCommand extends AbstractCommand {
     public MessageChain processingCommand(String message, long userQqId) {
         EventService eventService = new EventService(userQqId);
         //获取帮助信息
-        if (message.startsWith(commands.helpCommand)) {
+        if (message.startsWith(helpCommand)) {
             return new MessageChainBuilder()
                     .append("===群聊可使用命令===\n\n")
                     .append(groupHelpInfo())
@@ -36,7 +37,7 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //根据日期获取活动列表
-        if (message.startsWith(commands.eventListCommand)) {
+        if (message.startsWith(eventListCommand)) {
             int commandLength = 2;
             String[] strings = splitMessage(message);
             if (strings.length != commandLength) {
@@ -55,18 +56,18 @@ public class GroupCommand extends AbstractCommand {
             return messageChain;
         }
         //获取活动已结束未发放学分列表
-        if (message.startsWith(commands.queryUserEventEndUnissuedCreditListCommand)) {
+        if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
             return eventService.getEventEndUnissuedCreditEvent();
         }
         //用户登录
-        if (message.startsWith(commands.loginCommand)) {
+        if (message.startsWith(loginCommand)) {
             return new MessageChainBuilder()
                     .append(new At(userQqId)
                             .plus("请私聊机器人登录"))
                     .build();
         }
         //查询学分信息
-        if (message.startsWith(commands.queryUserCreditInfoCommand)) {
+        if (message.startsWith(queryUserCreditInfoCommand)) {
             if (!checkUserLogin(userQqId)) {
                 return new MessageChainBuilder()
                         .append(new At(userQqId)
@@ -80,11 +81,11 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //获取待签到列表
-        if (message.startsWith(commands.querySignInEventListCommand)) {
+        if (message.startsWith(querySignInEventListCommand)) {
             return eventService.getUserCanSignInEventList();
         }
         //获取待签退列表
-        if (message.startsWith(commands.querySignOutEventListCommand)) {
+        if (message.startsWith(querySignOutEventListCommand)) {
             return eventService.getUserCanSignOutEventList();
         }
         return null;

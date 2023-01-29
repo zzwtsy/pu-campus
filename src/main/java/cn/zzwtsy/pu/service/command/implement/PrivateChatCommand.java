@@ -4,6 +4,9 @@ import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
+import static cn.zzwtsy.pu.tools.CommandConsts.deleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.helpCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.loginCommand;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 
@@ -18,18 +21,18 @@ public class PrivateChatCommand extends AbstractCommand {
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
         //登陆命令
-        if (message.startsWith(commands.loginCommand)) {
+        if (message.startsWith(loginCommand)) {
             return new MessageChainBuilder()
                     .append(login(message, userQqId))
                     .build();
         }
         //用户删除自己信息
-        if (message.startsWith(commands.deleteUserCommand)) {
+        if (message.startsWith(deleteUserCommand)) {
             return new MessageChainBuilder()
                     .append(deleteUser(userQqId))
                     .build();
         }
-        if (message.startsWith(commands.helpCommand)) {
+        if (message.startsWith(helpCommand)) {
             if (checkAdminQqId(userQqId)) {
                 return new MessageChainBuilder()
                         .append("===管管理员命令===\n\n")

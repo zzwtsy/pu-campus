@@ -9,7 +9,9 @@ import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
 
-import static cn.zzwtsy.pu.tools.Consts.commandBean;
+import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
+import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 
 /**
@@ -19,10 +21,6 @@ import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
-    private final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
-    private final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
-    private final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
-    private final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
     String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken};
     String message;
     FriendMessageEvent friendMessageEvent;

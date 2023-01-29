@@ -50,6 +50,7 @@ public class TimedTaskService {
      */
     public void stop() {
         tasksMap.get(0L).cancel(true);
+        tasksMap.remove(0L);
         PuCampus.INSTANCE.getLogger().info("停止定时任务");
     }
 

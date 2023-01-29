@@ -7,6 +7,9 @@ import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
+import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
+import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
 import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
@@ -24,19 +27,19 @@ public class AdminCommand extends AbstractCommand {
     @Override
     public MessageChain processingCommand(String message, long userQqId) {
         //管理员删除用户信息（可删除所有用户信息）
-        if (message.startsWith(commands.adminDeleteUserCommand)) {
+        if (message.startsWith(adminDeleteUserCommand)) {
             return new MessageChainBuilder()
                     .append(adminDeleteUser(message))
                     .build();
         }
         //添加公共Token
-        if (message.startsWith(commands.addPublicToken)) {
+        if (message.startsWith(addPublicToken)) {
             return new MessageChainBuilder()
                     .append(login(message, userQqId))
                     .build();
         }
         //定时任务
-        if (message.startsWith(commands.timedTaskCommand)) {
+        if (message.startsWith(timedTaskCommand)) {
             return new MessageChainBuilder()
                     .append(timedTask(message))
                     .build();
