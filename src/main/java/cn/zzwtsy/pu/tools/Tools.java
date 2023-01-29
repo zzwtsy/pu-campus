@@ -78,7 +78,7 @@ public class Tools {
      * @return boolean
      */
     public static boolean checkUserLogin(long qqId) {
-        return new UserService().getUser(qqId) != null;
+        return new UserService().getUser(qqId) == null;
     }
 
     /**

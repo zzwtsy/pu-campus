@@ -21,11 +21,11 @@ import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
-    String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken};
+    final String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken};
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
-    CommandService commandService;
+    final CommandService commandService;
 
     public ListenerPrivateChatMessage() {
         commandService = new CommandService();

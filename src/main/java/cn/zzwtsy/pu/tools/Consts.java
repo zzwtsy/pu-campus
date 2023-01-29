@@ -20,7 +20,7 @@ public class Consts {
     public static final String PATH_NAME = PuCampus.INSTANCE.getConfigFolder().getName();
     public static SettingBean settingBean;
     public static CommandBean commandBean;
-    public static Map<Long, ScheduledFuture<?>> tasksMap = new HashMap<>();
+    public static final Map<Long, ScheduledFuture<?>> TASKS_MAP = new HashMap<>();
 
     public static final String DRIVER_CLASS_NAME = "org.sqlite.JDBC";
     /**

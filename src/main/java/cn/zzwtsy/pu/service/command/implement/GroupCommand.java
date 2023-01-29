@@ -30,7 +30,7 @@ public class GroupCommand extends AbstractCommand {
                     .append(privateHelpInfo())
                     .build();
         }
-        if (!checkUserLogin(userQqId)) {
+        if (checkUserLogin(userQqId)) {
             return new MessageChainBuilder()
                     .append(new At(userQqId)
                             .plus("你还没有登陆请先私聊机器人登陆PU校园账户"))
@@ -68,7 +68,7 @@ public class GroupCommand extends AbstractCommand {
         }
         //查询学分信息
         if (message.startsWith(queryUserCreditInfoCommand)) {
-            if (!checkUserLogin(userQqId)) {
+            if (checkUserLogin(userQqId)) {
                 return new MessageChainBuilder()
                         .append(new At(userQqId)
                                 .plus("你还没有登陆，请私聊机器人登录PU校园"))

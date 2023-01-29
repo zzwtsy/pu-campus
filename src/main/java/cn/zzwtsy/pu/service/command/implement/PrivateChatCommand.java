@@ -54,7 +54,7 @@ public class PrivateChatCommand extends AbstractCommand {
      * @return {@link String}
      */
     private String deleteUser(long userQqId) {
-        if (!checkUserLogin(userQqId)) {
+        if (checkUserLogin(userQqId)) {
             return "无法删除，没有你的用户信息";
         }
         int delUserStatus = new UserService().deleteUser(userQqId);

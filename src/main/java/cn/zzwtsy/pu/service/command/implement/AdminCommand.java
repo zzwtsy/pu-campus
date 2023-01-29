@@ -63,7 +63,7 @@ public class AdminCommand extends AbstractCommand {
         if (!checkUserQqId(qqIdStr)) {
             return "用户『" + qqId + "』qq号错误";
         }
-        if (!checkUserLogin(qqId)) {
+        if (checkUserLogin(qqId)) {
             return "没有『" + qqId + "』用户信息";
         }
         int deleteUserStatus = new UserService().deleteUser(qqId);

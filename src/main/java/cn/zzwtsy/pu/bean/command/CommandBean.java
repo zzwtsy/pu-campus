@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @since 2022/11/29
  */
 public class CommandBean {
-    public static CommandBean INSTANCE = new CommandBean();
+    public static final CommandBean INSTANCE = new CommandBean();
 
     @JsonProperty("public")
     private PublicBean publicBean;
