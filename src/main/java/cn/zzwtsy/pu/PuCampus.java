@@ -13,6 +13,7 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
+import net.mamoe.mirai.event.events.BotEvent;
 
 import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
@@ -67,8 +68,9 @@ public final class PuCampus extends JavaPlugin {
         }
         // 加载全部配置文件
         LoadConfig.loadAllConfig();
+        //过滤事件
+        EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.filter(event -> event instanceof BotEvent && ((BotEvent) event).getBot().getId() == settingBean.getBotId());
         //注册监听事件
-        EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
         eventChannel.registerListenerHost(new ListenerGroupMessage());
         eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
         String doNotStartTimedTask = "0";
