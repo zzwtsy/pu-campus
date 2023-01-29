@@ -51,7 +51,9 @@ public abstract class AbstractEvent implements Event {
         if (response instanceof MessageChain){
             return (MessageChain) response;
         }
-        return null;
+        return new MessageChainBuilder()
+                .append("为什么代码会走到这里")
+                .build();
     }
 
     /**

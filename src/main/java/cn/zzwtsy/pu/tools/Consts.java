@@ -1,5 +1,6 @@
 package cn.zzwtsy.pu.tools;
 
+import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.bean.SettingBean;
 import cn.zzwtsy.pu.bean.command.CommandBean;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ public class Consts {
     /**
      * 存放配置文件路径名
      */
-    public static final String PATH_NAME = "cn.zzwtsy.pu";
+    public static final String PATH_NAME = PuCampus.INSTANCE.getConfigFolder().getName();
     public static SettingBean settingBean;
     public static CommandBean commandBean;
     public static Map<Long, ScheduledFuture<?>> tasksMap = new HashMap<>();
