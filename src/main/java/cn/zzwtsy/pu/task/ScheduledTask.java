@@ -41,7 +41,7 @@ public class ScheduledTask implements Runnable {
             return;
         }
         //判断公共token是否存在，不存在则使用管理员token
-        if (!checkUserLogin(0)) {
+        if (checkUserLogin(0)) {
             userBean = new UserService().getUser(settingBean.getAdminId());
             if (userBean == null) {
                 botFriend.sendMessage("请添加公共 pu 账号或管理员登录 pu 校园，以启用定时推送");

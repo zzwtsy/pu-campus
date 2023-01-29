@@ -7,6 +7,9 @@ import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
+import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
+import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
 import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
@@ -67,7 +70,7 @@ public class AdminCommand extends AbstractCommand {
         if (!checkUserQqId(qqIdStr)) {
             return "用户『" + qqId + "』qq号错误";
         }
-        if (!checkUserLogin(qqId)) {
+        if (checkUserLogin(qqId)) {
             return "没有『" + qqId + "』用户信息";
         }
         int deleteUserStatus = new UserService().deleteUser(qqId);

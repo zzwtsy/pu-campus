@@ -3,7 +3,17 @@ package cn.zzwtsy.pu.service.command.implement;
 import cn.zzwtsy.pu.service.LoginService;
 import cn.zzwtsy.pu.service.command.Command;
 
-import static cn.zzwtsy.pu.tools.Consts.commandBean;
+import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
+import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.deleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.eventListCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.helpCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.loginCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.querySignInEventListCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.querySignOutEventListCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.queryUserCreditInfoCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.queryUserEventEndUnissuedCreditListCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
 import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
@@ -15,21 +25,6 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  */
 @SuppressWarnings("PMD")
 public abstract class AbstractCommand implements Command {
-    private static final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
-    /*群聊命令*/
-    public static final String eventListCommand = commandPrefix + commandBean.getGroupBean().getGetCalendarEventList();
-    public static final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
-    public static final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroupBean().getQueryUserCreditInfo();
-    public static final String querySignInEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignInEventList();
-    public static final String querySignOutEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignOutEventList();
-    public static final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroupBean().getQueryUserEventEndUnissuedCreditList();
-    public static final String deleteUserCommand = commandPrefix + commandBean.getPrivateBean().getDeleteUser();
-    /*用户私聊命令*/
-    public static final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
-    /*管理员命令*/
-    public static final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
-    public static final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
-    public static final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
 
     protected String groupHelpInfo() {
         return eventListCommand + " <日期格式(04-08)|今日|今天|昨日|昨天|明日|明天>" + "根据日期获取活动列表"

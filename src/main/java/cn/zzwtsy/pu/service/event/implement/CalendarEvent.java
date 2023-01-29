@@ -3,9 +3,10 @@ package cn.zzwtsy.pu.service.event.implement;
 import cn.zzwtsy.pu.PuCampus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import java.io.IOException;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
+
+import java.io.IOException;
 
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.utils.DateUtil.addYear;
@@ -37,7 +38,7 @@ public class CalendarEvent extends AbstractEvent{
                     .append("日期格式错误")
                     .build();
         }
-        if (!checkUserLogin(userQqId)) {
+        if (checkUserLogin(userQqId)) {
             return new MessageChainBuilder()
                     .append("你还没有登陆请先私聊机器人登陆PU校园账户")
                     .build();
@@ -87,40 +88,16 @@ public class CalendarEvent extends AbstractEvent{
     }
 
     /**
-     * 内容解析器
-     *
-     * @param content 要解析的内容
-     * @return {@link MessageChain}
-     */
-    @Override
-    protected MessageChain contentParser(JsonNode content) {
-        return super.contentParser(content);
-    }
-
-    /**
      * 获取活动列表
      *
      * @param dateParameter 日期
      */
     private String getEventListDate(String dateParameter) {
-        String date;
-        switch (dateParameter) {
-            case "今日":
-            case "今天":
-                date = dateCalculate(0);
-                break;
-            case "明日":
-            case "明天":
-                date = dateCalculate(+1);
-                break;
-            case "昨日":
-            case "昨天":
-                date = dateCalculate(-1);
-                break;
-            default:
-                date = addYear(dateParameter);
-                break;
-        }
-        return date;
+        return switch (dateParameter) {
+            case "今日", "今天" -> dateCalculate(0);
+            case "明日", "明天" -> dateCalculate(+1);
+            case "昨日", "昨天" -> dateCalculate(-1);
+            default -> addYear(dateParameter);
+        };
     }
 }

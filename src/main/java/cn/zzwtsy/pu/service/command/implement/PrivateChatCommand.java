@@ -4,6 +4,9 @@ import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
+import static cn.zzwtsy.pu.tools.CommandConsts.deleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.helpCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.loginCommand;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 
@@ -51,7 +54,7 @@ public class PrivateChatCommand extends AbstractCommand {
      * @return {@link String}
      */
     private String deleteUser(long userQqId) {
-        if (!checkUserLogin(userQqId)) {
+        if (checkUserLogin(userQqId)) {
             return "无法删除，没有你的用户信息";
         }
         int delUserStatus = new UserService().deleteUser(userQqId);

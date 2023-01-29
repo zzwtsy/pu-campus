@@ -6,6 +6,7 @@ import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.service.event.Event;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
@@ -44,14 +45,15 @@ public abstract class AbstractEvent implements Event {
     @Override
     public MessageChain getMessage() {
         Object response = getResponse();
-        if (response instanceof JsonNode){
-            JsonNode content = (JsonNode) response;
+        if (response instanceof JsonNode content){
             return contentParser(content);
         }
-        if (response instanceof MessageChain){
-            return (MessageChain) response;
+        if (response instanceof MessageChain messageChain){
+            return messageChain;
         }
-        return null;
+        return new MessageChainBuilder()
+                .append("为什么代码会走到这里")
+                .build();
     }
 
     /**
@@ -74,14 +76,12 @@ public abstract class AbstractEvent implements Event {
                     .append("暂无可报名活动")
                     .build();
         }
-        String event;
-        JsonNode tempNode;
         //获取当前时间戳（转换为秒）
         long nowTimestamp = System.currentTimeMillis() / 1000;
         StringBuilder eventList = new StringBuilder();
         int contentLength = content.size();
         for (int i = 0; i < contentLength; i++) {
-            tempNode = content.get(i);
+            JsonNode tempNode = content.get(i);
             //活动状态
             String eventStatus = tempNode.get("eventStatus").asText();
             //报名结束时间
@@ -104,17 +104,29 @@ public abstract class AbstractEvent implements Event {
             String limitCount = tempNode.get("limitCount").asText();
             //活动地址
             String address = tempNode.get("address").asText();
-            event = "活动名称：\n\t\t\t《" + title + "》\n"
-                    + "活动地址：\n\t\t\t『" + address + "』\n"
-                    + "活动开始时间：\n\t\t\t" + sTime + "\n"
-                    + "活动结束时间：\n\t\t\t" + eTime + "\n"
-                    + "报名开始时间：\n\t\t\t" + startline + "\n"
-                    + "报名结束时间：\n\t\t\t" + deadline + "\n"
-                    + "剩余可参加人数：" + limitCount + "\n"
-                    + "============" + "\n";
-            eventList.append(event);
+            String event = """
+                    活动名称：
+                        《 %s 》
+                    活动地址：
+                        『%s』
+                    活动开始时间：
+                        %s
+                    活动结束时间：
+                        %s
+                    报名开始时间：
+                        %s
+                    报名结束时间：
+                        %s
+                    剩余可参加人数：
+                        %s
+                    ============
+                    """;
+            String format = String.format(event, title, address, sTime, eTime, startline, deadline, limitCount);
+            eventList.append(format);
         }
         return new MessageChainBuilder()
+                .append(new At(userQqId))
+                .append("\n")
                 .append(eventList)
                 .build();
     }
