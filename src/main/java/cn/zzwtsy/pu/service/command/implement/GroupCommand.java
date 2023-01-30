@@ -45,19 +45,26 @@ public class GroupCommand extends AbstractCommand {
                         .append("命令格式错误")
                         .build();
             }
-            MessageChain messageChain = eventService.getCalendarEventList(strings[1]);
-            if (messageChain.isEmpty()) {
+            String str = eventService.getCalendarEventList(strings[1]);
+            if (str.isEmpty()) {
                 return new MessageChainBuilder()
                         .append(new At(userQqId))
                         .append("\n\n")
                         .append("暂无可参加活动")
                         .build();
             }
-            return messageChain;
+            return new MessageChainBuilder()
+                    .append(new At(userQqId))
+                    .append("\n\n")
+                    .append(str)
+                    .build();
         }
         //获取活动已结束未发放学分列表
         if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
-            return eventService.getEventEndUnissuedCreditEvent();
+            String str = eventService.getEventEndUnissuedCreditEvent();
+            return new MessageChainBuilder()
+                    .append(str)
+                    .build();
         }
         //用户登录
         if (message.startsWith(loginCommand)) {
@@ -82,11 +89,17 @@ public class GroupCommand extends AbstractCommand {
         }
         //获取待签到列表
         if (message.startsWith(querySignInEventListCommand)) {
-            return eventService.getUserCanSignInEventList();
+            String str = eventService.getUserCanSignInEventList();
+            return new MessageChainBuilder()
+                    .append(str)
+                    .build();
         }
         //获取待签退列表
         if (message.startsWith(querySignOutEventListCommand)) {
-            return eventService.getUserCanSignOutEventList();
+            String str = eventService.getUserCanSignOutEventList();
+            return new MessageChainBuilder()
+                    .append(str)
+                    .build();
         }
         return null;
     }

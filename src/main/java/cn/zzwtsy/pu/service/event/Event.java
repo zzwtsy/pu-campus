@@ -1,7 +1,5 @@
 package cn.zzwtsy.pu.service.event;
 
-import net.mamoe.mirai.message.data.MessageChain;
-
 /**
  * 事件
  *
@@ -13,8 +11,8 @@ public interface Event {
     /**
      * 获取消息
      *
-     * @return {@link MessageChain}
+     * @return {@link String}
      */
-    MessageChain getMessage();
+    String getMessage();
 
 }

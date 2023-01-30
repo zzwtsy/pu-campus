@@ -3,9 +3,6 @@ package cn.zzwtsy.pu.service.event.implement;
 import cn.zzwtsy.pu.PuCampus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import net.mamoe.mirai.message.data.MessageChain;
-import net.mamoe.mirai.message.data.MessageChainBuilder;
-
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
@@ -29,19 +26,15 @@ public class CalendarEvent extends AbstractEvent{
     /**
      * 获取消息
      *
-     * @return {@link MessageChain}
+     * @return {@link String}
      */
     @Override
-    public MessageChain getMessage() {
+    public String getMessage() {
         if (!checkDateFormat(date)) {
-            return new MessageChainBuilder()
-                    .append("日期格式错误")
-                    .build();
+            return "日期格式错误";
         }
         if (checkUserLogin(userQqId)) {
-            return new MessageChainBuilder()
-                    .append("你还没有登陆请先私聊机器人登陆PU校园账户")
-                    .build();
+            return "你还没有登陆请先私聊机器人登陆PU校园账户";
         }
         return super.getMessage();
     }
@@ -60,28 +53,19 @@ public class CalendarEvent extends AbstractEvent{
             response = api.getCalendarEventList(date, oauthToken, oauthTokenSecret);
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error("获取活动列表失败", e);
-            return new MessageChainBuilder()
-                    .append("获取活动列表失败：")
-                    .append(e.getMessage())
-                    .build();
+            return "获取活动列表失败：" + e.getMessage();
         }
         try {
             jsonNode = mapper.readTree(response);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
-            return new MessageChainBuilder()
-                    .append("发生错误：")
-                    .append(e.getMessage())
-                    .build();
+            return"发生错误："+e.getMessage();
         }
         //获取 JSON 文件的 Message 字段内容
         String messageContent = jsonNode.get(eventMessageNode).asText();
         // 判断 Message 内容是否等于 success，否则返回 Message 内容
         if (!eventListSuccessWord.equals(messageContent)) {
-            return new MessageChainBuilder()
-                    .append("发生错误：")
-                    .append(messageContent)
-                    .build();
+            return "发生错误："+messageContent;
         }
         //获取 content 字段内容
         return jsonNode.get(eventContentNode);

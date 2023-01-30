@@ -54,7 +54,7 @@ public class ScheduledTask implements Runnable {
         Group group = bot.getGroup(settingBean.getGroupId());
         //判断获取qq群是否失败
         if (group != null) {
-            MessageChain messages = new EventService(userId).getNewEventList();
+            String messages = new EventService(userId).getNewEventList();
             MessageChain messageChain;
             if (messages.isEmpty()){
                 messageChain = AtAll.INSTANCE.plus("\n")

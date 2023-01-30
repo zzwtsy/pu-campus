@@ -4,7 +4,6 @@ import cn.zzwtsy.pu.service.event.implement.CalendarEvent;
 import cn.zzwtsy.pu.service.event.implement.EventEndUnissuedCreditEvent;
 import cn.zzwtsy.pu.service.event.implement.NewEvent;
 import cn.zzwtsy.pu.service.event.implement.SignInStateEvent;
-import net.mamoe.mirai.message.data.MessageChain;
 
 /**
  * 事件
@@ -23,13 +22,13 @@ public class EventService {
      * 根据日期获取活动列表
      *
      * @param date 日期
-     * @return {@link MessageChain}
+     * @return {@link String}
      */
-    public MessageChain getCalendarEventList(String date) {
+    public String getCalendarEventList(String date) {
         return new CalendarEvent(userQqId, date).getMessage();
     }
 
-    public MessageChain getEventEndUnissuedCreditEvent() {
+    public String getEventEndUnissuedCreditEvent() {
         return new EventEndUnissuedCreditEvent(userQqId).getMessage();
     }
 
@@ -38,7 +37,7 @@ public class EventService {
      *
      * @return {@link String}
      */
-    public MessageChain getUserCanSignInEventList() {
+    public String getUserCanSignInEventList() {
         return new SignInStateEvent(userQqId, true).getMessage();
     }
 
@@ -47,16 +46,16 @@ public class EventService {
      *
      * @return {@link String}
      */
-    public MessageChain getUserCanSignOutEventList() {
+    public String getUserCanSignOutEventList() {
         return new SignInStateEvent(userQqId, false).getMessage();
     }
 
     /**
      * 获取当日可参加的新活动列表
      *
-     * @return {@link MessageChain}
+     * @return {@link String}
      */
-    public MessageChain getNewEventList(){
+    public String getNewEventList(){
         return new NewEvent(userQqId).getMessage();
     }
 }

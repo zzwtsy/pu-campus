@@ -4,7 +4,6 @@ import cn.zzwtsy.pu.PuCampus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
-import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 /**
  * 活动签到状态
@@ -53,18 +52,13 @@ public class SignInStateEvent extends AbstractEvent {
             }
         } catch (IOException e) {
             PuCampus.INSTANCE.getLogger().error(e);
-            return new MessageChainBuilder()
-                    .append(errorMessage)
-                    .build();
+            return errorMessage;
         }
         try {
             jsonNode = mapper.readTree(response);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
-            return new MessageChainBuilder()
-                    .append("发生错误：")
-                    .append(e.getMessage())
-                    .build();
+            return "发生错误：" + e.getMessage();
         }
         String eventMessage = jsonNode.get(eventMessageNode).asText();
         if (!eventListSuccessWord.equals(eventMessage)) {
@@ -72,9 +66,7 @@ public class SignInStateEvent extends AbstractEvent {
         }
         JsonNode contentNode = jsonNode.get(eventContentNode);
         if (contentNode.isEmpty()) {
-            return new MessageChainBuilder()
-                    .append(emptyEventListMessage)
-                    .build();
+            return emptyEventListMessage;
         }
         return contentNode;
     }

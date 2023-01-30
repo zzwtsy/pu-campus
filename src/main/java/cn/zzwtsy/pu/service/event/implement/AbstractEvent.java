@@ -6,9 +6,6 @@ import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.service.event.Event;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.mamoe.mirai.message.data.At;
-import net.mamoe.mirai.message.data.MessageChain;
-import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
 
@@ -40,20 +37,18 @@ public abstract class AbstractEvent implements Event {
     /**
      * 获取消息
      *
-     * @return {@link MessageChain}
+     * @return {@link String}
      */
     @Override
-    public MessageChain getMessage() {
+    public String getMessage() {
         Object response = getResponse();
         if (response instanceof JsonNode content){
             return contentParser(content);
         }
-        if (response instanceof MessageChain messageChain){
-            return messageChain;
+        if (response instanceof String message){
+            return message;
         }
-        return new MessageChainBuilder()
-                .append("为什么代码会走到这里")
-                .build();
+        return "为什么代码会走到这里";
     }
 
     /**
@@ -69,12 +64,10 @@ public abstract class AbstractEvent implements Event {
      * @param content 要解析的内容
      * @return {@link String}
      */
-    protected MessageChain contentParser(JsonNode content){
+    protected String contentParser(JsonNode content){
         //判断 content 内容 是否为空
         if (content.isEmpty()) {
-            return new MessageChainBuilder()
-                    .append("暂无可报名活动")
-                    .build();
+            return "暂无可报名活动";
         }
         //获取当前时间戳（转换为秒）
         long nowTimestamp = System.currentTimeMillis() / 1000;
@@ -124,11 +117,7 @@ public abstract class AbstractEvent implements Event {
             String format = String.format(event, title, address, sTime, eTime, startline, deadline, limitCount);
             eventList.append(format);
         }
-        return new MessageChainBuilder()
-                .append(new At(userQqId))
-                .append("\n")
-                .append(eventList)
-                .build();
+        return "\n" + eventList;
     }
 
 }

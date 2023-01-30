@@ -13,7 +13,7 @@ import net.mamoe.mirai.message.data.MessageChain;
  */
 public class CommandService {
     /**
-     *  群组命令
+     * 群组命令
      *
      * @param message  消息
      * @param userQqId 用户qq id

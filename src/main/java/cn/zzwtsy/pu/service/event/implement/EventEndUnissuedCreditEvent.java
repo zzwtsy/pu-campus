@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import net.mamoe.mirai.message.data.MessageChain;
-import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 /**
  * 活动结束未发放学分
@@ -39,27 +37,19 @@ public class EventEndUnissuedCreditEvent extends AbstractEvent {
                 response = api.getUserEventEndUnissuedCreditList(String.valueOf(userQqId), String.valueOf(count), page, oauthToken, oauthTokenSecret);
             } catch (IOException e) {
                 PuCampus.INSTANCE.getLogger().error("获取未发放学分列表失败：", e);
-                return new MessageChainBuilder()
-                        .append("获取未发放学分列表失败：")
-                        .append(e.getMessage())
-                        .build();
+                return "获取未发放学分列表失败：" + e.getMessage();
             }
             try {
                 jsonNode = mapper.readTree(response);
                 //判断 json 是否有 message 字段
                 if (jsonNode.hasNonNull(eventMessageNode)) {
-                    return new MessageChainBuilder()
-                            .append(jsonNode.get(eventMessageNode).asText())
-                            .build();
+                    return jsonNode.get(eventMessageNode).asText();
                 }
                 //合并活动列表
                 jsonArray.addAll((ArrayNode) jsonNode);
             } catch (JsonProcessingException e) {
                 PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
-                return new MessageChainBuilder()
-                        .append("发生错误：")
-                        .append(e.getMessage())
-                        .build();
+                return "发生错误：" + e.getMessage();
             }
             //判断当前页面是否为最后一页
             if (jsonNode.size() < count) {
@@ -73,10 +63,10 @@ public class EventEndUnissuedCreditEvent extends AbstractEvent {
      * 内容解析器
      *
      * @param content 要解析的内容
-     * @return {@link MessageChain}
+     * @return {@link String}
      */
     @Override
-    protected MessageChain contentParser(JsonNode content) {
+    protected String contentParser(JsonNode content) {
         StringBuilder stringBuilder = new StringBuilder();
         int size = content.size();
         for (int i = 0; i < size; i++) {
@@ -89,13 +79,9 @@ public class EventEndUnissuedCreditEvent extends AbstractEvent {
         String message = stringBuilder.toString();
         //判断是否存在未发放学分活动
         if (message.isEmpty()) {
-            return new MessageChainBuilder()
-                    .append("暂无未发放学分活动")
-                    .build();
+            return "暂无未发放学分活动";
         } else {
-            return new MessageChainBuilder()
-                    .append(message)
-                    .build();
+            return message;
         }
     }
 }

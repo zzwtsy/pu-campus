@@ -17,6 +17,11 @@ import static cn.zzwtsy.pu.tools.Tools.calculateScheduledDelayTime;
  * @since 2023/01/12
  */
 public class TimedTaskService {
+    private final long groupId;
+
+    public TimedTaskService(long groupId) {
+        this.groupId = groupId;
+    }
 
     /**
      * 启动定时任务
@@ -28,7 +33,7 @@ public class TimedTaskService {
         long delayTime;
         try {
             delayTime = calculateScheduledDelayTime();
-            TASKS_MAP.put(0L, scheduler.scheduleAtFixedRate(new ScheduledTask(), delayTime, 86400, TimeUnit.SECONDS));
+            TASKS_MAP.put(groupId, scheduler.scheduleAtFixedRate(new ScheduledTask(), delayTime, 86400, TimeUnit.SECONDS));
             PuCampus.INSTANCE.getLogger().info("已启动定时任务，延时" + delayTime + "秒后开始发送消息");
         } catch (ParseException e) {
             PuCampus.INSTANCE.getLogger().error("启动定时任务失败", e);
@@ -43,24 +48,6 @@ public class TimedTaskService {
             return "已启动定时任务，延时" + (delayTime / 60) + "分钟后开始发送消息";
         }
         return "已启动定时任务，延时" + delayTime + "秒后开始发送消息";
-    }
-
-    /**
-     * 停止定时任务
-     */
-    public void stop() {
-        TASKS_MAP.get(0L).cancel(true);
-        TASKS_MAP.remove(0L);
-        PuCampus.INSTANCE.getLogger().info("停止定时任务");
-    }
-
-    /**
-     * 线程是否关闭
-     *
-     * @return boolean
-     */
-    public boolean isShutdown() {
-        return TASKS_MAP.get(0L).isCancelled();
     }
 
 }

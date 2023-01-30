@@ -35,7 +35,7 @@ public class PrivateChatCommand extends AbstractCommand {
         if (message.startsWith(helpCommand)) {
             if (checkAdminQqId(userQqId)) {
                 return new MessageChainBuilder()
-                        .append("===管管理员命令===\n\n")
+                        .append("===管理员命令===\n\n")
                         .append(adminHelpInfo())
                         .build();
             }
