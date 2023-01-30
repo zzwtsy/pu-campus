@@ -18,10 +18,7 @@ public class Consts {
      * 存放配置文件路径名
      */
     public static final String PATH_NAME = PuCampus.INSTANCE.getConfigFolder().getName();
-    public static SettingBean settingBean;
-    public static CommandBean commandBean;
     public static final Map<Long, ScheduledFuture<?>> TASKS_MAP = new HashMap<>();
-
     public static final String DRIVER_CLASS_NAME = "org.sqlite.JDBC";
     /**
      * 数据库文件名字
@@ -39,5 +36,7 @@ public class Consts {
      * 数据库连接url
      */
     public static final String SQL_CONNECT_URL = "jdbc:sqlite:" + DB_FILE_FULL_PATH;
+    public static SettingBean settingBean;
+    public static CommandBean commandBean;
 
 }

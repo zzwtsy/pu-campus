@@ -57,11 +57,11 @@ public class TimedTaskService {
      * @return {@link String}
      */
     public String startTimedTask() {
-        if (!TASKS_MAP.containsKey(groupId)){
+        if (!TASKS_MAP.containsKey(groupId)) {
             return new TimedTaskService(groupId).start();
         }
         ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
-        if (!scheduledFuture.isCancelled()){
+        if (!scheduledFuture.isCancelled()) {
             scheduledFuture.cancel(true);
             TASKS_MAP.remove(groupId);
         }
@@ -74,14 +74,14 @@ public class TimedTaskService {
      * @return {@link String}
      */
     public String stopTimedTask() {
-        if (!TASKS_MAP.containsKey(groupId)){
+        if (!TASKS_MAP.containsKey(groupId)) {
             return groupId + "没有定时任务";
         }
         ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
-        if (scheduledFuture.isCancelled()){
+        if (scheduledFuture.isCancelled()) {
             return groupId + "定时任务没有启动";
         }
-        if (scheduledFuture.cancel(true)){
+        if (scheduledFuture.cancel(true)) {
             TASKS_MAP.remove(groupId);
             return groupId + "定时任务已停止";
         }

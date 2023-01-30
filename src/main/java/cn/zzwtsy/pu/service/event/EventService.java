@@ -55,7 +55,7 @@ public class EventService {
      *
      * @return {@link String}
      */
-    public String getNewEventList(){
+    public String getNewEventList() {
         return new NewEvent(userQqId).getMessage();
     }
 }

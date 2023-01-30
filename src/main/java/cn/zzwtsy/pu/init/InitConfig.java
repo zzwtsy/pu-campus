@@ -1,15 +1,14 @@
 package cn.zzwtsy.pu.init;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.command.CommandBean;
 import cn.zzwtsy.pu.bean.SettingBean;
 import cn.zzwtsy.pu.bean.command.AdminBean;
+import cn.zzwtsy.pu.bean.command.CommandBean;
 import cn.zzwtsy.pu.bean.command.GroupBean;
 import cn.zzwtsy.pu.bean.command.PrivateBean;
 import cn.zzwtsy.pu.bean.command.PublicBean;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import cn.zzwtsy.pu.utils.ConfigHelper;
-
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.tools.Consts.COMMAND_FILE_NAME;

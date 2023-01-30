@@ -16,16 +16,16 @@ import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
  * @since 2023/01/27
  */
 public abstract class AbstractEvent implements Event {
+    protected final String eventListSuccessWord = "success";
+    protected final String eventMessageNode = "message";
+    protected final String eventContentNode = "content";
     protected long userQqId;
     protected Api api;
     protected ObjectMapper mapper;
     protected String oauthToken;
     protected String oauthTokenSecret;
-    protected final String eventListSuccessWord = "success";
-    protected final String eventMessageNode = "message";
-    protected final String eventContentNode = "content";
 
-    public AbstractEvent(long userQqId){
+    public AbstractEvent(long userQqId) {
         this.userQqId = userQqId;
         api = new Api();
         mapper = new ObjectMapper();
@@ -42,10 +42,10 @@ public abstract class AbstractEvent implements Event {
     @Override
     public String getMessage() {
         Object response = getResponse();
-        if (response instanceof JsonNode content){
+        if (response instanceof JsonNode content) {
             return contentParser(content);
         }
-        if (response instanceof String message){
+        if (response instanceof String message) {
             return message;
         }
         return "为什么代码会走到这里";
@@ -64,7 +64,7 @@ public abstract class AbstractEvent implements Event {
      * @param content 要解析的内容
      * @return {@link String}
      */
-    protected String contentParser(JsonNode content){
+    protected String contentParser(JsonNode content) {
         //判断 content 内容 是否为空
         if (content.isEmpty()) {
             return "暂无可报名活动";

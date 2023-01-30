@@ -16,9 +16,10 @@ import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
  * @author zzwtsy
  * @since 2023/01/27
  */
-public class CalendarEvent extends AbstractEvent{
+public class CalendarEvent extends AbstractEvent {
     private final String date;
-    public CalendarEvent(long userQqId,String date) {
+
+    public CalendarEvent(long userQqId, String date) {
         super(userQqId);
         this.date = getEventListDate(date);
     }
@@ -59,13 +60,13 @@ public class CalendarEvent extends AbstractEvent{
             jsonNode = mapper.readTree(response);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
-            return"发生错误："+e.getMessage();
+            return "发生错误：" + e.getMessage();
         }
         //获取 JSON 文件的 Message 字段内容
         String messageContent = jsonNode.get(eventMessageNode).asText();
         // 判断 Message 内容是否等于 success，否则返回 Message 内容
         if (!eventListSuccessWord.equals(messageContent)) {
-            return "发生错误："+messageContent;
+            return "发生错误：" + messageContent;
         }
         //获取 content 字段内容
         return jsonNode.get(eventContentNode);

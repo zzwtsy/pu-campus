@@ -1,17 +1,16 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.command.CommandBean;
 import cn.zzwtsy.pu.bean.SettingBean;
+import cn.zzwtsy.pu.bean.command.CommandBean;
 import cn.zzwtsy.pu.utils.ConfigHelper;
-
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.tools.Consts.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.Consts.PATH_NAME;
 import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
-import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Consts.commandBean;
+import static cn.zzwtsy.pu.tools.Consts.settingBean;
 
 
 /**

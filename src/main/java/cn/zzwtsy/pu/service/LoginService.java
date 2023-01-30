@@ -5,7 +5,6 @@ import cn.zzwtsy.pu.api.Api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 /**
@@ -67,7 +66,7 @@ public class LoginService {
      * @param oauthTokenSecret oauthTokenSecret
      * @return {@link String}
      */
-    public String getUserUid(long qqId,String oauthToken, String oauthTokenSecret) {
+    public String getUserUid(long qqId, String oauthToken, String oauthTokenSecret) {
         String userInfo;
         JsonNode jsonNode;
         try {

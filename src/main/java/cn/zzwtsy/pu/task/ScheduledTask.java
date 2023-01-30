@@ -56,7 +56,7 @@ public class ScheduledTask implements Runnable {
         if (group != null) {
             String messages = new EventService(userId).getNewEventList();
             MessageChain messageChain;
-            if (messages.isEmpty()){
+            if (messages.isEmpty()) {
                 messageChain = AtAll.INSTANCE.plus("\n")
                         .plus("今日暂无可参加活动");
             } else {
