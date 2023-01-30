@@ -2,15 +2,14 @@ package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.service.UserService;
-import cn.zzwtsy.pu.tools.LoadConfig;
-import cn.zzwtsy.pu.tools.SaveConfig;
+import java.util.concurrent.ScheduledFuture;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
 import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
-import static cn.zzwtsy.pu.tools.Consts.settingBean;
+import static cn.zzwtsy.pu.tools.Consts.TASKS_MAP;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
@@ -23,7 +22,6 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  * @since 2023/01/26
  */
 public class AdminCommand extends AbstractCommand {
-
     /**
      * 处理命令
      *
@@ -88,33 +86,60 @@ public class AdminCommand extends AbstractCommand {
      * @return {@link String}
      */
     private String timedTask(String message) {
-        int commandLength = 2;
+        int commandMaxLength = 3;
+        int commandMinLength = 2;
         String[] strings = splitMessage(message);
-        if (strings.length != commandLength) {
+        if (strings.length > commandMaxLength || strings.length < commandMinLength) {
             return "命令格式错误";
         }
+        long groupId = Long.parseLong(strings[2]);
+        String time = strings[1];
         String closeTimedTask = "关闭";
-        TimedTaskService timedTaskService = new TimedTaskService();
-        if (closeTimedTask.equals(strings[1])) {
-            settingBean.setTimedTaskTime("0");
-            SaveConfig.saveSettingConfig(settingBean);
-            timedTaskService.stop();
-            if (timedTaskService.isShutdown()) {
-                LoadConfig.loadSettingConfig();
-                return "定时任务已停止";
-            }
-            return "定时任务停止失败";
+        if (closeTimedTask.equals(time)) {
+            return stopTimedTask(groupId);
         }
-        if (!checkTime(strings[1])) {
+        if (!checkTime(time)) {
             return "时间格式错误";
         }
-        timedTaskService.stop();
-        if (timedTaskService.isShutdown()) {
-            settingBean.setTimedTaskTime(strings[1]);
-            SaveConfig.saveSettingConfig(settingBean);
-            LoadConfig.loadSettingConfig();
-            return timedTaskService.start();
+        return startTimedTask(groupId);
+    }
+
+    /**
+     * 启动定时任务
+     *
+     * @param groupId groupId
+     * @return {@link String}
+     */
+    private String startTimedTask(long groupId) {
+        if (!TASKS_MAP.containsKey(groupId)){
+            return new TimedTaskService(groupId).start();
         }
-        return "设置定时任务失败";
+        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
+        if (!scheduledFuture.isCancelled()){
+            scheduledFuture.cancel(true);
+            TASKS_MAP.remove(groupId);
+        }
+        return new TimedTaskService(groupId).start();
+    }
+
+    /**
+     * 停止定时任务
+     *
+     * @param groupId groupId
+     * @return {@link String}
+     */
+    private String stopTimedTask(long groupId) {
+        if (!TASKS_MAP.containsKey(groupId)){
+            return groupId + "没有定时任务";
+        }
+        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
+        if (scheduledFuture.isCancelled()){
+            return groupId + "定时任务没有启动";
+        }
+        if (scheduledFuture.cancel(true)){
+            TASKS_MAP.remove(groupId);
+            return groupId + "定时任务已停止";
+        }
+        return "定时任务停止失败";
     }
 }
