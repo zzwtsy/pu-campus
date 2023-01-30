@@ -63,6 +63,9 @@ public class GroupCommand extends AbstractCommand {
         if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
             String str = eventService.getEventEndUnissuedCreditEvent();
             return new MessageChainBuilder()
+                    .append(new At(userQqId))
+                    .append("\n以下活动还未发放学分")
+                    .append("\n\n")
                     .append(str)
                     .build();
         }
@@ -83,14 +86,17 @@ public class GroupCommand extends AbstractCommand {
             }
             String userCreditInfoMessage = new UserCreditService().userCredit(userQqId);
             return new MessageChainBuilder()
-                    .append(new At(userQqId)
-                            .plus(userCreditInfoMessage))
+                    .append(new At(userQqId))
+                    .append("\n")
+                    .append(userCreditInfoMessage)
                     .build();
         }
         //获取待签到列表
         if (message.startsWith(querySignInEventListCommand)) {
             String str = eventService.getUserCanSignInEventList();
             return new MessageChainBuilder()
+                    .append(new At(userQqId))
+                    .append("\n")
                     .append(str)
                     .build();
         }
@@ -98,6 +104,8 @@ public class GroupCommand extends AbstractCommand {
         if (message.startsWith(querySignOutEventListCommand)) {
             String str = eventService.getUserCanSignOutEventList();
             return new MessageChainBuilder()
+                    .append(new At(userQqId))
+                    .append("\n")
                     .append(str)
                     .build();
         }

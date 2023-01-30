@@ -117,7 +117,7 @@ public abstract class AbstractEvent implements Event {
             String format = String.format(event, title, address, sTime, eTime, startline, deadline, limitCount);
             eventList.append(format);
         }
-        return "\n" + eventList;
+        return eventList.toString();
     }
 
 }
