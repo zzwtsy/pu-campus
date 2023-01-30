@@ -5,6 +5,7 @@ import cn.zzwtsy.pu.task.ScheduledTask;
 import java.text.ParseException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static cn.zzwtsy.pu.tools.Consts.TASKS_MAP;
@@ -48,6 +49,43 @@ public class TimedTaskService {
             return "已启动定时任务，延时" + (delayTime / 60) + "分钟后开始发送消息";
         }
         return "已启动定时任务，延时" + delayTime + "秒后开始发送消息";
+    }
+
+    /**
+     * 启动定时任务
+     *
+     * @return {@link String}
+     */
+    public String startTimedTask() {
+        if (!TASKS_MAP.containsKey(groupId)){
+            return new TimedTaskService(groupId).start();
+        }
+        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
+        if (!scheduledFuture.isCancelled()){
+            scheduledFuture.cancel(true);
+            TASKS_MAP.remove(groupId);
+        }
+        return new TimedTaskService(groupId).start();
+    }
+
+    /**
+     * 停止定时任务
+     *
+     * @return {@link String}
+     */
+    public String stopTimedTask() {
+        if (!TASKS_MAP.containsKey(groupId)){
+            return groupId + "没有定时任务";
+        }
+        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
+        if (scheduledFuture.isCancelled()){
+            return groupId + "定时任务没有启动";
+        }
+        if (scheduledFuture.cancel(true)){
+            TASKS_MAP.remove(groupId);
+            return groupId + "定时任务已停止";
+        }
+        return "定时任务停止失败";
     }
 
 }

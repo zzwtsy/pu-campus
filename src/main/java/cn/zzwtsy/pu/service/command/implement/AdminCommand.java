@@ -2,14 +2,12 @@ package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.service.UserService;
-import java.util.concurrent.ScheduledFuture;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
 import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
 import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
-import static cn.zzwtsy.pu.tools.Consts.TASKS_MAP;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
@@ -96,50 +94,12 @@ public class AdminCommand extends AbstractCommand {
         String time = strings[1];
         String closeTimedTask = "关闭";
         if (closeTimedTask.equals(time)) {
-            return stopTimedTask(groupId);
+            return new TimedTaskService(groupId).stopTimedTask();
         }
         if (!checkTime(time)) {
             return "时间格式错误";
         }
-        return startTimedTask(groupId);
+        return new TimedTaskService(groupId).startTimedTask();
     }
 
-    /**
-     * 启动定时任务
-     *
-     * @param groupId groupId
-     * @return {@link String}
-     */
-    private String startTimedTask(long groupId) {
-        if (!TASKS_MAP.containsKey(groupId)){
-            return new TimedTaskService(groupId).start();
-        }
-        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
-        if (!scheduledFuture.isCancelled()){
-            scheduledFuture.cancel(true);
-            TASKS_MAP.remove(groupId);
-        }
-        return new TimedTaskService(groupId).start();
-    }
-
-    /**
-     * 停止定时任务
-     *
-     * @param groupId groupId
-     * @return {@link String}
-     */
-    private String stopTimedTask(long groupId) {
-        if (!TASKS_MAP.containsKey(groupId)){
-            return groupId + "没有定时任务";
-        }
-        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
-        if (scheduledFuture.isCancelled()){
-            return groupId + "定时任务没有启动";
-        }
-        if (scheduledFuture.cancel(true)){
-            TASKS_MAP.remove(groupId);
-            return groupId + "定时任务已停止";
-        }
-        return "定时任务停止失败";
-    }
 }
