@@ -31,7 +31,7 @@ public final class PuCampus extends JavaPlugin {
     public static final PuCampus INSTANCE = new PuCampus();
 
     private PuCampus() {
-        super(new JvmPluginDescriptionBuilder("cn.zzwtsy.pu", "0.2.0")
+        super(new JvmPluginDescriptionBuilder("cn.zzwtsy.pu", "0.1.0")
                 .name("pu-campus")
                 .author("zzwtsy")
                 .build()
