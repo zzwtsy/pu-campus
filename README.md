@@ -20,6 +20,53 @@
 
 - [x] 定时推送活动信息
 
+## 快速开始
+
+1. 安装[MCL](https://github.com/iTXTech/mcl-installer)
+2. 从 Release 下载 jar 包
+3. 放入 Plugins 文件夹
+4. 启动 MCL
+5. 修改 setting.json 配置文件
+6. 重新启动 MCL
+
+## 配置文件说明
+
+### setting.json
+
+路径：config/cn.zzwtsy.pu/setting.json
+| 值 | 说明 |
+| ------------- | -------------------------------------- |
+| groupId | qq 群号 |
+| adminId | 管理员 qq 号 |
+| botId | 机器人 qq 号 |
+| timedTaskTime | 定时任务时间【24 小时制】(示例：01:01) |
+| emailSuffix | 学校邮箱后缀 |
+
+# [**pu 学校邮箱后缀**](https://blog.yumdeb.top/tools/PuSchoolInfo.html)
+
+### command.json
+
+路径：config/cn.zzwtsy.pu/command.json
+| 值 | 默认示例 | 说明 |
+| ----------------------------------- | ---------------------------------------------------- | -------------------------------------------------------- |
+| commandPrefix |# | 命令前缀 |
+| help | #help | 获取帮助信息 |
+| **_以下为仅 qq 群可使用命令_** | **_以下为仅 qq 群可使用命令_** | **_以下为仅 qq 群可使用命令_** |
+| queryUserCreditInfo | #学分 | 查询自己的学分 |
+| querySignInEventList | #签到 | 获取需要签到的活动 |
+| querySignOutEventList | #签退 | 获取需要签退的活动 |
+| queryActivityDetailById | | 查询活动详细信息（还没实现） |
+| getCalendarEventList | #活动 <今日 \| 今天 \| 明日 \| 明天 \| 昨日 \| 昨天 \| 03-03> | 根据日期获取可参加的活动信息 |
+| queryUserEventEndUnissuedCreditList | #未发放 | 获取活动已经结束还没发放学分的活动 |
+| **_以下为私聊可使用命令_** | **_以下为私聊可使用命令_** | **_以下为私聊可使用命令_** |
+| login | #login <账号\|oauthToken> <密码\|oauthTokenSecret> | 登录 pu 账号 |
+| **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** |
+| deleteUser | #删除信息 | 删除自己的信息 |
+| adminDeleteUser | #删除用户 <用户 qq 号> | 管理员删除指定用户信息 |
+| addPublicToken | #添加 tk <账号\|oauthToken> <密码\|oauthTokenSecret> | 添加公共 pu Token,用于定时任务，不设置则使用管理员
+Token |
+| timedTask | #定时任务 <时间*24 小时*(01:01)> | 设置定时任务 |
+
 ## 活动列表 JSON 解析
 
 - title：活动标题
