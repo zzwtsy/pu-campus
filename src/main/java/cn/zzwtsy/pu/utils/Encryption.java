@@ -34,7 +34,7 @@ public class Encryption {
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             PuCampus.INSTANCE.getLogger().error(e);
+            return null;
         }
-        return null;
     }
 }
