@@ -1,23 +1,18 @@
 package cn.zzwtsy.pu.listener;
 
-import cn.zzwtsy.pu.service.LoginService;
-import cn.zzwtsy.pu.service.TimedTaskService;
-import cn.zzwtsy.pu.service.UserService;
-import cn.zzwtsy.pu.tools.SaveConfig;
+import cn.zzwtsy.pu.service.command.CommandService;
 import cn.zzwtsy.pu.tools.Tools;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.message.data.MessageChain;
 
-import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
-import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
+import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
+import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
-import static cn.zzwtsy.pu.tools.Tools.checkTime;
-import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
-import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
-import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
 /**
  * 监听私聊消息
@@ -26,17 +21,15 @@ import static cn.zzwtsy.pu.tools.Tools.splitMessage;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
-    private final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
-    private final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
-    private final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
-    private final String deleteUserCommand = commandPrefix + commandBean.getPrivateBean().getDeleteUser();
-    private final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
-    private final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
-    private final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
-    String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken};
+    final String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken};
+    final CommandService commandService;
     String message;
     FriendMessageEvent friendMessageEvent;
     GroupTempMessageEvent groupTempMessageEvent;
+
+    public ListenerPrivateChatMessage() {
+        commandService = new CommandService();
+    }
 
     /**
      * 机器人收到的好友消息的事件
@@ -47,7 +40,8 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private void onEvent(FriendMessageEvent event) {
         this.friendMessageEvent = event;
         message = friendMessageEvent.getMessage().contentToString();
-        run(friendMessageEvent);
+        long userQqId = friendMessageEvent.getSender().getId();
+        publicCode(userQqId, friendMessageEvent);
     }
 
     /**
@@ -59,145 +53,36 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
     private void onEvent(GroupTempMessageEvent event) {
         this.groupTempMessageEvent = event;
         message = groupTempMessageEvent.getMessage().contentToString();
-        run(groupTempMessageEvent);
+        long userQqId = groupTempMessageEvent.getSender().getId();
+        publicCode(userQqId, groupTempMessageEvent);
     }
 
-    private void run(MessageEvent messageEvent) {
-        long userQqId = messageEvent.getSender().getId();
-        //登陆命令
-        if (message.startsWith(loginCommand)) {
-            login(message, messageEvent, userQqId);
-            return;
-        }
-        //用户删除自己信息
-        if (message.startsWith(deleteUserCommand)) {
-            deleteUser(messageEvent, userQqId);
-            return;
-        }
-        if (message.startsWith(helpCommand)) {
-            if (checkAdminQqId(userQqId)) {
-                messageEvent.getSender().sendMessage("===管管理员命令===\n\n" + new HelpInfo().adminHelpInfo());
-            }
-            messageEvent.getSender().sendMessage("===私聊命令===\n\n" + new HelpInfo().privateHelpInfo());
-            return;
-        }
+    /**
+     * 公共代码
+     *
+     * @param userQqId     用户qq
+     * @param messageEvent 消息事件
+     */
+    private void publicCode(long userQqId, MessageEvent messageEvent) {
         //判断命令是否是管理员命令
-        if (!Tools.messageContainsCommand(message, adminCommandArrays)) {
-            return;
-        }
-        //判断用户是否有管理员命令权限
-        if (!checkAdminQqId(userQqId)) {
-            messageEvent.getSender().sendMessage("你没有此命令权限");
-            return;
-        }
-        //管理员删除用户信息（可删除所有用户信息）
-        if (message.startsWith(adminDeleteUserCommand)) {
-            adminDeleteUser(message, messageEvent);
-            return;
-        }
-        //添加公共Token
-        if (message.startsWith(addPublicToken)) {
-            login(message, messageEvent, 0);
-            return;
-        }
-        //定时任务
-        if (message.startsWith(timedTaskCommand)) {
-            int commandLength = 2;
-            String[] strings = splitMessage(message);
-            if (strings.length != commandLength) {
-                messageEvent.getSender().sendMessage("命令格式错误");
+        if (Tools.messageContainsCommand(message, adminCommandArrays)) {
+            //判断用户是否有管理员命令权限
+            if (!checkAdminQqId(userQqId)) {
+                messageEvent.getSender().sendMessage("你没有此命令权限");
                 return;
             }
-            TimedTaskService timedTaskService = new TimedTaskService();
-            String closeTimedTask = "关闭";
-            if (closeTimedTask.equals(strings[1])) {
-                settingBean.setTimedTaskTime("0");
-                SaveConfig.saveSettingConfig(settingBean);
-                timedTaskService.stop();
-                return;
+            long publicTokenQqId = 0;
+            MessageChain adminMessage = commandService.adminCommand(message, publicTokenQqId);
+            if (adminMessage != null) {
+                messageEvent.getSender().sendMessage(adminMessage);
             }
-            if (!checkTime(strings[1])) {
-                messageEvent.getSender().sendMessage("时间格式错误");
-                return;
+        } else {
+            //处理私聊命令
+            MessageChain privateMessage = commandService.privateChatCommand(message, userQqId);
+            if (privateMessage != null) {
+                messageEvent.getSender().sendMessage(privateMessage);
             }
-            settingBean.setTimedTaskTime(strings[1]);
-            SaveConfig.saveSettingConfig(settingBean);
-            String delayTime = timedTaskService.start();
-            messageEvent.getSender().sendMessage(delayTime);
-        }
-    }
-
-    /**
-     * 登录
-     *
-     * @param message      消息
-     * @param messageEvent 消息事件
-     */
-    private void login(String message, MessageEvent messageEvent, long userQqId) {
-        int commandLength = 3;
-        String[] strings = splitMessage(message);
-        String setUserTokenStatus;
-        if (strings.length != commandLength) {
-            messageEvent.getSender().sendMessage("命令格式错误");
-            return;
-        }
-        messageEvent.getSender().sendMessage("正在登录,请稍后...");
-        int messageLength = strings[1].length();
-        int oauthTokenLength = 32;
-        if (messageLength == oauthTokenLength) {
-            setUserTokenStatus = new LoginService().getUserUid(userQqId, strings[1], strings[2]);
-        } else {
-            //补全用户账号: 用户账号加用户学校邮件后缀
-            String userName = strings[1] + settingBean.getEmailSuffix();
-            setUserTokenStatus = new LoginService().getUserToken(userQqId, userName, strings[2]);
-        }
-        messageEvent.getSender().sendMessage(setUserTokenStatus);
-    }
-
-    /**
-     * 用户删除自己的信息
-     *
-     * @param messageEvent 消息事件
-     */
-    private void deleteUser(MessageEvent messageEvent, long userQqId) {
-        if (!checkUserLogin(userQqId)) {
-            messageEvent.getSender().sendMessage("无法删除，没有你的用户信息");
-            return;
-        }
-        int delUserStatus = new UserService().deleteUser(userQqId);
-        if (delUserStatus <= 0) {
-            messageEvent.getSender().sendMessage("删除用户信息失败");
-        } else {
-            messageEvent.getSender().sendMessage("删除用户信息成功");
-        }
-    }
-
-    /**
-     * 管理员删除用户信息
-     *
-     * @param message      消息
-     * @param messageEvent 消息事件
-     */
-    private void adminDeleteUser(String message, MessageEvent messageEvent) {
-        String[] strings = splitMessage(message);
-        int commandLength = 2;
-        if (strings.length != commandLength) {
-            messageEvent.getSender().sendMessage("命令格式错误");
-        }
-        long qqId = Long.parseLong(strings[1]);
-        if (!checkUserQqId(String.valueOf(qqId))) {
-            messageEvent.getSender().sendMessage("用户『" + qqId + "』qq号错误");
-            return;
-        }
-        if (!checkUserLogin(qqId)) {
-            messageEvent.getSender().sendMessage("没有『" + qqId + "』用户信息");
-            return;
-        }
-        int deleteUserStatus = new UserService().deleteUser(qqId);
-        if (deleteUserStatus <= 0) {
-            messageEvent.getSender().sendMessage("删除『" + qqId + "』用户信息失败");
-        } else {
-            messageEvent.getSender().sendMessage("删除『" + qqId + "』用户信息成功");
         }
     }
 }
+

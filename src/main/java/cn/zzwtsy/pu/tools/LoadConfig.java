@@ -1,17 +1,16 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.command.CommandBean;
 import cn.zzwtsy.pu.bean.SettingBean;
+import cn.zzwtsy.pu.bean.command.CommandBean;
 import cn.zzwtsy.pu.utils.ConfigHelper;
-
 import java.io.IOException;
 
-import static cn.zzwtsy.pu.tools.MyStatic.COMMAND_FILE_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.PATH_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.SETTING_FILE_NAME;
-import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
-import static cn.zzwtsy.pu.tools.MyStatic.commandBean;
+import static cn.zzwtsy.pu.tools.Consts.COMMAND_FILE_NAME;
+import static cn.zzwtsy.pu.tools.Consts.PATH_NAME;
+import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
+import static cn.zzwtsy.pu.tools.Consts.commandBean;
+import static cn.zzwtsy.pu.tools.Consts.settingBean;
 
 /**
  * 加载配置
@@ -39,9 +38,9 @@ public class LoadConfig {
     }
 
     /**
-     * 加载用户配置
+     * 加载设置
      */
-    public static void loadUserConfig() {
+    public static void loadSettingConfig() {
         PuCampus.INSTANCE.getLogger().info("Loading user config file");
         try {
             settingBean = ConfigHelper.getConfigFromFile(PATH_NAME, SETTING_FILE_NAME, SettingBean.class);

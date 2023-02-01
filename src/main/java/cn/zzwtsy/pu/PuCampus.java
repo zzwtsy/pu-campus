@@ -10,11 +10,12 @@ import cn.zzwtsy.pu.tools.LoadConfig;
 import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
-import net.mamoe.mirai.event.Event;
 import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
+import net.mamoe.mirai.event.events.BotEvent;
+import net.mamoe.mirai.event.events.GroupEvent;
 
-import static cn.zzwtsy.pu.tools.MyStatic.settingBean;
+import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
 import static cn.zzwtsy.pu.tools.Tools.checkDataBaseFile;
 import static cn.zzwtsy.pu.tools.Tools.checkSettingFile;
@@ -30,10 +31,11 @@ public final class PuCampus extends JavaPlugin {
     public static final PuCampus INSTANCE = new PuCampus();
 
     private PuCampus() {
-        super(new JvmPluginDescriptionBuilder("cn.zzwtsy.pu", "0.1.1")
+        super(new JvmPluginDescriptionBuilder("cn.zzwtsy.pu", "0.2.0")
                 .name("pu-campus")
                 .author("zzwtsy")
-                .build());
+                .build()
+        );
     }
 
     @Override
@@ -67,14 +69,21 @@ public final class PuCampus extends JavaPlugin {
         }
         // 加载全部配置文件
         LoadConfig.loadAllConfig();
+        //过滤事件
+        EventChannel<GroupEvent> groupEventEventChannel = GlobalEventChannel.INSTANCE
+                .filterIsInstance(GroupEvent.class)
+                .filter(groupEvent -> groupEvent.getGroup().getId() == settingBean.getGroupId());
+        EventChannel<BotEvent> botEventEventChannel = GlobalEventChannel.INSTANCE
+                .filterIsInstance(BotEvent.class)
+                .filter(event -> event.getBot().getId() == settingBean.getBotId());
         //注册监听事件
-        EventChannel<Event> eventChannel = GlobalEventChannel.INSTANCE.parentScope(this);
-        eventChannel.registerListenerHost(new ListenerGroupMessage());
-        eventChannel.registerListenerHost(new ListenerPrivateChatMessage());
+        groupEventEventChannel.registerListenerHost(new ListenerGroupMessage());
+        botEventEventChannel.registerListenerHost(new ListenerPrivateChatMessage());
         String doNotStartTimedTask = "0";
         if (!doNotStartTimedTask.equals(settingBean.getTimedTaskTime())) {
             //启动定时任务
-            new TimedTaskService().start();
+            String taskStatus = new TimedTaskService().startTimedTask(settingBean.getGroupId());
+            getLogger().info(taskStatus);
         }
         getLogger().info("pu-campus Plugin loaded!");
     }

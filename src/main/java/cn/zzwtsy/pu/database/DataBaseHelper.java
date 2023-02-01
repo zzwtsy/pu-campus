@@ -2,7 +2,6 @@ package cn.zzwtsy.pu.database;
 
 
 import cn.zzwtsy.pu.PuCampus;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static cn.zzwtsy.pu.tools.DataBaseStatic.DRIVER_CLASS_NAME;
-import static cn.zzwtsy.pu.tools.DataBaseStatic.SQL_CONNECT_URL;
+import static cn.zzwtsy.pu.tools.Consts.DRIVER_CLASS_NAME;
+import static cn.zzwtsy.pu.tools.Consts.SQL_CONNECT_URL;
 
 /**
  * DBUtils
@@ -36,7 +35,7 @@ public class DataBaseHelper {
             Class.forName(DRIVER_CLASS_NAME);
             PuCampus.INSTANCE.getLogger().info("数据库连接成功");
         } catch (ClassNotFoundException e) {
-            PuCampus.INSTANCE.getLogger().error("数据库连接失败",e);
+            PuCampus.INSTANCE.getLogger().error("数据库连接失败", e);
         }
     }
 

@@ -1,7 +1,6 @@
 package cn.zzwtsy.pu.utils;
 
 import cn.zzwtsy.pu.PuCampus;
-
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -35,7 +34,7 @@ public class Encryption {
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             PuCampus.INSTANCE.getLogger().error(e);
+            return null;
         }
-        return null;
     }
 }
