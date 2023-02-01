@@ -18,24 +18,18 @@ import static cn.zzwtsy.pu.tools.Tools.calculateScheduledDelayTime;
  * @since 2023/01/12
  */
 public class TimedTaskService {
-    private final long groupId;
-
-    public TimedTaskService(long groupId) {
-        this.groupId = groupId;
-    }
 
     /**
      * 启动定时任务
      *
      * @return {@link String}
      */
-    public String start() {
+    private String execute(long groupId) {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         long delayTime;
         try {
             delayTime = calculateScheduledDelayTime();
             TASKS_MAP.put(groupId, scheduler.scheduleAtFixedRate(new ScheduledTask(), delayTime, 86400, TimeUnit.SECONDS));
-            PuCampus.INSTANCE.getLogger().info("已启动定时任务，延时" + delayTime + "秒后开始发送消息");
         } catch (ParseException e) {
             PuCampus.INSTANCE.getLogger().error("启动定时任务失败", e);
             return "启动定时任务失败" + e.getMessage();
@@ -56,16 +50,16 @@ public class TimedTaskService {
      *
      * @return {@link String}
      */
-    public String startTimedTask() {
+    public String startTimedTask(long groupId) {
         if (!TASKS_MAP.containsKey(groupId)) {
-            return new TimedTaskService(groupId).start();
+            return execute(groupId);
         }
         ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
         if (!scheduledFuture.isCancelled()) {
             scheduledFuture.cancel(true);
             TASKS_MAP.remove(groupId);
         }
-        return new TimedTaskService(groupId).start();
+        return execute(groupId);
     }
 
     /**
@@ -73,7 +67,7 @@ public class TimedTaskService {
      *
      * @return {@link String}
      */
-    public String stopTimedTask() {
+    public String stopTimedTask(long groupId) {
         if (!TASKS_MAP.containsKey(groupId)) {
             return groupId + "没有定时任务";
         }

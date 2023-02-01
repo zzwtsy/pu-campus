@@ -94,12 +94,12 @@ public class AdminCommand extends AbstractCommand {
         String time = strings[1];
         String closeTimedTask = "关闭";
         if (closeTimedTask.equals(time)) {
-            return new TimedTaskService(groupId).stopTimedTask();
+            return new TimedTaskService().stopTimedTask(groupId);
         }
         if (!checkTime(time)) {
             return "时间格式错误";
         }
-        return new TimedTaskService(groupId).startTimedTask();
+        return new TimedTaskService().startTimedTask(groupId);
     }
 
 }

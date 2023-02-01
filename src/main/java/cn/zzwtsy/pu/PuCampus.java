@@ -82,7 +82,8 @@ public final class PuCampus extends JavaPlugin {
         String doNotStartTimedTask = "0";
         if (!doNotStartTimedTask.equals(settingBean.getTimedTaskTime())) {
             //启动定时任务
-            new TimedTaskService(settingBean.getGroupId()).start();
+            String taskStatus = new TimedTaskService().startTimedTask(settingBean.getGroupId());
+            getLogger().info(taskStatus);
         }
         getLogger().info("pu-campus Plugin loaded!");
     }
