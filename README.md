@@ -1,5 +1,10 @@
 # pu-campus
 
+## 免责声明
+
+本程序仅作为学习交流之用，使用者造成的任何后果由其自行承担  
+使用本程序需要遵守 AGPL-3.0 开源协议
+
 ## TODO
 
 - [x] 用户登陆
@@ -42,7 +47,7 @@
 | timedTaskTime | 定时任务时间【24 小时制】(示例：01:01) |
 | emailSuffix | 学校邮箱后缀 |
 
-# [**pu 学校邮箱后缀**](https://blog.yumdeb.top/tools/PuSchoolInfo.html)
+# [**pu 校园邮箱后缀点击查看**](https://blog.yumdeb.top/tools/PuSchoolInfo.html)
 
 ### command.json
 
@@ -65,7 +70,16 @@
 | adminDeleteUser | #删除用户 <用户 qq 号> | 管理员删除指定用户信息 |
 | addPublicToken | #添加 tk <账号\|oauthToken> <密码\|oauthTokenSecret> | 添加公共 pu Token,用于定时任务，不设置则使用管理员
 Token |
-| timedTask | #定时任务 <时间*24 小时*(01:01)> | 设置定时任务 |
+| timedTask | #定时任务 <时间*24 小时*(01:01)> <qq群号> | 设置定时任务 |
+
+## 获取 pu oauthToken 和 oauthTokenSecret
+
+- 注意：使用用户名密码登录后 pu 软件会登录失效，再次使用 pu 需重新登录。使用 Token 则不会出现此问题
+
+1. 使用抓包软件抓取 pu 校园数据
+2. 点击任意链接找到`oauth_token`和`oauth_token_secret`复制值
+3. 将`oauth_token`和`oauth_token_secret`以 #login <oauth_token> <oauth_token_secret> 这样的形式发送给机器人即可完成登录
+
 
 ## 活动列表 JSON 解析
 
@@ -93,19 +107,19 @@ Token |
 
 - is_need_sign_out：
 
-    - 0：无需签退
+  - 0：无需签退
 
 - eventStatus：当前活动状态
 
-    - 4：活动未参加且正在进行中
-    - 5：活动未参加且已结束
-    - 8：活动已参加且已结束
+  - 4：活动未参加且正在进行中
+  - 5：活动未参加且已结束
+  - 8：活动已参加且已结束
 
 - isAllowEvent：是否可报名
 
-    - 0：当前不可报名
-    - 1：当前可报名
+  - 0：当前不可报名
+  - 1：当前可报名
 
 - is_joined：是否已参加活动
-    - 0：未参加当前活动
-    - 1：已参加当前活动
+  - 0：未参加当前活动
+  - 1：已参加当前活动
