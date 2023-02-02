@@ -40,7 +40,7 @@ public class Tools {
     }
 
     /**
-     * 检查时间
+     * 检查时间，格式（00-00）
      *
      * @param time 时间
      * @return boolean
