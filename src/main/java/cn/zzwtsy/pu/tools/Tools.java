@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.UserService;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +15,6 @@ import static cn.zzwtsy.pu.tools.Consts.PLUGIN_DATA_FILE_PATH;
 import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
 import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
-import static java.lang.Math.abs;
 
 /**
  * 拆分消息
@@ -154,15 +154,21 @@ public class Tools {
     public static long calculateScheduledDelayTime() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String addDate = complementaryDate(settingBean.getTimedTaskTime());
+        //获取补全后时间的时间戳
         long timedTaskTime = sdf.parse(addDate).getTime();
+        //获取当前时间的时间戳
         long nowTime = System.currentTimeMillis();
+        //设定时间减去当前时间并转换为秒
         long delayTime = (timedTaskTime - nowTime) / 1000L;
+        //设定时间位于当前时间之后，直接返回延迟时间即可
         if (delayTime > 0) {
             return delayTime;
-        } else if (delayTime == 0) {
-            return 0;
+        } else if (delayTime < 0) {
+            //设定时间位于当前时间之前，需要延迟到第二天执行
+            //24小时 = 86400秒
+            return 86400 + delayTime;
         } else {
-            return 86400 - abs(delayTime);
+            return 0;
         }
     }
 }
