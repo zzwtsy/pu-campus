@@ -16,7 +16,21 @@ import java.util.HashMap;
  * @since 2022/12/26
  */
 public class UserCreditService {
-    private final HashMap<String, Double> creditTotalMap = new HashMap<>(2);
+    private final HashMap<String, Double> creditTotalMap;
+    private final String totalNodeName;
+    private final String messageNodeName;
+    private final String getUserCreditSuccess;
+    private final String contentNodeName;
+    private final String creditInfoSuccessWord;
+
+    public UserCreditService() {
+        contentNodeName = "content";
+        getUserCreditSuccess = "success";
+        messageNodeName = "message";
+        totalNodeName = "total";
+        creditInfoSuccessWord = "学分类型";
+        creditTotalMap = new HashMap<>(2);
+    }
 
     /**
      * 学分信息
@@ -26,7 +40,6 @@ public class UserCreditService {
      */
     public String userCredit(long qqId) {
         Api api = new Api();
-        String creditInfoSuccessWord = "学分类型";
         StringBuilder stringBuilder = new StringBuilder();
         String activeCreditResponse;
         String applyCreditResponse;
@@ -46,7 +59,7 @@ public class UserCreditService {
             return activeCreditContentParse;
         }
         if (!applyCreditContentParse.startsWith(creditInfoSuccessWord)) {
-            return activeCreditContentParse;
+            return applyCreditContentParse;
         }
         Double creditTotal = creditTotalMap.get("activeCredit") + creditTotalMap.get("applyCredit");
         stringBuilder.append("\n")
@@ -65,10 +78,6 @@ public class UserCreditService {
      * @return {@link String}
      */
     private String contentParse(String creditResponse, String creditType) {
-        String totalNodeName = "total";
-        String messageNodeName = "message";
-        String getUserCreditSuccess = "success";
-        String contentNodeName = "content";
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode;
         try {
