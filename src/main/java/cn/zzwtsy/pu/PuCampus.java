@@ -14,6 +14,7 @@ import net.mamoe.mirai.event.EventChannel;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupEvent;
+import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 
 import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
@@ -76,9 +77,13 @@ public final class PuCampus extends JavaPlugin {
         EventChannel<BotEvent> botEventEventChannel = GlobalEventChannel.INSTANCE
                 .filterIsInstance(BotEvent.class)
                 .filter(event -> event.getBot().getId() == settingBean.getBotId());
+        EventChannel<GroupTempMessageEvent> groupTempMessageEventChannel = GlobalEventChannel.INSTANCE
+                .filterIsInstance(GroupTempMessageEvent.class)
+                .filter(event -> event.getGroup().getId() == settingBean.getGroupId());
         //注册监听事件
         groupEventEventChannel.registerListenerHost(new ListenerGroupMessage());
         botEventEventChannel.registerListenerHost(new ListenerPrivateChatMessage());
+        groupTempMessageEventChannel.registerListenerHost(new ListenerPrivateChatMessage());
         String doNotStartTimedTask = "0";
         if (!doNotStartTimedTask.equals(settingBean.getTimedTaskTime())) {
             //启动定时任务

@@ -25,4 +25,5 @@ public class CommandConsts {
     public static final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
     public static final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
     public static final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
+    public static final String showTaskCommand = commandPrefix + commandBean.getAdminBean().getShowTask();
 }

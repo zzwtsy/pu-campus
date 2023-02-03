@@ -66,6 +66,7 @@ public class InitConfig {
                 .setAdminDeleteUser("删除用户")
                 .setTimedTask("定时任务")
                 .setAddPublicToken("添加tk")
+                .setShowTask("显示任务")
         );
         try {
             if (ConfigHelper.createConfigFile(PATH_NAME, COMMAND_FILE_NAME)) {

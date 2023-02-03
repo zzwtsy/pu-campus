@@ -13,6 +13,7 @@ import static cn.zzwtsy.pu.tools.CommandConsts.querySignInEventListCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.querySignOutEventListCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.queryUserCreditInfoCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.queryUserEventEndUnissuedCreditListCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.showTaskCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
 import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
@@ -44,6 +45,7 @@ public abstract class AbstractCommand implements Command {
     protected String adminHelpInfo() {
         return addPublicToken + " <用户名|oauthToken> <密码|oauthTokenSecret>" + "：添加公共 token"
                 + "\n" + adminDeleteUserCommand + " <用户 qq 号>" + "：删除用户信息"
+                + "\n" + showTaskCommand + "：显示定时任务状态"
                 + "\n" + timedTaskCommand + " <时间为24小时制|关闭>" + "：设置定时任务时间或关闭定时任务"
                 + "\n" + helpCommand + "：获取帮助信息";
     }

@@ -11,6 +11,7 @@ import net.mamoe.mirai.message.data.MessageChain;
 
 import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
 import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.showTaskCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 
@@ -21,7 +22,7 @@ import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
-    final String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken};
+    final String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken, showTaskCommand};
     final CommandService commandService;
     String message;
     FriendMessageEvent friendMessageEvent;

@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.task.ScheduledTask;
+
 import java.text.ParseException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -9,6 +10,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static cn.zzwtsy.pu.tools.Consts.TASKS_MAP;
+import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.calculateScheduledDelayTime;
 
 /**
@@ -82,4 +84,18 @@ public class TimedTaskService {
         return "定时任务停止失败";
     }
 
+    /**
+     * 显示任务状态
+     *
+     * @return {@link String}
+     */
+    public String showTaskStatus() {
+        String doNotStartTimedTask = "0";
+        if (doNotStartTimedTask.equals(settingBean.getTimedTaskTime())) {
+            return "没有定时任务运行";
+        }
+        StringBuilder sb = new StringBuilder();
+        TASKS_MAP.keySet().forEach(key -> sb.append(key).append(":已有定时任务\n"));
+        return sb.toString();
+    }
 }

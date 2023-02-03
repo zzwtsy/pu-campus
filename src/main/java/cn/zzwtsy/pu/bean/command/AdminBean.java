@@ -16,6 +16,30 @@ public class AdminBean {
     private String adminDeleteUser;
     private String addPublicToken;
     private String timedTask;
+    /**
+     * 显示任务
+     */
+    private String showTask;
+
+    /**
+     * 获取显示任务命令
+     *
+     * @return {@link String}
+     */
+    public String getShowTask() {
+        return showTask;
+    }
+
+    /**
+     * 设置显示任务命令
+     *
+     * @param showTask 显示任务命令
+     * @return {@link AdminBean}
+     */
+    public AdminBean setShowTask(String showTask) {
+        this.showTask = showTask;
+        return this;
+    }
 
     /**
      * 获得管理员删除用户信息命令
