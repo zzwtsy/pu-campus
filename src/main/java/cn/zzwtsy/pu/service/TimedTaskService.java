@@ -10,7 +10,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static cn.zzwtsy.pu.tools.Consts.TASKS_MAP;
-import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.calculateScheduledDelayTime;
 
 /**
@@ -90,12 +89,11 @@ public class TimedTaskService {
      * @return {@link String}
      */
     public String showTaskStatus() {
-        String doNotStartTimedTask = "0";
-        if (doNotStartTimedTask.equals(settingBean.getTimedTaskTime())) {
+        if (TASKS_MAP.isEmpty()) {
             return "没有定时任务运行";
         }
         StringBuilder sb = new StringBuilder();
-        TASKS_MAP.keySet().forEach(key -> sb.append(key).append(":已有定时任务\n"));
+        TASKS_MAP.keySet().forEach(key -> sb.append(key).append(":已启动定时任务"));
         return sb.toString();
     }
 }
