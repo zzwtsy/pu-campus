@@ -24,7 +24,6 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
 }
 
-tasks.withType(JavaCompile).configureEach {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+mirai {
+    jvmTarget = JavaVersion.VERSION_17
 }
