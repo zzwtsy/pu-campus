@@ -68,7 +68,7 @@
 | **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** |
 | deleteUser | #删除信息 | 删除自己的信息 |
 | adminDeleteUser | #删除用户 <用户 qq 号> | 管理员删除指定用户信息 |
-| addPublicToken | #添加 tk <账号\|oauthToken> <密码\|oauthTokenSecret> | 添加公共 pu Token,用于定时任务，不设置则使用管理员
+| addPublicToken | #添加tk <账号\|oauthToken> <密码\|oauthTokenSecret> | 添加公共 pu Token,用于定时任务，不设置则使用管理员
 Token |
 | timedTask | #定时任务 <时间*24 小时*(01:01)> <qq群号> | 设置定时任务 |
 
