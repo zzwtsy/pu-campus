@@ -2,6 +2,7 @@ package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.service.TimedTaskService;
 import cn.zzwtsy.pu.service.UserService;
+import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
@@ -9,6 +10,7 @@ import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
 import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.showTaskCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
+import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
@@ -99,11 +101,13 @@ public class AdminCommand extends AbstractCommand {
         String time = strings[1];
         String closeTimedTask = "关闭";
         if (closeTimedTask.equals(time)) {
+            SaveConfig.saveSettingConfig(settingBean);
             return new TimedTaskService().stopTimedTask(groupId);
         }
         if (!checkTime(time)) {
             return "时间格式错误";
         }
+        SaveConfig.saveSettingConfig(settingBean);
         return new TimedTaskService().startTimedTask(groupId, time);
     }
 
