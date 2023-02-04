@@ -48,7 +48,7 @@ public class AdminCommand extends AbstractCommand {
                     .append(timedTask(message))
                     .build();
         }
-        if (message.startsWith(showTaskCommand)){
+        if (message.startsWith(showTaskCommand)) {
             return new MessageChainBuilder()
                     .append(new TimedTaskService().showTaskStatus())
                     .build();
@@ -90,10 +90,9 @@ public class AdminCommand extends AbstractCommand {
      * @return {@link String}
      */
     private String timedTask(String message) {
-        int commandMaxLength = 3;
-        int commandMinLength = 2;
+        int commandLength = 3;
         String[] strings = splitMessage(message);
-        if (strings.length > commandMaxLength || strings.length < commandMinLength) {
+        if (strings.length != commandLength) {
             return "命令格式错误";
         }
         long groupId = Long.parseLong(strings[2]);
@@ -105,7 +104,7 @@ public class AdminCommand extends AbstractCommand {
         if (!checkTime(time)) {
             return "时间格式错误";
         }
-        return new TimedTaskService().startTimedTask(groupId);
+        return new TimedTaskService().startTimedTask(groupId, time);
     }
 
 }

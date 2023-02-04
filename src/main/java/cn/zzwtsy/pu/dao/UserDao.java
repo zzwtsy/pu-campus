@@ -106,6 +106,10 @@ public class UserDao {
      * @return {@link String}
      */
     private String encryptionQqId(long qqId) {
+        if (qqId == 0) {
+            String id = "0";
+            return Encryption.encryptionToMd5(id, id);
+        }
         String id = new StringBuilder(String.valueOf(qqId)).reverse().toString();
         String salt = id.substring(0, 4);
         return Encryption.encryptionToMd5(id, salt);

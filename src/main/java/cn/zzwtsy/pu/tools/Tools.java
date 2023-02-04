@@ -2,10 +2,10 @@ package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.UserService;
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.tools.Consts.COMMAND_FILE_NAME;
@@ -152,10 +152,26 @@ public class Tools {
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String addDate = complementaryDate(settingBean.getTimedTaskTime());
-        //获取补全后时间的时间戳
-        long timedTaskTime = sdf.parse(addDate).getTime();
+        return calculateTime(addDate);
+    }
+
+    /**
+     * 计算定时任务延迟时间
+     *
+     * @param time 时间 (03:03)
+     * @return long
+     * @throws ParseException 解析异常
+     */
+    public static long calculateScheduledDelayTime(String time) throws ParseException {
+        String addDate = complementaryDate(time);
+        return calculateTime(addDate);
+    }
+
+    private static long calculateTime(String time) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        long timedTaskTime = sdf.parse(time).getTime();
         //获取当前时间的时间戳
         long nowTime = System.currentTimeMillis();
         //设定时间减去当前时间并转换为秒

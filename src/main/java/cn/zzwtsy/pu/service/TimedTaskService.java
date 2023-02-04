@@ -1,8 +1,6 @@
 package cn.zzwtsy.pu.service;
 
-import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.task.ScheduledTask;
-
 import java.text.ParseException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,16 +23,9 @@ public class TimedTaskService {
      *
      * @return {@link String}
      */
-    private String execute(long groupId) {
+    private String execute(long groupId, long delayTime) {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        long delayTime;
-        try {
-            delayTime = calculateScheduledDelayTime();
-            TASKS_MAP.put(groupId, scheduler.scheduleAtFixedRate(new ScheduledTask(), delayTime, 86400, TimeUnit.SECONDS));
-        } catch (ParseException e) {
-            PuCampus.INSTANCE.getLogger().error("启动定时任务失败", e);
-            return "启动定时任务失败" + e.getMessage();
-        }
+        TASKS_MAP.put(groupId, scheduler.scheduleAtFixedRate(new ScheduledTask(), delayTime, 86400, TimeUnit.SECONDS));
         int anHour = 3600;
         if (delayTime > anHour || delayTime == anHour) {
             return "已启动定时任务，延时" + (delayTime / 3600) + "小时后开始发送消息";
@@ -49,18 +40,50 @@ public class TimedTaskService {
     /**
      * 启动定时任务
      *
+     * @param groupId qq群
      * @return {@link String}
      */
     public String startTimedTask(long groupId) {
+        long delayTime;
+        try {
+            delayTime = calculateScheduledDelayTime();
+        } catch (ParseException e) {
+            return "启动定时任务失败" + e.getMessage();
+        }
         if (!TASKS_MAP.containsKey(groupId)) {
-            return execute(groupId);
+            return execute(groupId, delayTime);
         }
         ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
         if (!scheduledFuture.isCancelled()) {
             scheduledFuture.cancel(true);
             TASKS_MAP.remove(groupId);
         }
-        return execute(groupId);
+        return execute(groupId, delayTime);
+    }
+
+    /**
+     * 启动定时任务
+     *
+     * @param groupId qq群
+     * @param time    时间
+     * @return {@link String}
+     */
+    public String startTimedTask(long groupId, String time) {
+        long delayTime;
+        try {
+            delayTime = calculateScheduledDelayTime(time);
+        } catch (ParseException e) {
+            return "启动定时任务失败" + e.getMessage();
+        }
+        if (!TASKS_MAP.containsKey(groupId)) {
+            return execute(groupId, delayTime);
+        }
+        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
+        if (!scheduledFuture.isCancelled()) {
+            scheduledFuture.cancel(true);
+            TASKS_MAP.remove(groupId);
+        }
+        return execute(groupId, delayTime);
     }
 
     /**
@@ -93,7 +116,7 @@ public class TimedTaskService {
             return "没有定时任务运行";
         }
         StringBuilder sb = new StringBuilder();
-        TASKS_MAP.keySet().forEach(key -> sb.append(key).append(":已启动定时任务"));
+        TASKS_MAP.keySet().forEach(key -> sb.append(key).append(":已启动定时任务\n"));
         return sb.toString();
     }
 }

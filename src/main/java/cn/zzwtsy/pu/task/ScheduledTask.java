@@ -36,6 +36,10 @@ public class ScheduledTask implements Runnable {
         //判断公共token是否存在，不存在则使用管理员token
         if (checkUserLogin(0)) {
             userBean = new UserService().getUser(settingBean.getAdminId());
+            if (userBean == null) {
+                PuCampus.INSTANCE.getLogger().error("运行定时任务失败，不存在Token");
+                return;
+            }
             userId = settingBean.getAdminId();
         } else {
             userId = 0;
