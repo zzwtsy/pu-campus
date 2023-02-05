@@ -2,10 +2,8 @@ package cn.zzwtsy.pu.task;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.bean.UserBean;
-import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.service.event.EventService;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.data.AtAll;
 import net.mamoe.mirai.message.data.MessageChain;
@@ -31,19 +29,13 @@ public class ScheduledTask implements Runnable {
 
     @Override
     public void run() {
-        long userId;
-        Bot bot = Bot.getInstance(settingBean.getBotId());
+        long userId = 0;
         //判断公共token是否存在，不存在则使用管理员token
-        if (checkUserLogin(0)) {
-            userBean = new UserService().getUser(settingBean.getAdminId());
-            if (userBean == null) {
-                PuCampus.INSTANCE.getLogger().error("运行定时任务失败，不存在Token");
-                return;
-            }
-            userId = settingBean.getAdminId();
-        } else {
-            userId = 0;
+        if (checkUserLogin(userId)) {
+            PuCampus.INSTANCE.getLogger().error("运行定时任务失败，不存在公共Token");
+            return;
         }
+        Bot bot = Bot.getInstance(settingBean.getBotId());
         Group group = bot.getGroup(settingBean.getGroupId());
         //判断获取qq群是否失败
         if (group != null) {
@@ -60,16 +52,7 @@ public class ScheduledTask implements Runnable {
             }
             group.sendMessage(messageChain);
         } else {
-            //获取qq机器人的管理员好友
-            Friend botFriend = bot.getFriend(settingBean.getAdminId());
-            //判断获取好友是否失败
-            if (botFriend == null) {
-                PuCampus.INSTANCE.getLogger().error("以管理员 QQ 号码获取机器人好友对象失败");
-            }
-            PuCampus.INSTANCE.getLogger().error("获取qq群失败，请检查配置文件中的qq群号");
-            if (botFriend != null) {
-                botFriend.sendMessage("发送定时信息失败：获取qq群失败，请检查配置文件中的qq群号");
-            }
+            PuCampus.INSTANCE.getLogger().error("运行定时任务失败，获取qq群失败");
         }
     }
 }

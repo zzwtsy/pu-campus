@@ -9,7 +9,7 @@ package cn.zzwtsy.pu.bean;
 public class SettingBean {
     public static final SettingBean INSTANCE = new SettingBean();
     private long groupId;
-    private long adminId;
+    private long[] adminId;
     private long botId;
     private String timedTaskTime;
     private String emailSuffix;
@@ -99,7 +99,7 @@ public class SettingBean {
      *
      * @return long
      */
-    public long getAdminId() {
+    public long[] getAdminId() {
         return adminId;
     }
 
@@ -109,7 +109,7 @@ public class SettingBean {
      * @param adminId 管理员qq号
      * @return {@link SettingBean}
      */
-    public SettingBean setAdminId(long adminId) {
+    public SettingBean setAdminId(long[] adminId) {
         this.adminId = adminId;
         return this;
     }

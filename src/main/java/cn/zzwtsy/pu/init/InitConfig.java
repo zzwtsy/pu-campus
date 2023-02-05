@@ -29,7 +29,7 @@ public class InitConfig {
      * @return boolean
      */
     public boolean initSettingConfig() {
-        SettingBean.INSTANCE.setAdminId(0)
+        SettingBean.INSTANCE.setAdminId(new long[]{0})
                 .setGroupId(0)
                 .setBotId(0)
                 .setTimedTaskTime("0")

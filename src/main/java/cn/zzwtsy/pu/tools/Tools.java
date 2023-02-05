@@ -99,7 +99,12 @@ public class Tools {
      * @return boolean
      */
     public static boolean checkAdminQqId(long qqId) {
-        return qqId == settingBean.getAdminId();
+        for (long l : settingBean.getAdminId()) {
+            if (l == qqId) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
