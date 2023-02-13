@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * @author zzwtsy
  * @since 2022/11/28
  */
-public class HttpHelper {
+public class HttpUtil {
     private static final OkHttpClient OK_HTTP_CLIENT = new OkHttpClient();
 
     /**

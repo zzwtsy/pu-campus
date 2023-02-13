@@ -5,7 +5,6 @@ import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.service.event.Event;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
 
@@ -21,14 +20,12 @@ public abstract class AbstractEvent implements Event {
     protected final String eventContentNode = "content";
     protected long userQqId;
     protected Api api;
-    protected ObjectMapper mapper;
     protected String oauthToken;
     protected String oauthTokenSecret;
 
     public AbstractEvent(long userQqId) {
         this.userQqId = userQqId;
         api = new Api();
-        mapper = new ObjectMapper();
         UserBean userBean = new UserService().getUser(userQqId);
         oauthToken = userBean.getOauthToken();
         oauthTokenSecret = userBean.getOauthTokenSecret();

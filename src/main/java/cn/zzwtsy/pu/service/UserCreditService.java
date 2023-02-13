@@ -3,6 +3,7 @@ package cn.zzwtsy.pu.service;
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
 import cn.zzwtsy.pu.bean.UserBean;
+import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,10 +79,9 @@ public class UserCreditService {
      * @return {@link String}
      */
     private String contentParse(String creditResponse, String creditType) {
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode;
         try {
-            jsonNode = objectMapper.readTree(creditResponse);
+            jsonNode = JsonUtil.fromJson(creditResponse);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("", e);
             return "处理学分 JSON 时发生异常：" + e.getMessage();

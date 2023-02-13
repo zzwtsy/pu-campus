@@ -1,7 +1,9 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
+import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.service.UserService;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +15,6 @@ import static cn.zzwtsy.pu.tools.Consts.DB_FILE_FULL_PATH;
 import static cn.zzwtsy.pu.tools.Consts.PATH_NAME;
 import static cn.zzwtsy.pu.tools.Consts.PLUGIN_DATA_FILE_PATH;
 import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
-import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
 
 /**
@@ -99,12 +100,7 @@ public class Tools {
      * @return boolean
      */
     public static boolean checkAdminQqId(long qqId) {
-        for (long l : settingBean.getAdminId()) {
-            if (l == qqId) {
-                return true;
-            }
-        }
-        return false;
+        return Setting.INSTANCE.getAdminId().contains(qqId);
     }
 
     /**
@@ -157,7 +153,7 @@ public class Tools {
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime() throws ParseException {
-        String addDate = complementaryDate(settingBean.getTimedTaskTime());
+        String addDate = complementaryDate(Setting.INSTANCE.getTimedTask());
         return calculateTime(addDate);
     }
 

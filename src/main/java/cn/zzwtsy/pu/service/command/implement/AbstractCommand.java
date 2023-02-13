@@ -1,5 +1,6 @@
 package cn.zzwtsy.pu.service.command.implement;
 
+import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.service.LoginService;
 import cn.zzwtsy.pu.service.command.Command;
 
@@ -15,7 +16,6 @@ import static cn.zzwtsy.pu.tools.CommandConsts.queryUserCreditInfoCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.queryUserEventEndUnissuedCreditListCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.showTaskCommand;
 import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
-import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
 /**
@@ -68,7 +68,7 @@ public abstract class AbstractCommand implements Command {
             setUserTokenStatus = new LoginService().getUserUid(userQqId, strings[1], strings[2]);
         } else {
             //补全用户账号: 用户账号加用户学校邮件后缀
-            String userName = strings[1] + settingBean.getEmailSuffix();
+            String userName = strings[1] + Setting.INSTANCE.getEmailSuffix();
             setUserTokenStatus = new LoginService().getUserToken(userQqId, userName, strings[2]);
         }
         return setUserTokenStatus;

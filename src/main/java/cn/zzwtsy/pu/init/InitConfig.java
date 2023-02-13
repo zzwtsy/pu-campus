@@ -1,7 +1,6 @@
 package cn.zzwtsy.pu.init;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.SettingBean;
 import cn.zzwtsy.pu.bean.command.AdminBean;
 import cn.zzwtsy.pu.bean.command.CommandBean;
 import cn.zzwtsy.pu.bean.command.GroupBean;
@@ -13,7 +12,6 @@ import java.io.IOException;
 
 import static cn.zzwtsy.pu.tools.Consts.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.Consts.PATH_NAME;
-import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
 
 
 /**
@@ -23,29 +21,6 @@ import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
  * @since 2022/11/29
  */
 public class InitConfig {
-    /**
-     * 初始化设置配置
-     *
-     * @return boolean
-     */
-    public boolean initSettingConfig() {
-        SettingBean.INSTANCE.setAdminId(new long[]{0})
-                .setGroupId(0)
-                .setBotId(0)
-                .setTimedTaskTime("0")
-                .setEmailSuffix("");
-        try {
-            if (ConfigHelper.createConfigFile(PATH_NAME, SETTING_FILE_NAME)) {
-                PuCampus.INSTANCE.getLogger().info("Create setting config file successfully");
-            } else {
-                PuCampus.INSTANCE.getLogger().error("Create setting config file failed");
-            }
-        } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("Create setting config file failed", e);
-            return false;
-        }
-        return SaveConfig.saveSettingConfig(SettingBean.INSTANCE);
-    }
 
     public boolean initCommandConfig() {
         CommandBean.INSTANCE.setPublicBean(new PublicBean()
