@@ -57,7 +57,7 @@ public final class PuCampus extends JavaPlugin {
         //注册监听事件
         groupEventEventChannel.registerListenerHost(new ListenerGroupMessage());
         botEventEventChannel.registerListenerHost(new ListenerPrivateChatMessage());
-        String doNotStartTimedTask = "0";
+        String doNotStartTimedTask = "";
         String timedTask = Setting.INSTANCE.getTimedTask();
         if (!doNotStartTimedTask.equals(timedTask)) {
             //启动定时任务

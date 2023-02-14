@@ -20,11 +20,13 @@ object Setting : AutoSavePluginConfig("setting") {
     @ValueDescription("qq 群号")
     var groupId by value(0L)
 
-    @ValueDescription("""
+    @ValueDescription(
+        """
         定时任务时间，24小时制，示例：01:01（每天凌晨1点1分执行任务）
-        0 为关闭定时任务
-    """)
-    var timedTask by value("0")
+        值为空关闭定时任务
+    """
+    )
+    var timedTask: String by value("")
 
     @ValueDescription("学校邮箱后缀：https://blog.yumdeb.top/tools/PuSchoolInfo.html")
     var emailSuffix by value("")
