@@ -6,13 +6,13 @@ import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.CommandConsts.eventListCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.helpCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.loginCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.querySignInEventListCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.querySignOutEventListCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.queryUserCreditInfoCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.queryUserEventEndUnissuedCreditListCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.EVENT_LIST_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.HELP_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.LOGIN_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_SIGN_IN_EVENT_LIST_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_SIGN_OUT_EVENT_LIST_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_USER_CREDIT_INFO_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_USER_EVENT_END_UNISSUED_CREDIT_LIST_COMMAND;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
@@ -28,7 +28,7 @@ public class GroupCommand extends AbstractCommand {
     public MessageChain processingCommand(String message, long userQqId) {
         EventService eventService = new EventService(userQqId);
         //获取帮助信息
-        if (message.startsWith(helpCommand)) {
+        if (message.startsWith(HELP_COMMAND)) {
             return new MessageChainBuilder()
                     .append("===群聊可使用命令===\n\n")
                     .append(groupHelpInfo())
@@ -43,7 +43,7 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //根据日期获取活动列表
-        if (message.startsWith(eventListCommand)) {
+        if (message.startsWith(EVENT_LIST_COMMAND)) {
             int commandLength = 2;
             String[] strings = splitMessage(message);
             if (strings.length != commandLength) {
@@ -66,7 +66,7 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //获取活动已结束未发放学分列表
-        if (message.startsWith(queryUserEventEndUnissuedCreditListCommand)) {
+        if (message.startsWith(QUERY_USER_EVENT_END_UNISSUED_CREDIT_LIST_COMMAND)) {
             String str = eventService.getEventEndUnissuedCreditEvent();
             return new MessageChainBuilder()
                     .append(new At(userQqId))
@@ -76,14 +76,14 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //用户登录
-        if (message.startsWith(loginCommand)) {
+        if (message.startsWith(LOGIN_COMMAND)) {
             return new MessageChainBuilder()
                     .append(new At(userQqId)
                             .plus("请私聊机器人登录"))
                     .build();
         }
         //查询学分信息
-        if (message.startsWith(queryUserCreditInfoCommand)) {
+        if (message.startsWith(QUERY_USER_CREDIT_INFO_COMMAND)) {
             if (checkUserLogin(userQqId)) {
                 return new MessageChainBuilder()
                         .append(new At(userQqId)
@@ -98,7 +98,7 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //获取待签到列表
-        if (message.startsWith(querySignInEventListCommand)) {
+        if (message.startsWith(QUERY_SIGN_IN_EVENT_LIST_COMMAND)) {
             String str = eventService.getUserCanSignInEventList();
             return new MessageChainBuilder()
                     .append(new At(userQqId))
@@ -107,7 +107,7 @@ public class GroupCommand extends AbstractCommand {
                     .build();
         }
         //获取待签退列表
-        if (message.startsWith(querySignOutEventListCommand)) {
+        if (message.startsWith(QUERY_SIGN_OUT_EVENT_LIST_COMMAND)) {
             String str = eventService.getUserCanSignOutEventList();
             return new MessageChainBuilder()
                     .append(new At(userQqId))

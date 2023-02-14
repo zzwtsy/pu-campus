@@ -1,13 +1,12 @@
 package cn.zzwtsy.pu;
 
+import cn.zzwtsy.pu.data.Command;
 import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.database.DataBaseHelper;
-import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.init.InitDataBase;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
 import cn.zzwtsy.pu.service.TimedTaskService;
-import cn.zzwtsy.pu.tools.LoadConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.EventChannel;
@@ -15,7 +14,6 @@ import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupEvent;
 
-import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
 import static cn.zzwtsy.pu.tools.Tools.checkDataBaseFile;
 
 
@@ -39,6 +37,7 @@ public final class PuCampus extends JavaPlugin {
     @Override
     public void onEnable() {
         reloadPluginConfig(Setting.INSTANCE);
+        reloadPluginConfig(Command.INSTANCE);
         //检测数据库文件是否存在
         if (!checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");
@@ -48,17 +47,6 @@ public final class PuCampus extends JavaPlugin {
             getLogger().info("Registering database");
             DataBaseHelper.registerDataBase();
         }
-        InitConfig initConfig = new InitConfig();
-        //检测命令配置文件是否存在
-        if (!checkCommandFile()) {
-            if (initConfig.initCommandConfig()) {
-                getLogger().info("Init Command file successfully,Please modify the config file and try again");
-            } else {
-                getLogger().error("Init Command file failed");
-            }
-        }
-        // 加载全部配置文件
-        LoadConfig.loadAllConfig();
         //过滤事件
         EventChannel<GroupEvent> groupEventEventChannel = GlobalEventChannel.INSTANCE
                 .filterIsInstance(GroupEvent.class)
@@ -82,5 +70,6 @@ public final class PuCampus extends JavaPlugin {
     @Override
     public void onDisable() {
         savePluginConfig(Setting.INSTANCE);
+        savePluginConfig(Command.INSTANCE);
     }
 }
