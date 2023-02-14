@@ -32,5 +32,5 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: current
+          gradle-version: 7.4.1
           arguments: build
