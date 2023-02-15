@@ -24,7 +24,7 @@ object Setting : AutoSavePluginConfig("setting") {
         """
         定时任务时间，24小时制，示例：01:01（每天凌晨1点1分执行任务）
         值为空关闭定时任务
-    """
+        """
     )
     var timedTask: String by value("")
 

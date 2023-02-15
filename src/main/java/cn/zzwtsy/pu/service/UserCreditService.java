@@ -6,7 +6,7 @@ import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -51,7 +51,7 @@ public class UserCreditService {
             activeCreditResponse = api.getActiveCredit(oauthToken, oauthTokenSecret);
             applyCreditResponse = api.getApplyCredit(oauthToken, oauthTokenSecret);
         } catch (IOException e) {
-            PuCampus.INSTANCE.getLogger().error("获取学分信息失败");
+            PuCampus.INSTANCE.getLogger().error("获取学分信息失败", e);
             return "获取学分信息失败：" + e.getMessage();
         }
         String activeCreditContentParse = contentParse(activeCreditResponse, "activeCredit");
@@ -83,7 +83,7 @@ public class UserCreditService {
         try {
             jsonNode = JsonUtil.fromJson(creditResponse);
         } catch (JsonProcessingException e) {
-            PuCampus.INSTANCE.getLogger().error("", e);
+            PuCampus.INSTANCE.getLogger().error("处理学分 JSON 时发生异常:", e);
             return "处理学分 JSON 时发生异常：" + e.getMessage();
         }
         String messageContent = jsonNode.get(messageNodeName).asText();

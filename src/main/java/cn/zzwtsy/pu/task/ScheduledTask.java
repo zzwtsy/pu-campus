@@ -30,7 +30,7 @@ public class ScheduledTask implements Runnable {
     @Override
     public void run() {
         long userId = 0;
-        //判断公共token是否存在，不存在则使用管理员token
+        //判断公共token是否存在
         if (checkUserLogin(userId)) {
             PuCampus.INSTANCE.getLogger().error("运行定时任务失败，不存在公共Token");
             return;
