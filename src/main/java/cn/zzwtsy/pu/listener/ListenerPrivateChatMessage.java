@@ -1,18 +1,21 @@
 package cn.zzwtsy.pu.listener;
 
+import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.command.CommandService;
 import cn.zzwtsy.pu.tools.Tools;
+import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
+import org.jetbrains.annotations.NotNull;
 
-import static cn.zzwtsy.pu.tools.CommandConsts.addPublicToken;
-import static cn.zzwtsy.pu.tools.CommandConsts.adminDeleteUserCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.showTaskCommand;
-import static cn.zzwtsy.pu.tools.CommandConsts.timedTaskCommand;
+import static cn.zzwtsy.pu.tools.CommandConsts.ADD_PUBLIC_TOKEN;
+import static cn.zzwtsy.pu.tools.CommandConsts.ADMIN_DELETE_USER_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.SHOW_TASK_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.TIMED_TASK_COMMAND;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 
 /**
@@ -22,7 +25,7 @@ import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
  * @since 2022/12/24
  */
 public class ListenerPrivateChatMessage extends SimpleListenerHost {
-    final String[] adminCommandArrays = {adminDeleteUserCommand, timedTaskCommand, addPublicToken, showTaskCommand};
+    final String[] adminCommandArrays = {ADMIN_DELETE_USER_COMMAND, TIMED_TASK_COMMAND, ADD_PUBLIC_TOKEN, SHOW_TASK_COMMAND};
     final CommandService commandService;
     String message;
     FriendMessageEvent friendMessageEvent;
@@ -84,6 +87,11 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
                 messageEvent.getSender().sendMessage(privateMessage);
             }
         }
+    }
+
+    @Override
+    public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
+        PuCampus.INSTANCE.getLogger().error("发生错误:", exception);
     }
 }
 

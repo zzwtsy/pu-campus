@@ -1,6 +1,7 @@
 package cn.zzwtsy.pu.service.event.implement;
 
 import cn.zzwtsy.pu.PuCampus;
+import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,21 +27,26 @@ public class EventEndUnissuedCreditEvent extends AbstractEvent {
      */
     @Override
     protected Object getResponse() {
-        ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode;
-        ArrayNode jsonArray = mapper.createArrayNode();
+        ArrayNode jsonArray = new ObjectMapper().createArrayNode();
         String response;
         int count = 10;
         for (int i = 1; ; i++) {
             String page = String.valueOf(i);
             try {
-                response = api.getUserEventEndUnissuedCreditList(String.valueOf(userQqId), String.valueOf(count), page, oauthToken, oauthTokenSecret);
+                response = api.getUserEventEndUnissuedCreditList(
+                        String.valueOf(userQqId),
+                        String.valueOf(count),
+                        page,
+                        oauthToken,
+                        oauthTokenSecret
+                );
             } catch (IOException e) {
                 PuCampus.INSTANCE.getLogger().error("获取未发放学分列表失败：", e);
                 return "获取未发放学分列表失败：" + e.getMessage();
             }
             try {
-                jsonNode = mapper.readTree(response);
+                jsonNode = JsonUtil.fromJson(response);
                 //判断 json 是否有 message 字段
                 if (jsonNode.hasNonNull(eventMessageNode)) {
                     return jsonNode.get(eventMessageNode).asText();
@@ -74,7 +80,10 @@ public class EventEndUnissuedCreditEvent extends AbstractEvent {
             if (content.get(i).get("can_evaluate").asInt() != 1) {
                 continue;
             }
-            stringBuilder.append("《").append(content.get(i).get("title").asText()).append("》").append("\n");
+            stringBuilder.append("《")
+                    .append(content.get(i).get("title").asText())
+                    .append("》")
+                    .append("\n");
         }
         String message = stringBuilder.toString();
         //判断是否存在未发放学分活动

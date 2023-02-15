@@ -1,8 +1,7 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.SettingBean;
-import cn.zzwtsy.pu.bean.command.CommandBean;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -36,7 +35,5 @@ public class Consts {
      * 数据库连接url
      */
     public static final String SQL_CONNECT_URL = "jdbc:sqlite:" + DB_FILE_FULL_PATH;
-    public static SettingBean settingBean;
-    public static CommandBean commandBean;
 
 }

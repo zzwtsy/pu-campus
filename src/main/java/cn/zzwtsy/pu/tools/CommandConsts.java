@@ -1,6 +1,6 @@
 package cn.zzwtsy.pu.tools;
 
-import static cn.zzwtsy.pu.tools.Consts.commandBean;
+import cn.zzwtsy.pu.data.Command;
 
 /**
  * 命令常量
@@ -10,20 +10,36 @@ import static cn.zzwtsy.pu.tools.Consts.commandBean;
  */
 @SuppressWarnings("PMD")
 public class CommandConsts {
-    private static final String commandPrefix = commandBean.getPublicBean().getCommandPrefix();
     /*群聊命令*/
-    public static final String eventListCommand = commandPrefix + commandBean.getGroupBean().getGetCalendarEventList();
-    public static final String helpCommand = commandPrefix + commandBean.getPublicBean().getHelp();
-    public static final String queryUserCreditInfoCommand = commandPrefix + commandBean.getGroupBean().getQueryUserCreditInfo();
-    public static final String querySignInEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignInEventList();
-    public static final String querySignOutEventListCommand = commandPrefix + commandBean.getGroupBean().getQuerySignOutEventList();
-    public static final String queryUserEventEndUnissuedCreditListCommand = commandPrefix + commandBean.getGroupBean().getQueryUserEventEndUnissuedCreditList();
-    public static final String deleteUserCommand = commandPrefix + commandBean.getPrivateBean().getDeleteUser();
+    public static final String EVENT_LIST_COMMAND;
+    public static final String HELP_COMMAND;
+    public static final String QUERY_USER_CREDIT_INFO_COMMAND;
+    public static final String QUERY_SIGN_IN_EVENT_LIST_COMMAND;
+    public static final String QUERY_SIGN_OUT_EVENT_LIST_COMMAND;
+    public static final String QUERY_USER_EVENT_END_UNISSUED_CREDIT_LIST_COMMAND;
     /*用户私聊命令*/
-    public static final String loginCommand = commandPrefix + commandBean.getPrivateBean().getLogin();
+    public static final String DELETE_USER_COMMAND;
+    public static final String LOGIN_COMMAND;
     /*管理员命令*/
-    public static final String addPublicToken = commandPrefix + commandBean.getAdminBean().getAddPublicToken();
-    public static final String adminDeleteUserCommand = commandPrefix + commandBean.getAdminBean().getAdminDeleteUser();
-    public static final String timedTaskCommand = commandPrefix + commandBean.getAdminBean().getTimedTask();
-    public static final String showTaskCommand = commandPrefix + commandBean.getAdminBean().getShowTask();
+    public static final String ADD_PUBLIC_TOKEN;
+    public static final String ADMIN_DELETE_USER_COMMAND;
+    public static final String TIMED_TASK_COMMAND;
+    public static final String SHOW_TASK_COMMAND;
+
+    static {
+        String commandPrefix = Command.INSTANCE.getPublicX().getCommandPrefix();
+        EVENT_LIST_COMMAND = commandPrefix + Command.INSTANCE.getGroup().getGetCalendarEventList();
+        HELP_COMMAND = commandPrefix + Command.INSTANCE.getPublicX().getHelp();
+        QUERY_USER_CREDIT_INFO_COMMAND = commandPrefix + Command.INSTANCE.getGroup().getQueryUserCreditInfo();
+        QUERY_SIGN_IN_EVENT_LIST_COMMAND = commandPrefix + Command.INSTANCE.getGroup().getQuerySignInEventList();
+        QUERY_SIGN_OUT_EVENT_LIST_COMMAND = commandPrefix + Command.INSTANCE.getGroup().getQuerySignOutEventList();
+        QUERY_USER_EVENT_END_UNISSUED_CREDIT_LIST_COMMAND = commandPrefix + Command.INSTANCE.getGroup().getQueryUserEventEndUnissuedCreditList();
+        DELETE_USER_COMMAND = commandPrefix + Command.INSTANCE.getPrivateX().getDeleteUser();
+        LOGIN_COMMAND = commandPrefix + Command.INSTANCE.getPrivateX().getLogin();
+        ADD_PUBLIC_TOKEN = commandPrefix + Command.INSTANCE.getAdmin().getAddPublicToken();
+        ADMIN_DELETE_USER_COMMAND = commandPrefix + Command.INSTANCE.getAdmin().getAdminDeleteUser();
+        TIMED_TASK_COMMAND = commandPrefix + Command.INSTANCE.getAdmin().getTimedTask();
+        SHOW_TASK_COMMAND = commandPrefix + Command.INSTANCE.getAdmin().getShowTask();
+    }
+
 }

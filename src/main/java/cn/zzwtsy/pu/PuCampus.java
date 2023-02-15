@@ -1,13 +1,12 @@
 package cn.zzwtsy.pu;
 
+import cn.zzwtsy.pu.data.Command;
+import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.database.DataBaseHelper;
-import cn.zzwtsy.pu.init.InitConfig;
 import cn.zzwtsy.pu.init.InitDataBase;
 import cn.zzwtsy.pu.listener.ListenerGroupMessage;
 import cn.zzwtsy.pu.listener.ListenerPrivateChatMessage;
 import cn.zzwtsy.pu.service.TimedTaskService;
-import cn.zzwtsy.pu.tools.LoadConfig;
-import cn.zzwtsy.pu.tools.SaveConfig;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.EventChannel;
@@ -15,10 +14,7 @@ import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.events.BotEvent;
 import net.mamoe.mirai.event.events.GroupEvent;
 
-import static cn.zzwtsy.pu.tools.Consts.settingBean;
-import static cn.zzwtsy.pu.tools.Tools.checkCommandFile;
 import static cn.zzwtsy.pu.tools.Tools.checkDataBaseFile;
-import static cn.zzwtsy.pu.tools.Tools.checkSettingFile;
 
 
 /**
@@ -31,7 +27,7 @@ public final class PuCampus extends JavaPlugin {
     public static final PuCampus INSTANCE = new PuCampus();
 
     private PuCampus() {
-        super(new JvmPluginDescriptionBuilder("cn.zzwtsy.pu", "0.1.2")
+        super(new JvmPluginDescriptionBuilder("cn.zzwtsy.pu", "0.2.0")
                 .name("pu-campus")
                 .author("zzwtsy")
                 .build()
@@ -40,6 +36,8 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        reloadPluginConfig(Setting.INSTANCE);
+        reloadPluginConfig(Command.INSTANCE);
         //检测数据库文件是否存在
         if (!checkDataBaseFile()) {
             getLogger().info("The database file does not exist and the database is being created");
@@ -49,40 +47,21 @@ public final class PuCampus extends JavaPlugin {
             getLogger().info("Registering database");
             DataBaseHelper.registerDataBase();
         }
-        InitConfig initConfig = new InitConfig();
-        //检测命令配置文件是否存在
-        if (!checkCommandFile()) {
-            if (initConfig.initCommandConfig()) {
-                getLogger().info("Init Command file successfully,Please modify the config file and try again");
-            } else {
-                getLogger().error("Init Command file failed");
-            }
-        }
-        //检测设置配置文件是否存在
-        if (!checkSettingFile()) {
-            if (initConfig.initSettingConfig()) {
-                getLogger().error("初始化设置文件成功，请修改 setting.json 配置文件后重启插件");
-                getLogger().error("Init Setting file successfully,Please modify the config file and try again");
-            } else {
-                getLogger().error("Init Setting file failed");
-            }
-        }
-        // 加载全部配置文件
-        LoadConfig.loadAllConfig();
         //过滤事件
         EventChannel<GroupEvent> groupEventEventChannel = GlobalEventChannel.INSTANCE
                 .filterIsInstance(GroupEvent.class)
-                .filter(groupEvent -> groupEvent.getGroup().getId() == settingBean.getGroupId());
+                .filter(groupEvent -> groupEvent.getGroup().getId() == Setting.INSTANCE.getGroupId());
         EventChannel<BotEvent> botEventEventChannel = GlobalEventChannel.INSTANCE
                 .filterIsInstance(BotEvent.class)
-                .filter(event -> event.getBot().getId() == settingBean.getBotId());
+                .filter(event -> event.getBot().getId() == Setting.INSTANCE.getBotId());
         //注册监听事件
         groupEventEventChannel.registerListenerHost(new ListenerGroupMessage());
         botEventEventChannel.registerListenerHost(new ListenerPrivateChatMessage());
-        String doNotStartTimedTask = "0";
-        if (!doNotStartTimedTask.equals(settingBean.getTimedTaskTime())) {
+        String doNotStartTimedTask = "";
+        String timedTask = Setting.INSTANCE.getTimedTask();
+        if (!doNotStartTimedTask.equals(timedTask)) {
             //启动定时任务
-            String taskStatus = new TimedTaskService().startTimedTask(settingBean.getGroupId());
+            String taskStatus = new TimedTaskService().startTimedTask(Setting.INSTANCE.getGroupId(), timedTask);
             getLogger().info(taskStatus);
         }
         getLogger().info("pu-campus Plugin loaded!");
@@ -90,11 +69,7 @@ public final class PuCampus extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        //插件关闭时保存配置文件
-        if (SaveConfig.saveAllConfig()) {
-            PuCampus.INSTANCE.getLogger().info("Save All config files success");
-        } else {
-            PuCampus.INSTANCE.getLogger().info("Save All config files failed");
-        }
+        savePluginConfig(Setting.INSTANCE);
+        savePluginConfig(Command.INSTANCE);
     }
 }

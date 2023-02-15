@@ -1,19 +1,17 @@
 package cn.zzwtsy.pu.tools;
 
 import cn.zzwtsy.pu.PuCampus;
+import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.service.UserService;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
-import static cn.zzwtsy.pu.tools.Consts.COMMAND_FILE_NAME;
 import static cn.zzwtsy.pu.tools.Consts.DB_FILE_FULL_PATH;
-import static cn.zzwtsy.pu.tools.Consts.PATH_NAME;
 import static cn.zzwtsy.pu.tools.Consts.PLUGIN_DATA_FILE_PATH;
-import static cn.zzwtsy.pu.tools.Consts.SETTING_FILE_NAME;
-import static cn.zzwtsy.pu.tools.Consts.settingBean;
 import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
 
 /**
@@ -99,27 +97,7 @@ public class Tools {
      * @return boolean
      */
     public static boolean checkAdminQqId(long qqId) {
-        return qqId == settingBean.getAdminId();
-    }
-
-    /**
-     * 检查设置文件是否存在
-     *
-     * @return boolean
-     */
-    public static boolean checkSettingFile() {
-        File settingFile = new File("config/" + PATH_NAME + "/" + SETTING_FILE_NAME + ".json");
-        return settingFile.exists();
-    }
-
-    /**
-     * 检查命令文件是否存在
-     *
-     * @return boolean
-     */
-    public static boolean checkCommandFile() {
-        File commandFile = new File("config/" + PATH_NAME + "/" + COMMAND_FILE_NAME + ".json");
-        return commandFile.exists();
+        return Setting.INSTANCE.getAdminId().contains(qqId);
     }
 
     /**
@@ -152,7 +130,7 @@ public class Tools {
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime() throws ParseException {
-        String addDate = complementaryDate(settingBean.getTimedTaskTime());
+        String addDate = complementaryDate(Setting.INSTANCE.getTimedTask());
         return calculateTime(addDate);
     }
 

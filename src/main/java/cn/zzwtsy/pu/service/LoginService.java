@@ -2,9 +2,9 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
+import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 /**
@@ -14,11 +14,6 @@ import java.io.IOException;
  * @since 2022/11/30
  */
 public class LoginService {
-    private ObjectMapper mapper;
-
-    public LoginService() {
-        mapper = new ObjectMapper();
-    }
 
     /**
      * 获取用户令牌
@@ -29,7 +24,6 @@ public class LoginService {
      * @return String
      */
     public String getUserToken(long qqId, String userName, String password) {
-        mapper = new ObjectMapper();
         String response;
         try {
             response = new Api().getLoginInfo(userName, password);
@@ -39,7 +33,7 @@ public class LoginService {
         }
         JsonNode jsonNode;
         try {
-            jsonNode = mapper.readTree(response);
+            jsonNode = JsonUtil.fromJson(response);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return e.getMessage();
@@ -76,7 +70,7 @@ public class LoginService {
             return "添加用户 Token 失败";
         }
         try {
-            jsonNode = mapper.readTree(userInfo);
+            jsonNode = JsonUtil.fromJson(userInfo);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return e.getMessage();

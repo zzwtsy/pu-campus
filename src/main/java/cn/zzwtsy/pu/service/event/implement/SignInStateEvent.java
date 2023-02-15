@@ -1,6 +1,7 @@
 package cn.zzwtsy.pu.service.event.implement;
 
 import cn.zzwtsy.pu.PuCampus;
+import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class SignInStateEvent extends AbstractEvent {
             return errorMessage;
         }
         try {
-            jsonNode = mapper.readTree(response);
+            jsonNode = JsonUtil.fromJson(response);
         } catch (JsonProcessingException e) {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return "发生错误：" + e.getMessage();

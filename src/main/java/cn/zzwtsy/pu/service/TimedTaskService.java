@@ -41,30 +41,6 @@ public class TimedTaskService {
      * 启动定时任务
      *
      * @param groupId qq群
-     * @return {@link String}
-     */
-    public String startTimedTask(long groupId) {
-        long delayTime;
-        try {
-            delayTime = calculateScheduledDelayTime();
-        } catch (ParseException e) {
-            return "启动定时任务失败" + e.getMessage();
-        }
-        if (!TASKS_MAP.containsKey(groupId)) {
-            return execute(groupId, delayTime);
-        }
-        ScheduledFuture<?> scheduledFuture = TASKS_MAP.get(groupId);
-        if (!scheduledFuture.isCancelled()) {
-            scheduledFuture.cancel(true);
-            TASKS_MAP.remove(groupId);
-        }
-        return execute(groupId, delayTime);
-    }
-
-    /**
-     * 启动定时任务
-     *
-     * @param groupId qq群
      * @param time    时间
      * @return {@link String}
      */
