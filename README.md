@@ -31,7 +31,7 @@
 2. 从 Release 下载 jar 包
 3. 放入 Plugins 文件夹
 4. 启动 MCL
-5. 修改 setting.json 配置文件
+5. 修改 setting.yml 配置文件
 6. 重新启动 MCL
 
 ## 配置文件说明
