@@ -4,18 +4,7 @@ import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.service.LoginService;
 import cn.zzwtsy.pu.service.command.Command;
 
-import static cn.zzwtsy.pu.tools.CommandConsts.ADD_PUBLIC_TOKEN;
-import static cn.zzwtsy.pu.tools.CommandConsts.ADMIN_DELETE_USER_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.DELETE_USER_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.EVENT_LIST_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.HELP_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.LOGIN_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_SIGN_IN_EVENT_LIST_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_SIGN_OUT_EVENT_LIST_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_USER_CREDIT_INFO_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_USER_EVENT_END_UNISSUED_CREDIT_LIST_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.SHOW_TASK_COMMAND;
-import static cn.zzwtsy.pu.tools.CommandConsts.TIMED_TASK_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.*;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
 /**
