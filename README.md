@@ -36,7 +36,7 @@
 
 ## 配置文件说明
 
-### setting.json
+### setting.yml
 
 路径：config/cn.zzwtsy.pu/setting.yml
 | 值 | 说明 |
@@ -49,7 +49,7 @@
 
 # [**pu 校园邮箱后缀点击查看**](https://blog.yumdeb.top/tools/PuSchoolInfo.html)
 
-### command.json
+### command.yml
 
 路径：config/cn.zzwtsy.pu/command.yml
 | 值 | 默认示例 | 说明 |
