@@ -38,7 +38,7 @@
 
 ### setting.json
 
-路径：config/cn.zzwtsy.pu/setting.json
+路径：config/cn.zzwtsy.pu/setting.yml
 | 值 | 说明 |
 | ------------- | -------------------------------------- |
 | groupId | qq 群号 |
@@ -51,7 +51,7 @@
 
 ### command.json
 
-路径：config/cn.zzwtsy.pu/command.json
+路径：config/cn.zzwtsy.pu/command.yml
 | 值 | 默认示例 | 说明 |
 | ----------------------------------- | ---------------------------------------------------- | -------------------------------------------------------- |
 | commandPrefix |# | 命令前缀 |
