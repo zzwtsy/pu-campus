@@ -31,14 +31,14 @@
 2. 从 Release 下载 jar 包
 3. 放入 Plugins 文件夹
 4. 启动 MCL
-5. 修改 setting.json 配置文件
+5. 修改 setting.yml 配置文件
 6. 重新启动 MCL
 
 ## 配置文件说明
 
-### setting.json
+### setting.yml
 
-路径：config/cn.zzwtsy.pu/setting.json
+路径：config/cn.zzwtsy.pu/setting.yml
 | 值 | 说明 |
 | ------------- | -------------------------------------- |
 | groupId | qq 群号 |
@@ -49,9 +49,9 @@
 
 # [**pu 校园邮箱后缀点击查看**](https://blog.yumdeb.top/tools/PuSchoolInfo.html)
 
-### command.json
+### command.yml
 
-路径：config/cn.zzwtsy.pu/command.json
+路径：config/cn.zzwtsy.pu/command.yml
 | 值 | 默认示例 | 说明 |
 | ----------------------------------- | ---------------------------------------------------- | -------------------------------------------------------- |
 | commandPrefix |# | 命令前缀 |
