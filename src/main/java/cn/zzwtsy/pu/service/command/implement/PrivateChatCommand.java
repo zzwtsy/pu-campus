@@ -4,7 +4,9 @@ import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.CommandConsts.*;
+import static cn.zzwtsy.pu.tools.CommandConsts.DELETE_USER_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.HELP_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.LOGIN_COMMAND;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 

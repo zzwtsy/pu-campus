@@ -1,7 +1,5 @@
 package cn.zzwtsy.pu.tools;
 
-import cn.zzwtsy.pu.PuCampus;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
@@ -11,12 +9,6 @@ import java.util.concurrent.ScheduledFuture;
  * @since 2022/11/29
  */
 public class Consts {
-    public static final String SETTING_FILE_NAME = "setting";
-    public static final String COMMAND_FILE_NAME = "command";
-    /**
-     * 存放配置文件路径名
-     */
-    public static final String PATH_NAME = PuCampus.INSTANCE.getConfigFolder().getName();
     public static final Map<Long, ScheduledFuture<?>> TASKS_MAP = new HashMap<>();
     public static final String DRIVER_CLASS_NAME = "org.sqlite.JDBC";
     /**

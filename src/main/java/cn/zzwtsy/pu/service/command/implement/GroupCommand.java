@@ -6,7 +6,13 @@ import net.mamoe.mirai.message.data.At;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.CommandConsts.*;
+import static cn.zzwtsy.pu.tools.CommandConsts.EVENT_LIST_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.HELP_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.LOGIN_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_SIGN_IN_EVENT_LIST_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_SIGN_OUT_EVENT_LIST_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_USER_CREDIT_INFO_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.QUERY_USER_EVENT_END_UNISSUED_CREDIT_LIST_COMMAND;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 

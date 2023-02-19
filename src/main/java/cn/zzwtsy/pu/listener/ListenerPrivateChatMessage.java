@@ -12,7 +12,10 @@ import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.MessageChain;
 import org.jetbrains.annotations.NotNull;
 
-import static cn.zzwtsy.pu.tools.CommandConsts.*;
+import static cn.zzwtsy.pu.tools.CommandConsts.ADD_PUBLIC_TOKEN;
+import static cn.zzwtsy.pu.tools.CommandConsts.ADMIN_DELETE_USER_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.SHOW_TASK_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.TIMED_TASK_COMMAND;
 import static cn.zzwtsy.pu.tools.Tools.checkAdminQqId;
 
 /**
