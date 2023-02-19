@@ -1,7 +1,6 @@
 package cn.zzwtsy.pu.task;
 
 import cn.zzwtsy.pu.PuCampus;
-import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.service.event.EventService;
 import net.mamoe.mirai.Bot;
@@ -18,14 +17,6 @@ import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
  * @since 2023/01/10
  */
 public class ScheduledTask implements Runnable {
-    UserBean userBean;
-
-    /**
-     * 计划任务
-     */
-    public ScheduledTask() {
-        userBean = new UserBean();
-    }
 
     @Override
     public void run() {

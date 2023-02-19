@@ -40,11 +40,9 @@ public final class PuCampus extends JavaPlugin {
         reloadPluginConfig(Command.INSTANCE);
         //检测数据库文件是否存在
         if (!checkDataBaseFile()) {
-            getLogger().info("The database file does not exist and the database is being created");
             DataBaseHelper.registerDataBase();
             new InitDataBase().initDataBase();
         } else {
-            getLogger().info("Registering database");
             DataBaseHelper.registerDataBase();
         }
         //过滤事件

@@ -4,12 +4,11 @@ import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+
 import java.io.IOException;
 
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
-import static cn.zzwtsy.pu.utils.DateUtil.addYear;
-import static cn.zzwtsy.pu.utils.DateUtil.checkDateFormat;
-import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
+import static cn.zzwtsy.pu.utils.DateUtil.*;
 
 /**
  * 根据日期获取活动列表
