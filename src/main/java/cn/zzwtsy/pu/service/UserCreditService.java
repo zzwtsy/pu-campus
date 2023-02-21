@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.math.BigDecimal;
 
 /**
  * 用户学分
@@ -17,12 +17,13 @@ import java.util.HashMap;
  * @since 2022/12/26
  */
 public class UserCreditService {
-    private final HashMap<String, Double> creditTotalMap;
     private final String totalNodeName;
     private final String messageNodeName;
     private final String getUserCreditSuccess;
     private final String contentNodeName;
     private final String creditInfoSuccessWord;
+    public String activeCredit;
+    public String applyCredit;
 
     public UserCreditService() {
         contentNodeName = "content";
@@ -30,7 +31,6 @@ public class UserCreditService {
         messageNodeName = "message";
         totalNodeName = "total";
         creditInfoSuccessWord = "学分类型";
-        creditTotalMap = new HashMap<>(2);
     }
 
     /**
@@ -62,7 +62,7 @@ public class UserCreditService {
         if (!applyCreditContentParse.startsWith(creditInfoSuccessWord)) {
             return applyCreditContentParse;
         }
-        Double creditTotal = creditTotalMap.get("activeCredit") + creditTotalMap.get("applyCredit");
+        BigDecimal creditTotal = new BigDecimal(activeCredit).add(new BigDecimal(applyCredit));
         stringBuilder.append("\n")
                 .append(activeCreditContentParse)
                 .append(applyCreditContentParse)
@@ -92,8 +92,13 @@ public class UserCreditService {
         }
         JsonNode contentNode = jsonNode.get(contentNodeName);
         String name = contentNode.get("name").asText();
-        double total = contentNode.get(totalNodeName).asDouble();
-        creditTotalMap.put(creditType, total);
+        String total = contentNode.get(totalNodeName).asText();
+        String applyCreditStr = "applyCredit";
+        if (applyCreditStr.equals(creditType)) {
+            applyCredit = total;
+        } else {
+            activeCredit = total;
+        }
         return "学分类型：" + name + "\n" + "分数：" + total + "\n";
     }
 }
