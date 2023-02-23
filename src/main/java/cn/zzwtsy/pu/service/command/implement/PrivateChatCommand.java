@@ -44,7 +44,7 @@ public class PrivateChatCommand extends AbstractCommand {
                     .append(privateHelpInfo())
                     .build();
         }
-        return null;
+        return new MessageChainBuilder().build();
     }
 
     /**

@@ -77,13 +77,13 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
             }
             long publicTokenQqId = 0;
             MessageChain adminMessage = commandService.adminCommand(message, publicTokenQqId);
-            if (adminMessage != null) {
+            if (!adminMessage.isEmpty()) {
                 messageEvent.getSender().sendMessage(adminMessage);
             }
         } else {
             //处理私聊命令
             MessageChain privateMessage = commandService.privateChatCommand(message, userQqId);
-            if (privateMessage != null) {
+            if (!privateMessage.isEmpty()) {
                 messageEvent.getSender().sendMessage(privateMessage);
             }
         }

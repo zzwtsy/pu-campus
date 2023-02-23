@@ -115,7 +115,7 @@ public class GroupCommand extends AbstractCommand {
                     .append(str)
                     .build();
         }
-        return null;
+        return new MessageChainBuilder().build();
     }
 
 }

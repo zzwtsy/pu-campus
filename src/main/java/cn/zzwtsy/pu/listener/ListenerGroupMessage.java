@@ -25,7 +25,7 @@ public class ListenerGroupMessage extends SimpleListenerHost {
         message = groupMessageEvent.getMessage().contentToString();
         long userQqId = groupMessageEvent.getSender().getId();
         MessageChain messageChain = new CommandService().groupCommand(message, userQqId);
-        if (messageChain != null) {
+        if (!messageChain.isEmpty()) {
             groupMessageEvent.getGroup().sendMessage(messageChain);
         }
     }

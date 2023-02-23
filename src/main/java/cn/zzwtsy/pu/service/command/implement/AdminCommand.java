@@ -54,7 +54,7 @@ public class AdminCommand extends AbstractCommand {
                     .append(new TimedTaskService().showTaskStatus())
                     .build();
         }
-        return null;
+        return new MessageChainBuilder().build();
     }
 
     /**

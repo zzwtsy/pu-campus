@@ -49,8 +49,8 @@ public class EventEndUnissuedCreditEvent extends AbstractEvent {
             try {
                 jsonNode = JsonUtil.fromJson(response);
                 //判断 json 是否有 message 字段
-                if (jsonNode.hasNonNull(eventMessageNode)) {
-                    return jsonNode.get(eventMessageNode).asText();
+                if (jsonNode.hasNonNull(EVENT_MESSAGE_NODE)) {
+                    return jsonNode.get(EVENT_MESSAGE_NODE).asText();
                 }
                 //合并活动列表
                 jsonArray.addAll((ArrayNode) jsonNode);
