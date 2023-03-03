@@ -62,11 +62,11 @@ public class SignInStateEvent extends AbstractEvent {
             PuCampus.INSTANCE.getLogger().error("JsonProcessingException", e);
             return "发生错误：" + e.getMessage();
         }
-        String eventMessage = jsonNode.get(eventMessageNode).asText();
-        if (!eventListSuccessWord.equals(eventMessage)) {
+        String eventMessage = jsonNode.get(EVENT_MESSAGE_NODE).asText();
+        if (!EVENT_LIST_SUCCESS_WORD.equals(eventMessage)) {
             return eventMessage;
         }
-        JsonNode contentNode = jsonNode.get(eventContentNode);
+        JsonNode contentNode = jsonNode.get(EVENT_CONTENT_NODE);
         if (contentNode.isEmpty()) {
             return emptyEventListMessage;
         }

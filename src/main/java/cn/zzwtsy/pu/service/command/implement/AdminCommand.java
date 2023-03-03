@@ -6,8 +6,14 @@ import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
-import static cn.zzwtsy.pu.tools.CommandConsts.*;
-import static cn.zzwtsy.pu.tools.Tools.*;
+import static cn.zzwtsy.pu.tools.CommandConsts.ADD_PUBLIC_TOKEN;
+import static cn.zzwtsy.pu.tools.CommandConsts.ADMIN_DELETE_USER_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.SHOW_TASK_COMMAND;
+import static cn.zzwtsy.pu.tools.CommandConsts.TIMED_TASK_COMMAND;
+import static cn.zzwtsy.pu.tools.Tools.checkTime;
+import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
+import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
+import static cn.zzwtsy.pu.tools.Tools.splitMessage;
 
 /**
  * 管理员
@@ -48,7 +54,7 @@ public class AdminCommand extends AbstractCommand {
                     .append(new TimedTaskService().showTaskStatus())
                     .build();
         }
-        return null;
+        return new MessageChainBuilder().build();
     }
 
     /**

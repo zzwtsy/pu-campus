@@ -15,15 +15,15 @@ import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
  * @since 2023/01/27
  */
 public abstract class AbstractEvent implements Event {
-    protected final String eventListSuccessWord = "success";
-    protected final String eventMessageNode = "message";
-    protected final String eventContentNode = "content";
+    protected static final String EVENT_LIST_SUCCESS_WORD = "success";
+    protected static final String EVENT_MESSAGE_NODE = "message";
+    protected static final String EVENT_CONTENT_NODE = "content";
     protected long userQqId;
     protected Api api;
     protected String oauthToken;
     protected String oauthTokenSecret;
 
-    public AbstractEvent(long userQqId) {
+    protected AbstractEvent(long userQqId) {
         this.userQqId = userQqId;
         api = new Api();
         UserBean userBean = new UserService().getUser(userQqId);
