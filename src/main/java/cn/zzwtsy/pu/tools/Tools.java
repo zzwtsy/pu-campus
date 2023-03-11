@@ -7,7 +7,6 @@ import cn.zzwtsy.pu.service.UserService;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
@@ -16,8 +15,6 @@ import static cn.zzwtsy.pu.tools.Consts.PLUGIN_DATA_FILE_PATH;
 import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
 
 /**
- * 拆分消息
- *
  * @author zzwtsy
  * @since 2022/12/24
  */
@@ -30,7 +27,12 @@ public class Tools {
      * @return boolean
      */
     public static boolean messageContainsCommand(String message, String[] command) {
-        return Arrays.asList(command).contains(message);
+        for (String s : command) {
+            if (message.startsWith(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

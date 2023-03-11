@@ -17,21 +17,13 @@ import java.math.BigDecimal;
  * @since 2022/12/26
  */
 public class UserCreditService {
-    private final String totalNodeName;
-    private final String messageNodeName;
-    private final String getUserCreditSuccess;
-    private final String contentNodeName;
-    private final String creditInfoSuccessWord;
+    private static final String CONTENT_NODE_NAME = "content";
+    private static final String GET_USER_CREDIT_SUCCESS = "success";
+    private static final String MESSAGE_NODE_NAME = "message";
+    private static final String TOTAL_NODE_NAME = "total";
+    private static final String CREDIT_INFO_SUCCESS_WORD = "学分类型";
     public String activeCredit;
     public String applyCredit;
-
-    public UserCreditService() {
-        contentNodeName = "content";
-        getUserCreditSuccess = "success";
-        messageNodeName = "message";
-        totalNodeName = "total";
-        creditInfoSuccessWord = "学分类型";
-    }
 
     /**
      * 学分信息
@@ -56,10 +48,10 @@ public class UserCreditService {
         }
         String activeCreditContentParse = contentParse(activeCreditResponse, "activeCredit");
         String applyCreditContentParse = contentParse(applyCreditResponse, "applyCredit");
-        if (!activeCreditContentParse.startsWith(creditInfoSuccessWord)) {
+        if (!activeCreditContentParse.startsWith(CREDIT_INFO_SUCCESS_WORD)) {
             return activeCreditContentParse;
         }
-        if (!applyCreditContentParse.startsWith(creditInfoSuccessWord)) {
+        if (!applyCreditContentParse.startsWith(CREDIT_INFO_SUCCESS_WORD)) {
             return applyCreditContentParse;
         }
         BigDecimal creditTotal = new BigDecimal(activeCredit).add(new BigDecimal(applyCredit));
@@ -86,13 +78,13 @@ public class UserCreditService {
             PuCampus.INSTANCE.getLogger().error("处理学分 JSON 时发生异常:", e);
             return "处理学分 JSON 时发生异常：" + e.getMessage();
         }
-        String messageContent = jsonNode.get(messageNodeName).asText();
-        if (!getUserCreditSuccess.equals(messageContent)) {
+        String messageContent = jsonNode.get(MESSAGE_NODE_NAME).asText();
+        if (!GET_USER_CREDIT_SUCCESS.equals(messageContent)) {
             return messageContent;
         }
-        JsonNode contentNode = jsonNode.get(contentNodeName);
+        JsonNode contentNode = jsonNode.get(CONTENT_NODE_NAME);
         String name = contentNode.get("name").asText();
-        String total = contentNode.get(totalNodeName).asText();
+        String total = contentNode.get(TOTAL_NODE_NAME).asText();
         String applyCreditStr = "applyCredit";
         if (applyCreditStr.equals(creditType)) {
             applyCredit = total;
