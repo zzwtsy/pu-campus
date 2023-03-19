@@ -7,7 +7,6 @@ import cn.zzwtsy.pu.service.UserService;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
@@ -30,7 +29,12 @@ public class Tools {
      * @return boolean
      */
     public static boolean messageContainsCommand(String message, String[] command) {
-        return Arrays.asList(command).contains(message);
+        for (String s : command) {
+            if (message.equals(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

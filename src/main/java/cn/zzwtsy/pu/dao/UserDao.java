@@ -3,7 +3,7 @@ package cn.zzwtsy.pu.dao;
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.bean.UserBean;
 import cn.zzwtsy.pu.database.DataBaseHelper;
-import cn.zzwtsy.pu.utils.Encryption;
+import cn.zzwtsy.pu.utils.EncryptionKt;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class UserDao {
      */
     public UserBean getUserByQqId(long qqId) {
         String encryption = encryptionQqId(qqId);
-        if (encryption == null || encryption.length() != md5Length) {
+        if (encryption.length() != md5Length) {
             return null;
         }
         UserBean userBean = new UserBean();
@@ -57,7 +57,7 @@ public class UserDao {
      */
     public int addUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         String encryption = encryptionQqId(qqId);
-        if (encryption == null || encryption.length() != md5Length) {
+        if (encryption.length() != md5Length) {
             return -1;
         }
         int status;
@@ -79,7 +79,7 @@ public class UserDao {
      */
     public int deleteUser(long qqId) {
         String encryption = encryptionQqId(qqId);
-        if (encryption == null || encryption.length() != md5Length) {
+        if (encryption.length() != md5Length) {
             return -1;
         }
         int deleteStatus;
@@ -103,7 +103,7 @@ public class UserDao {
      */
     public int updateUser(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
         String encryption = encryptionQqId(qqId);
-        if (encryption == null || encryption.length() != md5Length) {
+        if (encryption.length() != md5Length) {
             return -1;
         }
         int status;
@@ -126,10 +126,10 @@ public class UserDao {
     private String encryptionQqId(long qqId) {
         if (qqId == 0) {
             String id = "0";
-            return Encryption.encryptionToMd5(id, id);
+            return EncryptionKt.toMd5(id, id);
         }
         String id = new StringBuilder(String.valueOf(qqId)).reverse().toString();
         String salt = id.substring(0, 4);
-        return Encryption.encryptionToMd5(id, salt);
+        return EncryptionKt.toMd5(id, salt);
     }
 }
