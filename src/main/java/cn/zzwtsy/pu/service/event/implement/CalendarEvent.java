@@ -1,6 +1,7 @@
 package cn.zzwtsy.pu.service.event.implement;
 
 import cn.zzwtsy.pu.PuCampus;
+import cn.zzwtsy.pu.tools.RegexCheck;
 import cn.zzwtsy.pu.utils.DateUtilKt;
 import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,7 +33,7 @@ public class CalendarEvent extends AbstractEvent {
      */
     @Override
     public String getMessage() {
-        if (!DateUtilKt.checkDateFormat(date)) {
+        if (!RegexCheck.checkDateFormat(date)) {
             return "日期格式错误";
         }
         if (checkUserLogin(userQqId)) {
