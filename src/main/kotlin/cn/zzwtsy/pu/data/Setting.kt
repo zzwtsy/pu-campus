@@ -15,7 +15,7 @@ object Setting : AutoSavePluginConfig("setting") {
     var botId by value(0L)
 
     @ValueDescription("管理员 qq 号，示例：[111111,2222222]")
-    var adminId: List<Long> by value()
+    var adminId by value(listOf(111111,2222222))
 
     @ValueDescription("qq 群号")
     var groupId by value(0L)
@@ -26,7 +26,7 @@ object Setting : AutoSavePluginConfig("setting") {
         值为空关闭定时任务
         """
     )
-    var timedTask: String by value("")
+    var timedTask by value("")
 
     @ValueDescription("学校邮箱后缀：https://blog.yumdeb.top/tools/PuSchoolInfo.html")
     var emailSuffix by value("")
