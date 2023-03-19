@@ -65,8 +65,8 @@
 | queryUserEventEndUnissuedCreditList | #未发放 | 获取活动已经结束还没发放学分的活动 |
 | **_以下为私聊可使用命令_** | **_以下为私聊可使用命令_** | **_以下为私聊可使用命令_** |
 | login | #login <账号\|oauthToken> <密码\|oauthTokenSecret> | 登录 pu 账号 |
-| **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** |
 | deleteUser | #删除信息 | 删除自己的信息 |
+| **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** | **_以下为管理员命令（仅私聊环境）_** |
 | adminDeleteUser | #删除用户 <用户 qq 号> | 管理员删除指定用户信息 |
 | addPublicToken | #添加tk <账号\|oauthToken> <密码\|oauthTokenSecret> | 添加公共 pu Token,用于定时任务，不设置则使用管理员
 Token |
@@ -74,12 +74,16 @@ Token |
 
 ## 获取 pu oauthToken 和 oauthTokenSecret
 
-- 注意：使用用户名密码登录后 pu 软件会登录失效，再次使用 pu 需重新登录。使用 Token 则不会出现此问题
+### 注意：
+ - 使用用户名密码登录后 pu 软件会登录失效，再次使用 pu 需重新登录。使用 Token 则不会出现此问题
+ - 此方法最新 pu 校园已失效，需使用低版本 pu 校园
 
 1. 使用抓包软件抓取 pu 校园数据
 2. 点击任意链接找到`oauth_token`和`oauth_token_secret`复制值
 3. 将`oauth_token`和`oauth_token_secret`以 #login <oauth_token> <oauth_token_secret> 这样的形式发送给机器人即可完成登录
 
+## 注意事项
+- 使用定时任务必添加公共 Token
 
 ## 活动列表 JSON 解析
 
