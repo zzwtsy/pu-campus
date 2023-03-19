@@ -29,7 +29,7 @@ object RegexCheck {
     }
 
     /**
-     * 检查日期格式
+     * 检查日期，格式（yyyy-MM-dd）
      * @param [date] 日期
      * @return [Boolean]
      */

@@ -6,8 +6,8 @@ import java.time.format.DateTimeFormatter
 object DateUtilKt {
     /**
      * unix 时间戳格式化
-     * @param [unixTimestamp] unix时间戳
-     * @return [String] yyyy-MM-dd HH:mm
+     * @param [unixTimestamp] unix时间戳 (10位)
+     * @return [String] 格式（yyyy-MM-dd HH:mm）
      */
     @JvmStatic
     fun unixTimestampToDateTime(unixTimestamp: Long): String {
@@ -46,7 +46,7 @@ object DateUtilKt {
      * 日期计算（天）
      * @param [date] 日期
      * @param [days] 天
-     * @return [LocalDate]
+     * @return [LocalDate] 格式（yyyy-MM-dd）
      */
     @JvmStatic
     fun daysCalculation(date: LocalDate, days: Int): LocalDate {
@@ -57,7 +57,7 @@ object DateUtilKt {
      * 日期计算（周）
      * @param [date] 日期
      * @param [weeks] 周
-     * @return [LocalDate]
+     * @return [LocalDate] 格式（yyyy-MM-dd）
      */
     @JvmStatic
     fun weeksCalculation(date: LocalDate, weeks: Int): LocalDate {
@@ -68,7 +68,7 @@ object DateUtilKt {
      * 日期计算（月）
      * @param [date] 日期
      * @param [months] 月
-     * @return [LocalDate]
+     * @return [LocalDate] 格式（yyyy-MM-dd）
      */
     @JvmStatic
     fun monthsCalculation(date: LocalDate, months: Int): LocalDate {
@@ -79,7 +79,7 @@ object DateUtilKt {
      * 日期计算（年）
      * @param [date] 日期
      * @param [years] 年
-     * @return [LocalDate]
+     * @return [LocalDate] 格式（yyyy-MM-dd）
      */
     @JvmStatic
     fun yearsCalculation(date: LocalDate, years: Int): LocalDate {
@@ -89,7 +89,7 @@ object DateUtilKt {
     /**
      * 加一年
      * @param [date] 日期
-     * @return [String]
+     * @return [String] 格式（yyyy-MM-dd）
      */
     @JvmStatic
     fun makeUpForTheWholeYear(date: String): String {
@@ -98,8 +98,8 @@ object DateUtilKt {
 
     /**
      * 补全日期
-     * @param [time] 时间
-     * @return [String]
+     * @param [time] 时间，格式（HH:mm）
+     * @return [String] 格式（yyyy-MM-dd HH:mm:ss）
      */
     @JvmStatic
     fun complementaryDate(time: String): String {
