@@ -7,7 +7,7 @@ object DateUtilKt {
     /**
      * unix 时间戳格式化
      * @param [unixTimestamp] unix时间戳
-     * @return [String]
+     * @return [String] yyyy-MM-dd HH:mm
      */
     @JvmStatic
     fun unixTimestampToDateTime(unixTimestamp: Long): String {
@@ -95,4 +95,28 @@ object DateUtilKt {
     fun makeUpForTheWholeYear(date: String): String {
         return Year.now().toString() + "-" + date
     }
+
+    /**
+     * 补全日期
+     * @param [time] 时间
+     * @return [String]
+     */
+    @JvmStatic
+    fun complementaryDate(time: String): String {
+        val now = LocalDateTime.now()
+        return "${now.year}-${now.monthValue}-${now.dayOfMonth} ${time}:00"
+    }
+
+    /**
+     * 检查日期格式
+     * @param [date] 日期
+     * @return [Boolean]
+     */
+    @JvmStatic
+    fun checkDateFormat(date: String): Boolean {
+        val regex =
+            Regex("^(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)\$")
+        return regex.containsMatchIn(date)
+    }
+
 }

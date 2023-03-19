@@ -3,6 +3,7 @@ package cn.zzwtsy.pu.tools;
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.service.UserService;
+import cn.zzwtsy.pu.utils.DateUtilKt;
 
 import java.io.File;
 import java.text.ParseException;
@@ -12,7 +13,6 @@ import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.tools.Consts.DB_FILE_FULL_PATH;
 import static cn.zzwtsy.pu.tools.Consts.PLUGIN_DATA_FILE_PATH;
-import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
 
 /**
  * 拆分消息
@@ -130,7 +130,7 @@ public class Tools {
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime() throws ParseException {
-        String addDate = complementaryDate(Setting.INSTANCE.getTimedTask());
+        String addDate = DateUtilKt.complementaryDate(Setting.INSTANCE.getTimedTask());
         return calculateTime(addDate);
     }
 
@@ -142,7 +142,7 @@ public class Tools {
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime(String time) throws ParseException {
-        String addDate = complementaryDate(time);
+        String addDate = DateUtilKt.complementaryDate(time);
         return calculateTime(addDate);
     }
 

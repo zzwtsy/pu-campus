@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
-import static cn.zzwtsy.pu.utils.DateUtil.checkDateFormat;
 
 /**
  * 根据日期获取活动列表
@@ -33,7 +32,7 @@ public class CalendarEvent extends AbstractEvent {
      */
     @Override
     public String getMessage() {
-        if (!checkDateFormat(date)) {
+        if (!DateUtilKt.checkDateFormat(date)) {
             return "日期格式错误";
         }
         if (checkUserLogin(userQqId)) {
