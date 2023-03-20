@@ -1,11 +1,11 @@
-package cn.zzwtsy.pu.tools
+package cn.zzwtsy.pu.utils
 
 /**
  * 正则表达式检查
  * @author zzwtsy
  * @date 2023/03/20
  */
-object RegexCheck {
+object RegexUtil {
     /**
      * 检查时间，格式（23-00）
      * @param [time] 时间
