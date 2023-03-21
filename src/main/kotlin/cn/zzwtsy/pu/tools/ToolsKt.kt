@@ -1,5 +1,7 @@
 package cn.zzwtsy.pu.tools
 
+import cn.zzwtsy.pu.utils.EncryptionKt
+
 object ToolsKt {
     /**
      * 判断消息是否包含命令
@@ -20,5 +22,16 @@ object ToolsKt {
     @JvmStatic
     fun splitMessage(message: String): Array<String> {
         return message.split(" ").toTypedArray()
+    }
+
+    /**
+     * md5 加密 qq id
+     * @param [qqId] qq id
+     * @return [String]
+     */
+    fun encryptionQqIdToMd5(qqId: Long): String {
+        val reversedQqId = qqId.toString().reversed()
+        val salt = reversedQqId.substring(0, 4)
+        return EncryptionKt.toMd5(reversedQqId, salt)
     }
 }

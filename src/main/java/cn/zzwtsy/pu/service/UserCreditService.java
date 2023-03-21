@@ -2,7 +2,8 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
-import cn.zzwtsy.pu.bean.UserBean;
+import cn.zzwtsy.pu.database.dao.UserDao;
+import cn.zzwtsy.pu.database.entity.User;
 import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -44,7 +45,10 @@ public class UserCreditService {
         StringBuilder stringBuilder = new StringBuilder();
         String activeCreditResponse;
         String applyCreditResponse;
-        UserBean userBean = new UserService().getUser(qqId);
+        User userBean = UserDao.INSTANCE.getUserByQqId(qqId);
+        if (userBean == null) {
+            return "没有该用户";
+        }
         String oauthToken = userBean.getOauthToken();
         String oauthTokenSecret = userBean.getOauthTokenSecret();
         try {

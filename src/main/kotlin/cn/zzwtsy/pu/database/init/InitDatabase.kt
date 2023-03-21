@@ -41,6 +41,5 @@ class InitDatabase {
         } catch (e: SQLException) {
             PuCampus.INSTANCE.logger.error("创建 user 表失败", e)
         }
-
     }
 }

@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 class PublicCommand(
-    var commandPrefix: String = "#",
-    var help: String = "help"
+    val commandPrefix: String = "#",
+    val help: String = "help"
 )

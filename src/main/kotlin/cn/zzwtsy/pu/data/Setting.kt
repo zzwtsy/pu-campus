@@ -12,13 +12,13 @@ import net.mamoe.mirai.console.data.value
  */
 object Setting : AutoSavePluginConfig("setting") {
     @ValueDescription("机器人 qq 号")
-    var botId by value(0L)
+    val botId by value(0L)
 
     @ValueDescription("管理员 qq 号，示例：[111111,2222222]")
-    var adminId by value(listOf(111111,2222222))
+    val adminId by value(listOf(111111,2222222))
 
     @ValueDescription("qq 群号")
-    var groupId by value(0L)
+    val groupId by value(0L)
 
     @ValueDescription(
         """
