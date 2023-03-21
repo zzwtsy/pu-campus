@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.7.10'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.10'
+    id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
 
     id "net.mamoe.mirai-console" version "2.14.0"
 }
@@ -14,6 +15,8 @@ repositories {
     mavenCentral()
 }
 
+String ktormKspVersion = '1.0.0-RC3'
+
 dependencies {
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
@@ -23,9 +26,18 @@ dependencies {
     implementation 'org.xerial:sqlite-jdbc:3.40.1.0'
     // https://mvnrepository.com/artifact/org.ktorm/ktorm-core
     implementation 'org.ktorm:ktorm-core:3.6.0'
+    implementation "org.ktorm:ktorm-ksp-api:${ktormKspVersion}"
+    ksp "org.ktorm:ktorm-ksp-compiler:${ktormKspVersion}"
     testImplementation 'junit:junit:4.13.2'
 }
 
 mirai {
     jvmTarget = JavaVersion.VERSION_17
+}
+
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
+        test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+    }
 }
