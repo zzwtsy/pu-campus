@@ -2,7 +2,7 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
-import cn.zzwtsy.pu.dao.UserDao;
+import cn.zzwtsy.pu.tools.Tools;
 import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -96,17 +96,17 @@ public class LoginService {
      * @return {@link String}
      */
     private String setUserInfo(long qqId, String uid, String oauthToken, String oauthTokenSecret) {
-        if (UserDao.INSTANCE.getUserByQqId(qqId) != null) {
+        if (!Tools.checkUserLogin(qqId)) {
             //用户已存在，更新用户信息
-            boolean updateUserStatus = UserDao.INSTANCE.updateUser(qqId, uid, oauthToken, oauthTokenSecret);
-            if (updateUserStatus) {
+            boolean updateUserStatus = UserService.INSTANCE.updateUser(qqId, uid, oauthToken, oauthTokenSecret);
+            if (!updateUserStatus) {
                 return "登录失败:更新用户Token失败";
             }
             return "更新用户信息成功";
         }
         //用户不存在，添加用户
-        boolean addUserStatus = UserDao.INSTANCE.addUser(qqId, uid, oauthToken, oauthTokenSecret);
-        if (addUserStatus) {
+        boolean addUserStatus = UserService.INSTANCE.addUser(qqId, uid, oauthToken, oauthTokenSecret);
+        if (!addUserStatus) {
             return "登录失败:添加用户Token失败";
         }
         return "登陆成功";

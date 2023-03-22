@@ -1,6 +1,6 @@
 package cn.zzwtsy.pu.service.command.implement;
 
-import cn.zzwtsy.pu.dao.UserDao;
+import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
@@ -57,8 +57,8 @@ public class PrivateChatCommand extends AbstractCommand {
         if (checkUserLogin(userQqId)) {
             return "无法删除，没有你的用户信息";
         }
-        boolean delUserStatus = UserDao.INSTANCE.deleteUser(userQqId);
-        if (delUserStatus) {
+        boolean delUserStatus = UserService.INSTANCE.deleteUser(userQqId);
+        if (!delUserStatus) {
             return "删除用户信息失败";
         } else {
             return "删除用户信息成功";

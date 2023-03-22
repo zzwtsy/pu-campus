@@ -2,8 +2,7 @@ package cn.zzwtsy.pu.service;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.api.Api;
-import cn.zzwtsy.pu.dao.UserDao;
-import cn.zzwtsy.pu.entity.User;
+import cn.zzwtsy.pu.model.User;
 import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,7 +36,7 @@ public class UserCreditService {
         StringBuilder stringBuilder = new StringBuilder();
         String activeCreditResponse;
         String applyCreditResponse;
-        User userBean = UserDao.INSTANCE.getUserByQqId(qqId);
+        User userBean = UserService.INSTANCE.getUser(qqId);
         if (userBean == null) {
             return "没有该用户";
         }

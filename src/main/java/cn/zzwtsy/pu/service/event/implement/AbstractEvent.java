@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.service.event.implement;
 
 import cn.zzwtsy.pu.api.Api;
-import cn.zzwtsy.pu.bean.UserBean;
+import cn.zzwtsy.pu.model.User;
 import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.service.event.Event;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,7 +26,7 @@ public abstract class AbstractEvent implements Event {
     protected AbstractEvent(long userQqId) {
         this.userQqId = userQqId;
         api = new Api();
-        UserBean userBean = new UserService().getUser(userQqId);
+        User userBean = UserService.INSTANCE.getUser(userQqId);
         oauthToken = userBean.getOauthToken();
         oauthTokenSecret = userBean.getOauthTokenSecret();
     }

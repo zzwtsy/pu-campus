@@ -8,7 +8,6 @@ import cn.zzwtsy.pu.utils.DateUtilKt;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
@@ -78,7 +77,7 @@ public class Tools {
      * @return boolean
      */
     public static boolean checkUserLogin(long qqId) {
-        return new UserService().getUser(qqId) == null;
+        return UserService.INSTANCE.getUser(qqId) == null;
     }
 
     /**
