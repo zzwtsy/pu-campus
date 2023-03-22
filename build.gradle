@@ -2,28 +2,42 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.7.10'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.10'
+    id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
 
-    id "net.mamoe.mirai-console" version "2.13.3"
+    id "net.mamoe.mirai-console" version "2.14.0"
 }
 
 group = 'cn.zzwtsy.pu'
-version = '0.2.0'
+version = '0.2.1'
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/public' }
     mavenCentral()
 }
 
+String ktormKspVersion = '1.0.0-RC3'
+
 dependencies {
     // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
     // https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc
-    implementation 'org.xerial:sqlite-jdbc:3.40.0.0'
-    testImplementation 'junit:junit:4.13.1'
+    implementation 'org.xerial:sqlite-jdbc:3.40.1.0'
+    // https://mvnrepository.com/artifact/org.ktorm/ktorm-core
+    implementation 'org.ktorm:ktorm-core:3.6.0'
+    implementation "org.ktorm:ktorm-ksp-api:${ktormKspVersion}"
+    ksp "org.ktorm:ktorm-ksp-compiler:${ktormKspVersion}"
+    testImplementation 'junit:junit:4.13.2'
 }
 
 mirai {
     jvmTarget = JavaVersion.VERSION_17
+}
+
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'build/generated/ksp/main/kotlin'
+        test.kotlin.srcDirs += 'build/generated/ksp/test/kotlin'
+    }
 }

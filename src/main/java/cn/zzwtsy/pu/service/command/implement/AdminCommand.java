@@ -1,8 +1,8 @@
 package cn.zzwtsy.pu.service.command.implement;
 
 import cn.zzwtsy.pu.data.Setting;
+import cn.zzwtsy.pu.database.dao.UserDao;
 import cn.zzwtsy.pu.service.TimedTaskService;
-import cn.zzwtsy.pu.service.UserService;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 
@@ -10,10 +10,10 @@ import static cn.zzwtsy.pu.tools.CommandConsts.ADD_PUBLIC_TOKEN;
 import static cn.zzwtsy.pu.tools.CommandConsts.ADMIN_DELETE_USER_COMMAND;
 import static cn.zzwtsy.pu.tools.CommandConsts.SHOW_TASK_COMMAND;
 import static cn.zzwtsy.pu.tools.CommandConsts.TIMED_TASK_COMMAND;
-import static cn.zzwtsy.pu.tools.Tools.checkTime;
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
-import static cn.zzwtsy.pu.tools.Tools.checkUserQqId;
 import static cn.zzwtsy.pu.tools.Tools.splitMessage;
+import static cn.zzwtsy.pu.utils.RegexUtil.checkTime;
+import static cn.zzwtsy.pu.utils.RegexUtil.checkUserQqId;
 
 /**
  * 管理员
@@ -69,15 +69,14 @@ public class AdminCommand extends AbstractCommand {
             return "命令格式错误";
         }
         long qqId = Long.parseLong(strings[1]);
-        String qqIdStr = strings[1];
-        if (!checkUserQqId(qqIdStr)) {
+        if (!checkUserQqId(qqId)) {
             return "用户『" + qqId + "』qq号错误";
         }
         if (checkUserLogin(qqId)) {
             return "没有『" + qqId + "』用户信息";
         }
-        int deleteUserStatus = new UserService().deleteUser(qqId);
-        if (deleteUserStatus <= 0) {
+        boolean deleteUserStatus = UserDao.INSTANCE.deleteUser(qqId);
+        if (deleteUserStatus) {
             return "删除『" + qqId + "』用户信息失败";
         } else {
             return "删除『" + qqId + "』用户信息成功";

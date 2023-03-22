@@ -3,18 +3,22 @@ package cn.zzwtsy.pu.tools;
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.data.Setting;
 import cn.zzwtsy.pu.service.UserService;
+import cn.zzwtsy.pu.utils.DateUtilKt;
 
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 import static cn.zzwtsy.pu.tools.Consts.DB_FILE_FULL_PATH;
 import static cn.zzwtsy.pu.tools.Consts.PLUGIN_DATA_FILE_PATH;
-import static cn.zzwtsy.pu.utils.DateUtil.complementaryDate;
 
 /**
+ * 拆分消息
+ *
  * @author zzwtsy
  * @since 2022/12/24
  */
@@ -28,7 +32,7 @@ public class Tools {
      */
     public static boolean messageContainsCommand(String message, String[] command) {
         for (String s : command) {
-            if (message.startsWith(s)) {
+            if (message.equals(s)) {
                 return true;
             }
         }
@@ -36,7 +40,7 @@ public class Tools {
     }
 
     /**
-     * 检查时间，格式（00-00）
+     * 检查时间，格式（HH:mm）
      *
      * @param time 时间
      * @return boolean
@@ -128,19 +132,19 @@ public class Tools {
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime() throws ParseException {
-        String addDate = complementaryDate(Setting.INSTANCE.getTimedTask());
+        String addDate = DateUtilKt.complementaryDate(Setting.INSTANCE.getTimedTask());
         return calculateTime(addDate);
     }
 
     /**
      * 计算定时任务延迟时间
      *
-     * @param time 时间 (03:03)
-     * @return long
+     * @param time 时间 (HH:mm)
+     * @return long 秒
      * @throws ParseException 解析异常
      */
     public static long calculateScheduledDelayTime(String time) throws ParseException {
-        String addDate = complementaryDate(time);
+        String addDate = DateUtilKt.complementaryDate(time);
         return calculateTime(addDate);
     }
 
@@ -148,10 +152,15 @@ public class Tools {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         long timedTaskTime = sdf.parse(time).getTime();
+        // 将当前时间转换为时间字符串
+        String timeStr = sdf.format(new Date());
+        // 解析时间字符串
+        Date date = sdf.parse(timeStr);
+        // 转换为时间戳
+        long nowTimeInMillis = date.getTime();
         //获取当前时间的时间戳
-        long nowTime = System.currentTimeMillis();
         //设定时间减去当前时间并转换为秒
-        long delayTime = (timedTaskTime - nowTime) / 1000L;
+        long delayTime = (timedTaskTime - nowTimeInMillis) / 1000L;
         //设定时间位于当前时间之后，直接返回延迟时间即可
         if (delayTime > 0) {
             return delayTime;

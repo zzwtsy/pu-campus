@@ -6,7 +6,7 @@ import cn.zzwtsy.pu.service.UserService;
 import cn.zzwtsy.pu.service.event.Event;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import static cn.zzwtsy.pu.utils.DateUtil.formatUnixTimestamp;
+import static cn.zzwtsy.pu.utils.DateUtilKt.unixTimestampToDateTime;
 
 /**
  * 抽象事件
@@ -83,13 +83,13 @@ public abstract class AbstractEvent implements Event {
             //活动标题
             String title = tempNode.get("title").asText();
             //活动开始时间
-            String sTime = formatUnixTimestamp(tempNode.get("sTime").asLong());
+            String sTime = unixTimestampToDateTime(tempNode.get("sTime").asLong());
             //活动结束时间
-            String eTime = formatUnixTimestamp(tempNode.get("eTime").asLong());
+            String eTime = unixTimestampToDateTime(tempNode.get("eTime").asLong());
             //报名开始时间
-            String startline = formatUnixTimestamp(tempNode.get("startline").asLong());
+            String startline = unixTimestampToDateTime(tempNode.get("startline").asLong());
             //报名结束时间
-            String deadline = formatUnixTimestamp(eventRegistrationCloseTime);
+            String deadline = unixTimestampToDateTime(eventRegistrationCloseTime);
             //剩余可参加人数
             String limitCount = tempNode.get("limitCount").asText();
             //活动地址

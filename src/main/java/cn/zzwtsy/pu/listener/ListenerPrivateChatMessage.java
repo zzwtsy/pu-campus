@@ -2,7 +2,7 @@ package cn.zzwtsy.pu.listener;
 
 import cn.zzwtsy.pu.PuCampus;
 import cn.zzwtsy.pu.service.command.CommandService;
-import cn.zzwtsy.pu.tools.Tools;
+import cn.zzwtsy.pu.tools.ToolsKt;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
@@ -69,7 +69,7 @@ public class ListenerPrivateChatMessage extends SimpleListenerHost {
      */
     private void publicCode(long userQqId, MessageEvent messageEvent) {
         //判断命令是否是管理员命令
-        if (Tools.messageContainsCommand(message, adminCommandArrays)) {
+        if (ToolsKt.messageContainsCommand(message, adminCommandArrays)) {
             //判断用户是否有管理员命令权限
             if (!checkAdminQqId(userQqId)) {
                 messageEvent.getSender().sendMessage("你没有此命令权限");

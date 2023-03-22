@@ -12,13 +12,13 @@ import net.mamoe.mirai.console.data.value
  */
 object Setting : AutoSavePluginConfig("setting") {
     @ValueDescription("机器人 qq 号")
-    var botId by value(0L)
+    val botId by value(0L)
 
     @ValueDescription("管理员 qq 号，示例：[111111,2222222]")
-    var adminId: List<Long> by value()
+    val adminId by value(listOf(111111,2222222))
 
     @ValueDescription("qq 群号")
-    var groupId by value(0L)
+    val groupId by value(0L)
 
     @ValueDescription(
         """
@@ -26,7 +26,7 @@ object Setting : AutoSavePluginConfig("setting") {
         值为空关闭定时任务
         """
     )
-    var timedTask: String by value("")
+    var timedTask by value("")
 
     @ValueDescription("学校邮箱后缀：https://blog.yumdeb.top/tools/PuSchoolInfo.html")
     var emailSuffix by value("")

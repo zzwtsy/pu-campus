@@ -1,16 +1,16 @@
 package cn.zzwtsy.pu.service.event.implement;
 
 import cn.zzwtsy.pu.PuCampus;
+import cn.zzwtsy.pu.utils.RegexUtil;
+import cn.zzwtsy.pu.utils.DateUtilKt;
 import cn.zzwtsy.pu.utils.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import static cn.zzwtsy.pu.tools.Tools.checkUserLogin;
-import static cn.zzwtsy.pu.utils.DateUtil.addYear;
-import static cn.zzwtsy.pu.utils.DateUtil.checkDateFormat;
-import static cn.zzwtsy.pu.utils.DateUtil.dateCalculate;
 
 /**
  * 根据日期获取活动列表
@@ -33,7 +33,7 @@ public class CalendarEvent extends AbstractEvent {
      */
     @Override
     public String getMessage() {
-        if (!checkDateFormat(date)) {
+        if (!RegexUtil.checkDateFormat(date)) {
             return "日期格式错误";
         }
         if (checkUserLogin(userQqId)) {
@@ -80,11 +80,12 @@ public class CalendarEvent extends AbstractEvent {
      * @param dateParameter 日期
      */
     private String getEventListDate(String dateParameter) {
+        LocalDate now = LocalDate.now();
         return switch (dateParameter) {
-            case "今日", "今天" -> dateCalculate(0);
-            case "明日", "明天" -> dateCalculate(+1);
-            case "昨日", "昨天" -> dateCalculate(-1);
-            default -> addYear(dateParameter);
+            case "今日", "今天" -> DateUtilKt.daysCalculation(now, 0).toString();
+            case "明日", "明天" -> DateUtilKt.daysCalculation(now, +1).toString();
+            case "昨日", "昨天" -> DateUtilKt.daysCalculation(now, -1).toString();
+            default -> DateUtilKt.makeUpForTheWholeYear(dateParameter);
         };
     }
 }
