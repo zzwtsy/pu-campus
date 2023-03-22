@@ -1,4 +1,4 @@
-package cn.zzwtsy.pu.database.init
+package cn.zzwtsy.pu.database
 
 import cn.zzwtsy.pu.PuCampus
 import cn.zzwtsy.pu.tools.*

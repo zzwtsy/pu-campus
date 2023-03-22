@@ -1,4 +1,4 @@
-package cn.zzwtsy.pu.database.entity
+package cn.zzwtsy.pu.entity
 
 import org.ktorm.entity.Entity
 import org.ktorm.ksp.api.PrimaryKey

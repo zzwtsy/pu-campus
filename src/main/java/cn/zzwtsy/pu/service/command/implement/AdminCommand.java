@@ -1,7 +1,7 @@
 package cn.zzwtsy.pu.service.command.implement;
 
+import cn.zzwtsy.pu.dao.UserDao;
 import cn.zzwtsy.pu.data.Setting;
-import cn.zzwtsy.pu.database.dao.UserDao;
 import cn.zzwtsy.pu.service.TimedTaskService;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;

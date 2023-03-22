@@ -1,6 +1,6 @@
 package cn.zzwtsy.pu.service.command.implement;
 
-import cn.zzwtsy.pu.database.dao.UserDao;
+import cn.zzwtsy.pu.dao.UserDao;
 import net.mamoe.mirai.message.data.MessageChain;
 import net.mamoe.mirai.message.data.MessageChainBuilder;
 

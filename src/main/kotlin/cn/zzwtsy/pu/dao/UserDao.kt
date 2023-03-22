@@ -1,7 +1,7 @@
-package cn.zzwtsy.pu.database.dao
+package cn.zzwtsy.pu.dao
 
-import cn.zzwtsy.pu.database.entity.User
-import cn.zzwtsy.pu.database.entity.users
+import cn.zzwtsy.pu.entity.User
+import cn.zzwtsy.pu.entity.users
 import cn.zzwtsy.pu.tools.ToolsKt
 import org.ktorm.database.Database
 import org.ktorm.dsl.eq
@@ -22,6 +22,7 @@ object UserDao {
      * @param [qqId] qq id
      * @return [User?]
      */
+    @JvmStatic
     fun getUserByQqId(qqId: Long): User? {
         val md5 = ToolsKt.encryptionQqIdToMd5(qqId)
         return database.users.find { it.qqId eq md5 }
